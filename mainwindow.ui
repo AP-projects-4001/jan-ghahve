@@ -6,167 +6,165 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1058</width>
-    <height>845</height>
+    <width>1040</width>
+    <height>627</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGroupBox" name="groupBox_3">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>20</y>
-      <width>251</width>
-      <height>471</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>GroupBox</string>
-    </property>
-    <widget class="QScrollArea" name="scrollArea">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>90</y>
-       <width>201</width>
-       <height>301</height>
-      </rect>
-     </property>
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents_2">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>199</width>
-        <height>299</height>
-       </rect>
-      </property>
-      <widget class="QScrollBar" name="verticalScrollBar">
-       <property name="geometry">
-        <rect>
-         <x>180</x>
-         <y>0</y>
-         <width>16</width>
-         <height>301</height>
-        </rect>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </widget>
-    </widget>
-   </widget>
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>30</y>
-      <width>411</width>
+      <x>80</x>
+      <y>50</y>
+      <width>801</width>
       <height>461</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout" stretch="1,6,1">
-     <property name="spacing">
-      <number>0</number>
-     </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,5">
      <item>
-      <widget class="QGroupBox" name="groupBox_4">
-       <property name="styleSheet">
-        <string notr="true">border:hide;</string>
-       </property>
+      <widget class="QGroupBox" name="groupBox_3">
        <property name="title">
-        <string/>
+        <string>GroupBox</string>
        </property>
-       <widget class="QLineEdit" name="lineEdit">
+       <widget class="QScrollArea" name="scrollArea">
         <property name="geometry">
          <rect>
-          <x>80</x>
-          <y>0</y>
-          <width>331</width>
-          <height>51</height>
+          <x>20</x>
+          <y>50</y>
+          <width>201</width>
+          <height>361</height>
          </rect>
         </property>
-       </widget>
-       <widget class="QGraphicsView" name="graphicsView">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>71</width>
-          <height>51</height>
-         </rect>
+        <property name="widgetResizable">
+         <bool>true</bool>
         </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>199</width>
+           <height>359</height>
+          </rect>
+         </property>
+         <widget class="QScrollBar" name="verticalScrollBar">
+          <property name="geometry">
+           <rect>
+            <x>180</x>
+            <y>0</y>
+            <width>16</width>
+            <height>351</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+         </widget>
+        </widget>
        </widget>
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="groupBox">
-       <property name="styleSheet">
-        <string notr="true">border:hide;</string>
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="1,6,1">
+       <property name="spacing">
+        <number>0</number>
        </property>
-       <property name="title">
-        <string/>
-       </property>
-       <widget class="QTextEdit" name="textEdit">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>10</y>
-          <width>411</width>
-          <height>331</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="groupBox_2">
-       <property name="styleSheet">
-        <string notr="true">border:hide;
+       <item>
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="styleSheet">
+          <string notr="true">border:hide;</string>
+         </property>
+         <property name="title">
+          <string/>
+         </property>
+         <widget class="QLineEdit" name="lineEdit">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>0</y>
+            <width>491</width>
+            <height>51</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QGraphicsView" name="graphicsView">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>71</width>
+            <height>51</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="styleSheet">
+          <string notr="true">border:hide;</string>
+         </property>
+         <property name="title">
+          <string/>
+         </property>
+         <widget class="QTextEdit" name="textEdit">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>10</y>
+            <width>571</width>
+            <height>331</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="styleSheet">
+          <string notr="true">border:hide;
 border-right:2px solid blue;
 
 </string>
-       </property>
-       <property name="title">
-        <string/>
-       </property>
-       <widget class="QPlainTextEdit" name="plainTextEdit">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>10</y>
-          <width>271</width>
-          <height>51</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border:hide;</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton">
-        <property name="geometry">
-         <rect>
-          <x>350</x>
-          <y>20</y>
-          <width>41</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border:hide;</string>
-        </property>
-        <property name="text">
-         <string>send</string>
-        </property>
-       </widget>
-      </widget>
+         </property>
+         <property name="title">
+          <string/>
+         </property>
+         <widget class="QPlainTextEdit" name="plainTextEdit">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>10</y>
+            <width>501</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border:hide;</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="pushButton">
+          <property name="geometry">
+           <rect>
+            <x>510</x>
+            <y>20</y>
+            <width>41</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border:hide;</string>
+          </property>
+          <property name="text">
+           <string>send</string>
+          </property>
+         </widget>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>
@@ -176,7 +174,7 @@ border-right:2px solid blue;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1058</width>
+     <width>1040</width>
      <height>26</height>
     </rect>
    </property>
