@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1040</width>
-    <height>627</height>
+    <width>986</width>
+    <height>684</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>50</y>
-      <width>801</width>
-      <height>461</height>
+      <x>90</x>
+      <y>20</y>
+      <width>811</width>
+      <height>511</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,5">
@@ -68,7 +68,7 @@
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout" stretch="1,6,1">
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="1,4,1">
        <property name="spacing">
         <number>0</number>
        </property>
@@ -93,9 +93,9 @@
          <widget class="QGraphicsView" name="graphicsView">
           <property name="geometry">
            <rect>
-            <x>0</x>
+            <x>10</x>
             <y>0</y>
-            <width>71</width>
+            <width>61</width>
             <height>51</height>
            </rect>
           </property>
@@ -113,10 +113,10 @@
          <widget class="QTextEdit" name="textEdit">
           <property name="geometry">
            <rect>
-            <x>0</x>
-            <y>10</y>
-            <width>571</width>
-            <height>331</height>
+            <x>10</x>
+            <y>-50</y>
+            <width>561</width>
+            <height>381</height>
            </rect>
           </property>
          </widget>
@@ -136,10 +136,10 @@ border-right:2px solid blue;
          <widget class="QPlainTextEdit" name="plainTextEdit">
           <property name="geometry">
            <rect>
-            <x>0</x>
+            <x>10</x>
             <y>10</y>
-            <width>501</width>
-            <height>41</height>
+            <width>511</width>
+            <height>51</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -149,7 +149,7 @@ border-right:2px solid blue;
          <widget class="QPushButton" name="pushButton">
           <property name="geometry">
            <rect>
-            <x>510</x>
+            <x>520</x>
             <y>20</y>
             <width>41</width>
             <height>29</height>
@@ -174,7 +174,7 @@ border-right:2px solid blue;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1040</width>
+     <width>986</width>
      <height>26</height>
     </rect>
    </property>
