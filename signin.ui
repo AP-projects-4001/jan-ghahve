@@ -29,7 +29,7 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="led_name">
    <property name="geometry">
     <rect>
      <x>162</x>
@@ -39,7 +39,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="led_pass">
    <property name="geometry">
     <rect>
      <x>162</x>
@@ -75,7 +75,7 @@
     <string>PassWord :</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="pbn_forgetpass">
    <property name="geometry">
     <rect>
      <x>70</x>

@@ -78,7 +78,7 @@
     <string>Password :</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="led_name">
    <property name="geometry">
     <rect>
      <x>240</x>
@@ -88,7 +88,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="led_phonenumb">
    <property name="geometry">
     <rect>
      <x>240</x>
@@ -98,17 +98,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_3">
-   <property name="geometry">
-    <rect>
-     <x>240</x>
-     <y>140</y>
-     <width>161</width>
-     <height>26</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_4">
+  <widget class="QLineEdit" name="led_email">
    <property name="geometry">
     <rect>
      <x>240</x>
@@ -118,7 +108,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_5">
+  <widget class="QLineEdit" name="led_pass">
    <property name="geometry">
     <rect>
      <x>240</x>
@@ -128,7 +118,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="pbn_submit">
    <property name="geometry">
     <rect>
      <x>300</x>
@@ -141,7 +131,7 @@
     <string>Submit</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="pbn_cancel">
    <property name="geometry">
     <rect>
      <x>170</x>
@@ -152,6 +142,16 @@
    </property>
    <property name="text">
     <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QDateEdit" name="dateEdit">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>140</y>
+     <width>161</width>
+     <height>26</height>
+    </rect>
    </property>
   </widget>
  </widget>
