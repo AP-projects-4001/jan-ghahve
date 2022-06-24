@@ -13,6 +13,11 @@ MyClient::MyClient(QByteArray *data,QObject *parent)
     if(clientSocket->waitForConnected(-1)){
         qDebug() << "connected Successfully!\n";
         clientSocket->write(*data);
+        while(clientSocket->waitForBytesWritten(-1));
+        if(clientSocket->waitForReadyRead(-1)){
+            QByteArray response = clientSocket->readAll();
+            emit response_recieved(response);
+        }
     }
     connect(clientSocket,SIGNAL(connected()),this,SLOT(connectedToServer()));
     connect(clientSocket,SIGNAL(bytesWritten(qint64)),this,SLOT(writingData()));
@@ -24,7 +29,7 @@ MyClient::MyClient(QByteArray *data,QObject *parent)
 
 void MyClient::readingData()
 {
-    //QByteArray data = clientSocket->readAll();
+    QByteArray response = clientSocket->readAll();
 }
 
 void MyClient::writingData()

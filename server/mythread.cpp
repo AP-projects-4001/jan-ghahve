@@ -52,6 +52,9 @@ void MyThread::readyRead()
         Authentication auth;
         data_obj.remove("status");
         QString response = auth.signup(data_obj);
+        QByteArray msg = response.toUtf8();
+        socket->write(msg);
+
     }
 
 }

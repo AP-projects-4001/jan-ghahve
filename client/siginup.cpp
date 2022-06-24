@@ -70,7 +70,13 @@ void siginup::on_pbn_submit_clicked()
 
     QJsonDocument user_d(user);
     QByteArray user_b = user_d.toJson();
-    MyClient client(&user_b);
+    MyClient *client = new MyClient(&user_b);
+    connect(client, SIGNAL(response_recieved(QByteArray)), this, SLOT(on_response_recieved(QString)));
     //client.connectingToServer();
+}
+
+void siginup::on_response_recieved(QByteArray response)
+{
+
 }
 
