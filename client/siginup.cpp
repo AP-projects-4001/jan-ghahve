@@ -61,6 +61,7 @@ void siginup::on_pbn_submit_clicked()
         return;
 
     QJsonObject user;
+    user["status"] = "register";
     user["id"] = id;
     user["name"] = name;
     user["password"] = pass;
