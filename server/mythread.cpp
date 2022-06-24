@@ -1,5 +1,9 @@
-#include "mythread.h"
 #include <QDebug>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include "mythread.h"
+#include "authentication.h"
+
 MyThread::MyThread(qintptr ID, QObject *parent) :
     QThread(parent)
 {
@@ -41,6 +45,18 @@ void MyThread::readyRead()
     qDebug() << socketDescriptor << " Data in: " << Data;
 
     socket->write(Data);
+
+    QJsonDocument data_doc = QJsonDocument::fromJson(Data);
+    QJsonObject data_obj = data_doc.object();
+    if(data_obj["status"] == "register"){
+        Authentication auth;
+        data_obj.remove("status");
+        QString response = auth.signup(data_obj);
+        QByteArray msg = response.toUtf8();
+        socket->write(msg);
+
+    }
+
 }
 
 void MyThread::disconnected()

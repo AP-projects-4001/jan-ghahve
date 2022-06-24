@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QTcpSocket>
-#include <qbytearray.h>
+#include <QByteArray>
 
 class MyClient : public QObject
 {
@@ -11,6 +11,8 @@ class MyClient : public QObject
 public:
     explicit MyClient(QByteArray* data, QObject *parent = nullptr);
 
+signals:
+    void response_recieved(QByteArray);
 
 public slots:
     //void connectingToServer();
