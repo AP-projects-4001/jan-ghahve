@@ -13,7 +13,7 @@ public:
 
 
 public slots:
-    void connectingToServer();
+    //void connectingToServer();
     void readingData();
     void writingData();
     void connectedToServer();

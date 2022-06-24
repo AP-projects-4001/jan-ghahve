@@ -70,6 +70,6 @@ void siginup::on_pbn_submit_clicked()
     QJsonDocument user_d(user);
     QByteArray user_b = user_d.toJson();
     MyClient client(&user_b);
-    client.connectingToServer();
+    //client.connectingToServer();
 }
 
