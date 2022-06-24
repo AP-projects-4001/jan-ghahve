@@ -156,6 +156,9 @@ border-radius: 10%;</string>
     <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 10%;</string>
    </property>
+   <property name="buttonSymbols">
+    <enum>QAbstractSpinBox::UpDownArrows</enum>
+   </property>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
