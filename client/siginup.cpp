@@ -80,6 +80,7 @@ void siginup::on_response_recieved(QByteArray response)
 {
     QString msg = QString(response);
     if(msg == "accepted"){
+
         client->disconnect();
         this->close();
         MainWindow* main_window = new MainWindow();
