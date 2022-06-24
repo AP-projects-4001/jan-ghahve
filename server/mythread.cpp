@@ -44,7 +44,7 @@ void MyThread::readyRead()
     // will write on server side window
     qDebug() << socketDescriptor << " Data in: " << Data;
 
-    socket->write(Data);
+    //socket->write(Data);
 
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
     QJsonObject data_obj = data_doc.object();

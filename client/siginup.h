@@ -2,7 +2,7 @@
 #define SIGINUP_H
 
 #include <QWidget>
-
+#include "myclient.h"
 
 namespace Ui {
 class siginup;
@@ -23,6 +23,7 @@ private slots:
 
 private:
     Ui::siginup *ui;
+    MyClient* client;
 };
 
 #endif // SIGINUP_H

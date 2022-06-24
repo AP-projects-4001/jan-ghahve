@@ -5,6 +5,7 @@
 #include "siginup.h"
 #include "ui_siginup.h"
 #include "myclient.h"
+#include "mainwindow.h"
 
 siginup::siginup(QWidget *parent) :
     QWidget(parent),
@@ -70,13 +71,21 @@ void siginup::on_pbn_submit_clicked()
 
     QJsonDocument user_d(user);
     QByteArray user_b = user_d.toJson();
-    MyClient *client = new MyClient(&user_b);
-    connect(client, SIGNAL(response_recieved(QByteArray)), this, SLOT(on_response_recieved(QString)));
+    client = new MyClient(&user_b);
+
     //client.connectingToServer();
 }
 
 void siginup::on_response_recieved(QByteArray response)
 {
-
+    QString msg = QString(response);
+    if(msg == "accepted"){
+        client->disconnect();
+        this->close();
+        MainWindow* main_window = new MainWindow();
+        main_window->show();
+    }else{
+        QMessageBox::warning(this, "Input error", msg);
+    }
 }
 

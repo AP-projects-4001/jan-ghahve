@@ -1,9 +1,12 @@
 #include "myclient.h"
+#include "siginup.h"
 #include <QDebug>
 
 MyClient::MyClient(QByteArray *data,QObject *parent)
     : QObject{parent}
 {
+    siginup* signup = new siginup();
+    connect(this, SIGNAL(response_recieved(QByteArray)), signup, SLOT(on_response_recieved(QByteArray)));
     this->data = data;
     qDebug() << "Start\n";
     clientSocket = new QTcpSocket;
