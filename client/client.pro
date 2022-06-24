@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,12 +12,14 @@ SOURCES += \
     loading.cpp \
     main.cpp \
     mainwindow.cpp \
+    myclient.cpp \
     siginup.cpp \
     signin.cpp
 
 HEADERS += \
     loading.h \
     mainwindow.h \
+    myclient.h \
     siginup.h \
     signin.h
 
