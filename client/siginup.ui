@@ -252,7 +252,7 @@ border-radius: 10%;</string>
     <string>confirm password :</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="conf_pass">
    <property name="geometry">
     <rect>
      <x>182</x>
