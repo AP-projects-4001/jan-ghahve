@@ -1,6 +1,7 @@
 #include "loading.h"
 #include "ui_loading.h"
 #include "siginup.h"
+#include "signin.h"
 
 loading::loading(QWidget *parent) :
     QWidget(parent),
@@ -22,3 +23,10 @@ void loading::on_pbn_siginup_clicked()
     this->close();
 }
 
+void loading::on_pbn_signin_clicked()
+{
+    signin* signin_window = new signin();
+    signin_window->setFixedSize(450,400);
+    signin_window->show();
+    this->close();
+}

@@ -9,6 +9,7 @@ class Authentication : public QObject
 public:
     explicit Authentication(QObject *parent = nullptr);
     QString signup(QJsonObject data);
+    QString signin(QJsonObject data);
 private:
     QString path;
 

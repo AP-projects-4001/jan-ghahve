@@ -17,7 +17,7 @@ public:
 
 private slots:
     void on_pbn_siginup_clicked();
-
+    void on_pbn_signin_clicked();
 private:
     Ui::loading *ui;
 };

@@ -9,7 +9,7 @@ class MyClient : public QObject
 {
     Q_OBJECT
 public:
-    explicit MyClient(QByteArray* data, QObject *parent = nullptr);
+    explicit MyClient(QString status ,QByteArray* data, QObject *parent = nullptr);
 
 signals:
     void response_recieved(QByteArray);

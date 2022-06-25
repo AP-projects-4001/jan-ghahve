@@ -44,7 +44,7 @@ void MyThread::readyRead()
     // will write on server side window
     qDebug() << socketDescriptor << " Data in: " << Data;
 
-    socket->write(Data);
+    //socket->write(Data);
 
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
     QJsonObject data_obj = data_doc.object();
@@ -54,9 +54,14 @@ void MyThread::readyRead()
         QString response = auth.signup(data_obj);
         QByteArray msg = response.toUtf8();
         socket->write(msg);
-
     }
-
+    else if(data_obj["status"] == "login"){
+        Authentication auth;
+        data_obj.remove("status");
+        QString response = auth.signin(data_obj);
+        QByteArray msg = response.toUtf8();
+        socket->write(msg);
+    }
 }
 
 void MyThread::disconnected()
