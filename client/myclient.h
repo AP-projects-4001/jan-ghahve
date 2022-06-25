@@ -9,17 +9,12 @@ class MyClient : public QObject
 {
     Q_OBJECT
 public:
-    explicit MyClient(QString status ,QByteArray* data, QObject *parent = nullptr);
-
-signals:
-    void response_recieved(QByteArray);
-
-public slots:
-    //void connectingToServer();
-    void readingData();
-    void writingData();
-    void connectedToServer();
-    void disconnectedFromServer();
+    explicit MyClient(QObject *parent = nullptr);
+    ~MyClient();
+    bool connect_to_server();
+    QByteArray authentication(QByteArray* data);
+    void disconnect_from_server();
+    void send_message(QByteArray* message, QString id1, QString id2);
 
 private:
     QTcpSocket *clientSocket;

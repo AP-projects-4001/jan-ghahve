@@ -19,7 +19,6 @@ public:
 
 private slots:
     void on_pbn_ok_clicked();
-    void on_response_recieved(QByteArray response);
 
 private:
     Ui::signin *ui;
