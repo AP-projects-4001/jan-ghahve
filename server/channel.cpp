@@ -1,19 +1,19 @@
 ﻿#include <QJsonDocument>
 #include <QJsonArray>
 #include <QFile>
-#include "authentication.h"
+#include "channel.h"
 
-Authentication::Authentication(QObject *parent)
+Channel::Channel(QObject *parent)
     : QObject{parent}
 {
     path = "database.json";
 }
 
 //returns "Username already taken" or "accepted"
-QString Authentication::signup(QJsonObject data)
+QString Channel::signup(QJsonObject data)
 {
     QFile file(path);
-    QJsonArray json_arr;
+    QJsonArray json_arr, profiles_arr;
     bool username_uique = true;
 
     if(file.open(QIODevice::ReadOnly)){
@@ -23,10 +23,11 @@ QString Authentication::signup(QJsonObject data)
         QJsonDocument json_doc = QJsonDocument::fromJson(b);
         QJsonObject json_obj = json_doc.object();
         json_arr = json_obj["users"].toArray();
+        profiles_arr = json_doc["profiles"].toArray();
     }
 
     QJsonObject user;
-    for(QJsonValueRef user_ref:json_arr)
+    for(QJsonValueRef user_ref:qAsConst(json_arr))
     {
         user = user_ref.toObject();
         if(user["id"] == data["id"]){
@@ -37,9 +38,16 @@ QString Authentication::signup(QJsonObject data)
     if(!username_uique)
         return "Username already taken";
 
-    json_arr.append(data);
+    user["id"] = data["id"];
+    user["password"] = data["password"];
+    json_arr.append(user);
+    data.remove("password");
+    profiles_arr.append(data);
+
     QJsonObject result;
     result["users"] = json_arr;
+    result["profiles"] = profiles_arr;
+
     QJsonDocument result_doc(result);
     QFile file2(path);
     file2.open(QIODevice::WriteOnly);
@@ -48,7 +56,7 @@ QString Authentication::signup(QJsonObject data)
     return "accepted";
 }
 
-QString Authentication::signin(QJsonObject data)
+QString Channel::signin(QJsonObject data)
 {
 
     QFile file(path);
@@ -64,7 +72,7 @@ QString Authentication::signin(QJsonObject data)
     }
 
     QJsonObject user;
-    for(QJsonValueRef user_ref:json_arr)
+    for(QJsonValueRef user_ref:qAsConst(json_arr))
     {
         user = user_ref.toObject();
         //qDebug()<<"user in database : "<<user["id"]<<"     "<<user["password"]<<"  |  "<<"data inputed : "<<data["id"]<<"     "<<data["password"];
@@ -78,29 +86,30 @@ QString Authentication::signin(QJsonObject data)
         }
     }
     return "incorrect Username";
+}
 
-//    QFile file(path);
-//    if(!file.open(QIODevice::ReadOnly))
-//        return "";
+QByteArray Channel::get_info(QString id)
+{
+    QFile file(path);
+    QJsonArray profiles_arr;
 
-//    QByteArray b = file.readAll();
-//    file.close();
+    if(file.open(QIODevice::ReadOnly)){
+        QByteArray b = file.readAll();
+        file.close();
 
-//    QJsonDocument json_doc = QJsonDocument::fromJson(b);
-//    QJsonObject json_obj = json_doc.object();
-//    QJsonArray json_arr = json_obj["user"].toArray();
-//    QJsonObject user;
-//    for(QJsonValueRef user_ref:json_arr){
-//        user = user_ref.toObject();
-//        if((user["username"] == data["username"])&&(user["password"]==data["password"]))
-//        {
-//            return "Username and Password is correct";
-//        }
-//        else if((user["username"] == data["username"])&&(user["password"]!=data["password"]))
-//        {
-//            return "incorrect password";
-//        }
-//    }
-//    return "incorrect Username";
+        QJsonDocument json_doc = QJsonDocument::fromJson(b);
+        QJsonObject json_obj = json_doc.object();
+        profiles_arr = json_doc["profiles"].toArray();
+    }
 
+    QJsonObject user;
+    for(QJsonValueRef user_ref:qAsConst(profiles_arr))
+    {
+        user = user_ref.toObject();
+        if(user["id"] == id){
+            QJsonDocument temp_doc(user);
+            return temp_doc.toJson();
+        }
+    }
+    return 0;
 }

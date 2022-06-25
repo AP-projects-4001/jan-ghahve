@@ -2,7 +2,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include "mythread.h"
-#include "authentication.h"
+#include "channel.h"
 
 MyThread::MyThread(qintptr ID, QObject *parent) :
     QThread(parent)
@@ -44,24 +44,26 @@ void MyThread::readyRead()
     // will write on server side window
     qDebug() << socketDescriptor << " Data in: " << Data;
 
-    //socket->write(Data);
-
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
     QJsonObject data_obj = data_doc.object();
-    if(data_obj["status"] == "register"){
-        Authentication auth;
-        data_obj.remove("status");
-        QString response = auth.signup(data_obj);
-        QByteArray msg = response.toUtf8();
-        socket->write(msg);
+    Channel channel;
+    QString msg, status = data_obj["status"].toString();
+    QByteArray response;
+
+    data_obj.remove("status");
+    if(status == "register"){
+        msg = channel.signup(data_obj);
+        response = msg.toUtf8();
     }
-    else if(data_obj["status"] == "login"){
-        Authentication auth;
-        data_obj.remove("status");
-        QString response = auth.signin(data_obj);
-        QByteArray msg = response.toUtf8();
-        socket->write(msg);
+    else if(status == "login"){
+        msg = channel.signin(data_obj);
+        response = msg.toUtf8();
     }
+    else if(status == "getInfo"){
+        response = channel.get_info(data_obj["id"].toString());
+    }
+
+    socket->write(response);
 }
 
 void MyThread::disconnected()

@@ -1,4 +1,5 @@
 #include "myclient.h"
+#include "qjsonobject.h"
 #include "siginup.h"
 #include "signin.h"
 #include <QDebug>
@@ -29,7 +30,7 @@ bool MyClient::connect_to_server()
     return false;
 }
 
-QByteArray MyClient::authentication(QByteArray *data)
+QByteArray MyClient::request_to_server(QByteArray *data)
 {
     clientSocket->write(*data);
     while(clientSocket->waitForBytesWritten(-1));
@@ -37,6 +38,7 @@ QByteArray MyClient::authentication(QByteArray *data)
         QByteArray response = clientSocket->readAll();
         return response;
     }
+    return 0;
 }
 
 void MyClient::disconnect_from_server()
@@ -45,6 +47,7 @@ void MyClient::disconnect_from_server()
     clientSocket->disconnectFromHost();
     clientSocket->deleteLater();
 }
+
 
 //void MyClient::send_message(QByteArray *message, QString id1, QString id2)
 //{

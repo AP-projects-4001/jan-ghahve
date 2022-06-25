@@ -1,18 +1,19 @@
-#ifndef AUTHENTICATION_H
-#define AUTHENTICATION_H
+#ifndef CHANNEL_H
+#define CHANNEL_H
 
 #include <QObject>
 #include <QJsonObject>
-class Authentication : public QObject
+class Channel : public QObject
 {
     Q_OBJECT
 public:
-    explicit Authentication(QObject *parent = nullptr);
+    explicit Channel(QObject *parent = nullptr);
     QString signup(QJsonObject data);
     QString signin(QJsonObject data);
+    QByteArray get_info(QString id);
 private:
     QString path;
 
 };
 
-#endif // AUTHENTICATION_H
+#endif // CHANNEL_H

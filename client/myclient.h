@@ -12,7 +12,7 @@ public:
     explicit MyClient(QObject *parent = nullptr);
     ~MyClient();
     bool connect_to_server();
-    QByteArray authentication(QByteArray* data);
+    QByteArray request_to_server(QByteArray* data);
     void disconnect_from_server();
     void send_message(QByteArray* message, QString id1, QString id2);
 

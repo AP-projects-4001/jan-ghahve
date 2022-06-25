@@ -74,14 +74,14 @@ void siginup::on_pbn_submit_clicked()
     QByteArray user_b = user_d.toJson();
 
     if(client->connect_to_server()){
-        QByteArray response = client->authentication(&user_b);
+        QByteArray response = client->request_to_server(&user_b);
         QString msg = QString(response);
         if(msg == "accepted"){
             client->disconnect_from_server();
             this->close();
             this->destroy(true, true);
             this->deleteLater();
-            MainWindow* main_window = new MainWindow(client);
+            MainWindow* main_window = new MainWindow(id);
             main_window->show();
         }
         else
