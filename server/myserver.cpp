@@ -21,6 +21,7 @@ void MyServer::startServer()
     }
 }
 
+
 // This function is called by QTcpServer when a new connection is available.
 void MyServer::incomingConnection(qintptr socketDescriptor)
 {

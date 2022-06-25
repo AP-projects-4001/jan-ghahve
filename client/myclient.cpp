@@ -8,6 +8,7 @@
 MyClient::MyClient(QString status ,QByteArray *data,QObject *parent)
     : QObject{parent}
 {
+    //checking status
     if(status == "login")
     {
         signin* signin_ = new signin();
@@ -19,6 +20,7 @@ MyClient::MyClient(QString status ,QByteArray *data,QObject *parent)
         connect(this, SIGNAL(response_recieved(QByteArray)), signup, SLOT(on_response_recieved(QByteArray)));  //SIGN UP
     }
 
+    //starting to connect to the server
     this->data = data;
     qDebug() << "Start\n";
     clientSocket = new QTcpSocket;
@@ -31,13 +33,13 @@ MyClient::MyClient(QString status ,QByteArray *data,QObject *parent)
         while(clientSocket->waitForBytesWritten(-1));
         if(clientSocket->waitForReadyRead(-1)){
             QByteArray response = clientSocket->readAll();
+            //emit response to sign in or signup, to get a reaction
             emit response_recieved(response);
         }
     }
     connect(clientSocket,SIGNAL(connected()),this,SLOT(connectedToServer()));
     connect(clientSocket,SIGNAL(bytesWritten(qint64)),this,SLOT(writingData()));
     connect(clientSocket,SIGNAL(readyRead()),this,SLOT(readingData()));
-
     //connect(clientSocket,SIGNAL(disconnect()),this,SLOT(disconnectedFromServer()));
 }
 

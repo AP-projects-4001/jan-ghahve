@@ -15,7 +15,6 @@ signals:
     void response_recieved(QByteArray);
 
 public slots:
-    //void connectingToServer();
     void readingData();
     void writingData();
     void connectedToServer();

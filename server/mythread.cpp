@@ -44,22 +44,25 @@ void MyThread::readyRead()
     // will write on server side window
     qDebug() << socketDescriptor << " Data in: " << Data;
 
-    //socket->write(Data);
-
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
     QJsonObject data_obj = data_doc.object();
+    //Check status, Does the user want to login or register?
     if(data_obj["status"] == "register"){
         Authentication auth;
         data_obj.remove("status");
+        //Go to authentication to get appropriate response
         QString response = auth.signup(data_obj);
         QByteArray msg = response.toUtf8();
+        //writing an answer to the client
         socket->write(msg);
     }
     else if(data_obj["status"] == "login"){
         Authentication auth;
         data_obj.remove("status");
+        //Go to authentication to get appropriate response
         QString response = auth.signin(data_obj);
         QByteArray msg = response.toUtf8();
+        //writing an answer to the client
         socket->write(msg);
     }
 }

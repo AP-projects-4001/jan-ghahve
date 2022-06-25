@@ -58,6 +58,7 @@ void siginup::on_pbn_submit_clicked()
     birthdate =  ui->dateEdit->text();
     conf_pass = ui->conf_pass->text();
 
+    //Check validation of inputs
     if(!validate_signup_data(name, id, email, birthdate, pass, conf_pass))
         return;
 
@@ -71,18 +72,17 @@ void siginup::on_pbn_submit_clicked()
 
     QJsonDocument user_d(user);
     QByteArray user_b = user_d.toJson();
+    //sending data to "myclient" to send to the server and write to the file
     client = new MyClient("register",&user_b);
-
-    //client.connectingToServer();
 }
 
 void siginup::on_response_recieved(QByteArray response)
 {
     QString msg = QString(response);
+    //Check response(Successful or not)
     if(msg == "accepted"){
-
-        client->disconnect();
         this->close();
+        client->disconnect();  
         MainWindow* main_window = new MainWindow();
         main_window->show();
     }
@@ -91,3 +91,9 @@ void siginup::on_response_recieved(QByteArray response)
         QMessageBox::warning(this, "signup error", msg);
     }
 }
+
+void siginup::on_pbn_cancel_clicked()
+{
+
+}
+

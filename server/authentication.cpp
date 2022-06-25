@@ -9,12 +9,13 @@ Authentication::Authentication(QObject *parent)
     path = "database.json";
 }
 
+
 QString Authentication::signup(QJsonObject data)
 {
+    //Reading all data from Database
+
     QFile file(path);
     QJsonArray json_arr;
-    bool username_uique = true;
-
     if(file.open(QIODevice::ReadOnly)){
         QByteArray b = file.readAll();
         file.close();
@@ -24,6 +25,8 @@ QString Authentication::signup(QJsonObject data)
         json_arr = json_obj["users"].toArray();
     }
 
+    //Search for similar username(id) in Database(is username uniqe or not)
+    bool username_uique = true;
     QJsonObject user;
     for(QJsonValueRef user_ref:json_arr)
     {
@@ -36,6 +39,7 @@ QString Authentication::signup(QJsonObject data)
     if(!username_uique)
         return "Username already taken";
 
+    //Append new user's data, in Database
     json_arr.append(data);
     QJsonObject result;
     result["users"] = json_arr;
@@ -49,7 +53,7 @@ QString Authentication::signup(QJsonObject data)
 
 QString Authentication::signin(QJsonObject data)
 {
-
+    //Reading all data from Database
     QFile file(path);
     QJsonArray json_arr;
     if(file.open(QIODevice::ReadOnly))
@@ -62,11 +66,11 @@ QString Authentication::signin(QJsonObject data)
         json_arr = json_obj["users"].toArray();
     }
 
+    //Compare input data with Database
     QJsonObject user;
     for(QJsonValueRef user_ref:json_arr)
     {
         user = user_ref.toObject();
-        //qDebug()<<"user in database : "<<user["id"]<<"     "<<user["password"]<<"  |  "<<"data inputed : "<<data["id"]<<"     "<<data["password"];
         if((user["id"] == data["id"])&&(user["password"]==data["password"]))
         {
             return "accepted login";
@@ -77,29 +81,4 @@ QString Authentication::signin(QJsonObject data)
         }
     }
     return "incorrect Username";
-
-//    QFile file(path);
-//    if(!file.open(QIODevice::ReadOnly))
-//        return "";
-
-//    QByteArray b = file.readAll();
-//    file.close();
-
-//    QJsonDocument json_doc = QJsonDocument::fromJson(b);
-//    QJsonObject json_obj = json_doc.object();
-//    QJsonArray json_arr = json_obj["user"].toArray();
-//    QJsonObject user;
-//    for(QJsonValueRef user_ref:json_arr){
-//        user = user_ref.toObject();
-//        if((user["username"] == data["username"])&&(user["password"]==data["password"]))
-//        {
-//            return "Username and Password is correct";
-//        }
-//        else if((user["username"] == data["username"])&&(user["password"]!=data["password"]))
-//        {
-//            return "incorrect password";
-//        }
-//    }
-//    return "incorrect Username";
-
 }

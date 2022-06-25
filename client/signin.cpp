@@ -1,5 +1,6 @@
 //signin.cpp
 
+
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <qbytearray.h>
@@ -9,11 +10,14 @@
 #include "myclient.h"
 #include "mainwindow.h"
 
+#include <QLineEdit>
+
 signin::signin(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::signin)
 {
     ui->setupUi(this);
+    ui->led_pass->setEchoMode(QLineEdit::Password);
 }
 
 signin::~signin()
@@ -21,10 +25,11 @@ signin::~signin()
     delete ui;
 }
 
+//Checking validation of inputs
 bool signin::validate_signin_data(QString id,QString pass)
 {
     if(id.length() == 0){
-        QMessageBox::warning(this, "Invalid input", "User name field cannot be empty!");
+        QMessageBox::warning(this, "Invalid input", "Username field cannot be empty!");
         return false;
     }
     else if(pass.length() == 0){
@@ -33,6 +38,7 @@ bool signin::validate_signin_data(QString id,QString pass)
     }
     return true;
 }
+
 
 void signin::on_pbn_ok_clicked()
 {
@@ -50,16 +56,18 @@ void signin::on_pbn_ok_clicked()
 
     QJsonDocument user_d(user);
     QByteArray user_b = user_d.toJson();
+    //sending data to "myclient" to send to the server and compare with Database(chaeck validation)
     client = new MyClient("login",&user_b);
 }
 
 void signin::on_response_recieved(QByteArray response)
 {
     QString msg = QString(response);
+    //Check response(Successful or not)
     if(msg == "accepted login")
     {
-        client->disconnect();
         this->close();
+        client->disconnect();
         MainWindow* main_window = new MainWindow();
         main_window->show();
     }
