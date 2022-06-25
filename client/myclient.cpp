@@ -1,12 +1,24 @@
 #include "myclient.h"
 #include "siginup.h"
+#include "signin.h"
 #include <QDebug>
 
-MyClient::MyClient(QByteArray *data,QObject *parent)
+
+
+MyClient::MyClient(QString status ,QByteArray *data,QObject *parent)
     : QObject{parent}
 {
-    siginup* signup = new siginup();
-    connect(this, SIGNAL(response_recieved(QByteArray)), signup, SLOT(on_response_recieved(QByteArray)));
+    if(status == "login")
+    {
+        signin* signin_ = new signin();
+        connect(this, SIGNAL(response_recieved(QByteArray)), signin_, SLOT(on_response_recieved(QByteArray))); //SIGN IN
+    }
+    else if(status=="register")
+    {
+        siginup* signup = new siginup();
+        connect(this, SIGNAL(response_recieved(QByteArray)), signup, SLOT(on_response_recieved(QByteArray)));  //SIGN UP
+    }
+
     this->data = data;
     qDebug() << "Start\n";
     clientSocket = new QTcpSocket;
@@ -25,6 +37,7 @@ MyClient::MyClient(QByteArray *data,QObject *parent)
     connect(clientSocket,SIGNAL(connected()),this,SLOT(connectedToServer()));
     connect(clientSocket,SIGNAL(bytesWritten(qint64)),this,SLOT(writingData()));
     connect(clientSocket,SIGNAL(readyRead()),this,SLOT(readingData()));
+
     //connect(clientSocket,SIGNAL(disconnect()),this,SLOT(disconnectedFromServer()));
 }
 

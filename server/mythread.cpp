@@ -54,9 +54,14 @@ void MyThread::readyRead()
         QString response = auth.signup(data_obj);
         QByteArray msg = response.toUtf8();
         socket->write(msg);
-
     }
-
+    else if(data_obj["status"] == "login"){
+        Authentication auth;
+        data_obj.remove("status");
+        QString response = auth.signin(data_obj);
+        QByteArray msg = response.toUtf8();
+        socket->write(msg);
+    }
 }
 
 void MyThread::disconnected()

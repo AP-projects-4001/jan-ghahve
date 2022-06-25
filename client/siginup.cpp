@@ -71,7 +71,7 @@ void siginup::on_pbn_submit_clicked()
 
     QJsonDocument user_d(user);
     QByteArray user_b = user_d.toJson();
-    client = new MyClient(&user_b);
+    client = new MyClient("register",&user_b);
 
     //client.connectingToServer();
 }
@@ -85,8 +85,9 @@ void siginup::on_response_recieved(QByteArray response)
         this->close();
         MainWindow* main_window = new MainWindow();
         main_window->show();
-    }else{
-        QMessageBox::warning(this, "Input error", msg);
+    }
+    else
+    {
+        QMessageBox::warning(this, "signup error", msg);
     }
 }
-
