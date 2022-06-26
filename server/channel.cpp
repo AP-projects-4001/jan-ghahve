@@ -12,20 +12,13 @@ Channel::Channel(QObject *parent)
 //returns "Username already taken" or "accepted"
 QString Channel::signup(QJsonObject data)
 {
-    QFile file(path);
     QJsonArray json_arr, profiles_arr;
+    QJsonObject json_obj;
+    json_obj = read_from_file(path);
+    json_arr = json_obj["users"].toArray();
+    profiles_arr = json_obj["profiles"].toArray();
+
     bool username_uique = true;
-
-    if(file.open(QIODevice::ReadOnly)){
-        QByteArray b = file.readAll();
-        file.close();
-
-        QJsonDocument json_doc = QJsonDocument::fromJson(b);
-        QJsonObject json_obj = json_doc.object();
-        json_arr = json_obj["users"].toArray();
-        profiles_arr = json_doc["profiles"].toArray();
-    }
-
     QJsonObject user;
     for(QJsonValueRef user_ref:qAsConst(json_arr))
     {
@@ -48,28 +41,17 @@ QString Channel::signup(QJsonObject data)
     result["users"] = json_arr;
     result["profiles"] = profiles_arr;
 
-    QJsonDocument result_doc(result);
-    QFile file2(path);
-    file2.open(QIODevice::WriteOnly);
-    file2.write(result_doc.toJson());
-    file2.close();
+    write_to_file(path, result);
+
     return "accepted";
 }
 
 QString Channel::signin(QJsonObject data)
 {
-
-    QFile file(path);
     QJsonArray json_arr;
-    if(file.open(QIODevice::ReadOnly))
-    {
-        QByteArray b = file.readAll();
-        file.close();
-
-        QJsonDocument json_doc = QJsonDocument::fromJson(b);
-        QJsonObject json_obj = json_doc.object();
-        json_arr = json_obj["users"].toArray();
-    }
+    QJsonObject json_obj;
+    json_obj = read_from_file(path);
+    json_arr = json_obj["users"].toArray();
 
     QJsonObject user;
     for(QJsonValueRef user_ref:qAsConst(json_arr))
@@ -90,17 +72,10 @@ QString Channel::signin(QJsonObject data)
 
 QByteArray Channel::get_info(QString id)
 {
-    QFile file(path);
+    QJsonObject json_obj;
     QJsonArray profiles_arr;
-
-    if(file.open(QIODevice::ReadOnly)){
-        QByteArray b = file.readAll();
-        file.close();
-
-        QJsonDocument json_doc = QJsonDocument::fromJson(b);
-        QJsonObject json_obj = json_doc.object();
-        profiles_arr = json_doc["profiles"].toArray();
-    }
+    json_obj = read_from_file(path);
+    profiles_arr = json_obj["profiles"].toArray();
 
     QJsonObject user;
     for(QJsonValueRef user_ref:qAsConst(profiles_arr))
@@ -112,4 +87,49 @@ QByteArray Channel::get_info(QString id)
         }
     }
     return 0;
+}
+
+void Channel::send_message(QJsonObject data)
+{
+    QString file_path = data["id1"].toString() + "/" + data["id2"].toString();
+    QJsonObject msg_obj;
+    QJsonArray msg_arr;
+
+    msg_obj = read_from_file(file_path);
+    if(msg_obj.empty()){
+        file_path = data["id2"].toString() + "/" + data["id1"].toString();
+        msg_obj = read_from_file(file_path);
+    }
+
+    msg_arr = msg_obj["messages"].toArray();
+    QJsonObject message;
+    message["sender"] = data["id1"];
+    message["message"] = data["message"];
+    msg_arr.append(message);
+
+    QJsonObject result;
+    result["messages"] = msg_arr;
+    write_to_file(file_path, result);
+}
+
+void Channel::write_to_file(QString file_path, QJsonObject result)
+{
+    QJsonDocument result_doc(result);
+    QFile file(file_path);
+    file.open(QIODevice::WriteOnly);
+    file.write(result_doc.toJson());
+    file.close();
+}
+
+QJsonObject Channel::read_from_file(QString file_path)
+{
+    QFile file(file_path);
+    QJsonObject json_obj;
+    if(file.open(QIODevice::ReadOnly)){
+        QByteArray b = file.readAll();
+        file.close();
+        QJsonDocument json_doc = QJsonDocument::fromJson(b);
+        json_obj = json_doc.object();
+    }
+    return json_obj;
 }

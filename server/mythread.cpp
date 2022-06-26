@@ -61,6 +61,8 @@ void MyThread::readyRead()
     }
     else if(status == "getInfo"){
         response = channel.get_info(data_obj["id"].toString());
+    }else if(status == "message"){
+        channel.send_message(data_obj);
     }
 
     socket->write(response);

@@ -48,6 +48,11 @@ void MyClient::disconnect_from_server()
     clientSocket->deleteLater();
 }
 
+bool MyClient::is_client_connectd()
+{
+    return clientSocket->ConnectedState;
+}
+
 
 //void MyClient::send_message(QByteArray *message, QString id1, QString id2)
 //{
