@@ -1,4 +1,3 @@
-#include "mainwindow.h"
 #include "loading.h"
 #include <QApplication>
 

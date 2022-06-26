@@ -2,7 +2,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include "mythread.h"
-#include "authentication.h"
+#include "channel.h"
 
 MyThread::MyThread(qintptr ID, QObject *parent) :
     QThread(parent)
@@ -46,25 +46,31 @@ void MyThread::readyRead()
 
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
     QJsonObject data_obj = data_doc.object();
-    //Check status, Does the user want to login or register?
-    if(data_obj["status"] == "register"){
-        Authentication auth;
-        data_obj.remove("status");
-        //Go to authentication to get appropriate response
-        QString response = auth.signup(data_obj);
-        QByteArray msg = response.toUtf8();
-        //writing an answer to the client
-        socket->write(msg);
+    Channel channel;
+    QString msg, status = data_obj["status"].toString();
+    QByteArray response;
+
+    data_obj.remove("status");
+    if(status == "register"){
+        msg = channel.signup(data_obj);
+        response = msg.toUtf8();
     }
-    else if(data_obj["status"] == "login"){
-        Authentication auth;
-        data_obj.remove("status");
-        //Go to authentication to get appropriate response
-        QString response = auth.signin(data_obj);
-        QByteArray msg = response.toUtf8();
-        //writing an answer to the client
-        socket->write(msg);
+    else if(status == "login"){
+        msg = channel.signin(data_obj);
+        response = msg.toUtf8();
     }
+    else if(status == "getInfo"){
+        response = channel.get_info(data_obj["id"].toString());
+    }else if(status == "message"){
+        channel.send_message(data_obj);
+        msg = "ok";
+        response = msg.toUtf8();
+    }
+    else if(status == "chatInfo"){
+        response = channel.get_chat_info(data_obj["id1"].toString(), data_obj["id2"].toString());
+    }
+
+    socket->write(response);
 }
 
 void MyThread::disconnected()

@@ -1,27 +1,23 @@
 #include "myclient.h"
+#include "qjsonobject.h"
 #include "siginup.h"
 #include "signin.h"
 #include <QDebug>
 
 
-
-MyClient::MyClient(QString status ,QByteArray *data,QObject *parent)
+MyClient::MyClient(QObject *parent)
     : QObject{parent}
 {
-    //checking status
-    if(status == "login")
-    {
-        signin* signin_ = new signin();
-        connect(this, SIGNAL(response_recieved(QByteArray)), signin_, SLOT(on_response_recieved(QByteArray))); //SIGN IN
-    }
-    else if(status=="register")
-    {
-        siginup* signup = new siginup();
-        connect(this, SIGNAL(response_recieved(QByteArray)), signup, SLOT(on_response_recieved(QByteArray)));  //SIGN UP
-    }
 
-    //starting to connect to the server
-    this->data = data;
+}
+
+MyClient::~MyClient()
+{
+    qDebug() << "client deleted\n";
+}
+
+bool MyClient::connect_to_server()
+{
     qDebug() << "Start\n";
     clientSocket = new QTcpSocket;
     clientSocket->connectToHost("127.0.0.1",1025);
@@ -29,41 +25,42 @@ MyClient::MyClient(QString status ,QByteArray *data,QObject *parent)
 
     if(clientSocket->waitForConnected(-1)){
         qDebug() << "connected Successfully!\n";
-        clientSocket->write(*data);
-        while(clientSocket->waitForBytesWritten(-1));
-        if(clientSocket->waitForReadyRead(-1)){
-            QByteArray response = clientSocket->readAll();
-            //emit response to sign in or signup, to get a reaction
-            emit response_recieved(response);
-        }
+        return true;
     }
-    connect(clientSocket,SIGNAL(connected()),this,SLOT(connectedToServer()));
-    connect(clientSocket,SIGNAL(bytesWritten(qint64)),this,SLOT(writingData()));
-    connect(clientSocket,SIGNAL(readyRead()),this,SLOT(readingData()));
+    return false;
 }
 
-
-
-void MyClient::readingData()
+QByteArray MyClient::request_to_server(QByteArray *data)
 {
-    QByteArray response = clientSocket->readAll();
-}
-
-void MyClient::writingData()
-{
-    qDebug() << "writing successfully! \n";
-}
-
-void MyClient::connectedToServer()
-{
-    qDebug() << "connected Successfully!\n";
     clientSocket->write(*data);
+    while(clientSocket->waitForBytesWritten(-1));
+    if(clientSocket->waitForReadyRead(-1)){
+        QByteArray response = clientSocket->readAll();
+        return response;
+    }
+    return 0;
 }
 
-void MyClient::disconnectedFromServer()
+void MyClient::disconnect_from_server()
 {
-    qDebug() << "connection lost\n";
+    clientSocket->disconnect();
+    clientSocket->disconnectFromHost();
+    clientSocket->deleteLater();
 }
+
+bool MyClient::is_client_connectd()
+{
+    return clientSocket->ConnectedState;
+}
+
+
+//void MyClient::send_message(QByteArray *message, QString id1, QString id2)
+//{
+
+//}
+
+
+
 
 
 
