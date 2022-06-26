@@ -12,18 +12,21 @@ SOURCES += \
     loading.cpp \
     main.cpp \
     mainwindow.cpp \
+    setting.cpp \
     siginup.cpp \
     signin.cpp
 
 HEADERS += \
     loading.h \
     mainwindow.h \
+    setting.h \
     siginup.h \
     signin.h
 
 FORMS += \
     loading.ui \
     mainwindow.ui \
+    setting.ui \
     siginup.ui \
     signin.ui
 
