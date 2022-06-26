@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>851</width>
-    <height>541</height>
+    <height>608</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -166,69 +166,29 @@ border:hide;
     <property name="title">
      <string>GroupBox</string>
     </property>
-    <widget class="QScrollArea" name="scrollArea">
+    <widget class="QListWidget" name="listWidget">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>40</x>
        <y>50</y>
-       <width>201</width>
-       <height>431</height>
+       <width>161</width>
+       <height>391</height>
       </rect>
      </property>
-     <property name="styleSheet">
-      <string notr="true">border:1px solid gray;</string>
-     </property>
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents_2">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>199</width>
-        <height>429</height>
-       </rect>
-      </property>
-      <widget class="QScrollBar" name="verticalScrollBar">
-       <property name="geometry">
-        <rect>
-         <x>180</x>
-         <y>0</y>
-         <width>16</width>
-         <height>421</height>
-        </rect>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-      <widget class="QWidget" name="verticalLayoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>171</width>
-         <height>401</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QPushButton" name="pushButton_2">
-          <property name="styleSheet">
-           <string notr="true">border-radius: 20%;
-color:rgb(0, 136, 136);
-background-color:white;</string>
-          </property>
-          <property name="text">
-           <string>chat</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="test">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>520</y>
+      <width>93</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

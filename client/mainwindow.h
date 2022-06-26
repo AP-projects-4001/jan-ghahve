@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <QJsonObject>
 #include "myclient.h"
+#include <QVBoxLayout>
+#include <QListWidget>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,6 +20,13 @@ public:
     MainWindow(QString id, QWidget *parent = nullptr);
     ~MainWindow();
     void test_function();
+
+    void add_safebar();
+
+private slots:
+    void on_test_clicked();
+
+    void on_listWidget_itemClicked(QListWidgetItem *item);
 
 private:
     Ui::MainWindow *ui;
