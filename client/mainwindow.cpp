@@ -18,16 +18,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::add_safebar()
 {
-    QVBoxLayout* layout = qobject_cast<QVBoxLayout *>(ui->verticalLayout->layout());
+    QListWidget* list = ui->listWidget;
+    QListWidgetItem* item = new QListWidgetItem("pain");
 
-    QPushButton *Button = new QPushButton("chat",ui->groupBox_3);
-    Button->setStyleSheet("border: 1px solid; border-radius:10px; background-color: palette(base); ");
-    layout->insertWidget(0,Button);
-
+    list->addItem(item);
 
 }
-void MainWindow::on_test_clicked()
-{
 
+void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
+{
+    //mitoni itemi ke click shode estefade koni (to vorodi tabe ferestade)
+    ui->textEdit->insertPlainText("pain");
 }
 
