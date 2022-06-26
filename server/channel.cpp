@@ -91,13 +91,13 @@ QByteArray Channel::get_info(QString id)
 
 void Channel::send_message(QJsonObject data)
 {
-    QString file_path = data["id1"].toString() + "/" + data["id2"].toString();
+    QString file_path = data["id1"].toString() + "%" + data["id2"].toString() + ".json";
     QJsonObject msg_obj;
     QJsonArray msg_arr;
 
     msg_obj = read_from_file(file_path);
     if(msg_obj.empty()){
-        file_path = data["id2"].toString() + "/" + data["id1"].toString();
+        file_path = data["id2"].toString() + "%" + data["id1"].toString() + ".json";
         msg_obj = read_from_file(file_path);
     }
 
@@ -110,6 +110,20 @@ void Channel::send_message(QJsonObject data)
     QJsonObject result;
     result["messages"] = msg_arr;
     write_to_file(file_path, result);
+}
+
+QByteArray Channel::get_chat_info(QString id1, QString id2)
+{
+    QString file_path = id1 + "%" + id2 + ".json";
+    QJsonObject chat_obj;
+
+    chat_obj = read_from_file(file_path);
+    if(chat_obj.empty()){
+        file_path = id2 + "%" + id1 + ".json";
+        chat_obj = read_from_file(file_path);
+    }
+    QJsonDocument chat_doc(chat_obj);
+    return chat_doc.toJson();
 }
 
 void Channel::write_to_file(QString file_path, QJsonObject result)

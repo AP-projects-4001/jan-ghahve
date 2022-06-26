@@ -16,10 +16,12 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QString id, QWidget *parent = nullptr);
     ~MainWindow();
+    void test_function();
 
 private:
     Ui::MainWindow *ui;
     MyClient *client;
-    QJsonObject data;
+    QJsonObject user_data;
+    QJsonObject contact_info;
 };
 #endif // MAINWINDOW_H

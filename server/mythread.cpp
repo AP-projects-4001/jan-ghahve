@@ -63,6 +63,11 @@ void MyThread::readyRead()
         response = channel.get_info(data_obj["id"].toString());
     }else if(status == "message"){
         channel.send_message(data_obj);
+        msg = "ok";
+        response = msg.toUtf8();
+    }
+    else if(status == "chatInfo"){
+        response = channel.get_chat_info(data_obj["id1"].toString(), data_obj["id2"].toString());
     }
 
     socket->write(response);
