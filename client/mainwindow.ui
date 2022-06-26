@@ -36,9 +36,9 @@ background-color:rgb(191, 215, 234);</string>
     <widget class="QPlainTextEdit" name="plainTextEdit">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>10</x>
        <y>0</y>
-       <width>501</width>
+       <width>511</width>
        <height>61</height>
       </rect>
      </property>
@@ -88,9 +88,9 @@ background-color:rgb(191, 215, 234);</string>
     <widget class="QTextEdit" name="textEdit">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>0</x>
        <y>0</y>
-       <width>571</width>
+       <width>581</width>
        <height>341</height>
       </rect>
      </property>
@@ -172,10 +172,10 @@ border:hide;
     <widget class="QListWidget" name="listWidget">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>50</y>
-       <width>161</width>
-       <height>391</height>
+       <x>20</x>
+       <y>30</y>
+       <width>181</width>
+       <height>451</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -186,6 +186,23 @@ QListWidgetItem{
 color : red;
 background-color: red;
 }</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_3">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>430</y>
+       <width>41</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgb(25, 130, 196);
+border-radius: 20%;</string>
+     </property>
+     <property name="text">
+      <string>S</string>
      </property>
     </widget>
    </widget>
