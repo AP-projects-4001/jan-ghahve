@@ -19,8 +19,9 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QString id, QWidget *parent = nullptr);
     ~MainWindow();
+    void get_user_infor(QString id);
+    void get_all_users();
     void test_function();
-
     void add_safebar();
 
 private slots:
@@ -33,5 +34,6 @@ private:
     MyClient *client;
     QJsonObject user_data;
     QJsonObject contact_info;
+    QJsonObject all_users;
 };
 #endif // MAINWINDOW_H

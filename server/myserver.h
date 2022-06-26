@@ -14,7 +14,7 @@ public:
 
 private slots:
     void on_thread_finished(qintptr socketdiscriptor);
-    void on_message_recieved22(QString recieverId, QString message);
+    void on_message_recieved(QString recieverId, QString message);
     void on_user_authenticated(qintptr socketdiscriptor, QString id);
 
 protected:
