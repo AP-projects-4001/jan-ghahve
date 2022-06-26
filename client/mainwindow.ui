@@ -6,8 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
+<<<<<<< Updated upstream
     <width>986</width>
     <height>684</height>
+=======
+    <width>851</width>
+    <height>613</height>
+>>>>>>> Stashed changes
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,6 +28,7 @@
       <height>511</height>
      </rect>
     </property>
+<<<<<<< Updated upstream
     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,5">
      <item>
       <widget class="QGroupBox" name="groupBox_3">
@@ -167,6 +173,54 @@ border-right:2px solid blue;
       </layout>
      </item>
     </layout>
+=======
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(170, 192, 209);
+border:hide;
+</string>
+    </property>
+    <property name="title">
+     <string>GroupBox</string>
+    </property>
+    <widget class="QWidget" name="verticalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>80</y>
+       <width>171</width>
+       <height>351</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+>>>>>>> Stashed changes
+   </widget>
+   <widget class="QPushButton" name="test">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>520</y>
+      <width>93</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>test</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
