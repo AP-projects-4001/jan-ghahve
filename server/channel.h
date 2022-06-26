@@ -13,6 +13,8 @@ public:
     QByteArray get_info(QString id);
     void send_message(QJsonObject data);
     QByteArray get_chat_info(QString id1, QString id2);
+    QByteArray get_all_info();
+
 private:
     QString path;
     void write_to_file(QString file_path, QJsonObject result);

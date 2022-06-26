@@ -20,7 +20,7 @@ siginup::~siginup()
     delete ui;
 }
 
-bool siginup::validate_signup_data(QString name, QString id, QString email, QString birthdate, QString pass, QString conf_pass)
+bool siginup::validate_signup_data(QString name, QString id, QString email, QString birthdate, QString pass, QString conf_pass, QString number)
 {
     if(id.length() == 0){
         QMessageBox::warning(this, "Invalid input", "User name field cannot be empty!");
@@ -38,6 +38,10 @@ bool siginup::validate_signup_data(QString name, QString id, QString email, QStr
         QMessageBox::warning(this, "Invalid input", "Email field cannot be empty!");
         return false;
     }
+    else if(number.length() == 0){
+        QMessageBox::warning(this, "Invalid input", "Phone number field cannot be empty!");
+        return false;
+    }
     else if(birthdate.length() == 0){
         QMessageBox::warning(this, "Invalid input", "Birh date field cannot be empty!");
         return false;
@@ -51,15 +55,16 @@ bool siginup::validate_signup_data(QString name, QString id, QString email, QStr
 
 void siginup::on_pbn_submit_clicked()
 {
-    QString id, name, pass, email, birthdate, conf_pass;
+    QString id, name, pass, email, birthdate, conf_pass, number;
     name = ui->lineEdit->text();
     id = ui->led_name->text();
     pass = ui->led_pass->text();
     email = ui->led_email->text();
     birthdate =  ui->dateEdit->text();
     conf_pass = ui->conf_pass->text();
+    number = ui->led_phonenumb->text();
 
-    if(!validate_signup_data(name, id, email, birthdate, pass, conf_pass))
+    if(!validate_signup_data(name, id, email, birthdate, pass, conf_pass, number))
         return;
 
     QJsonObject user;
@@ -69,6 +74,7 @@ void siginup::on_pbn_submit_clicked()
     user["password"] = pass;
     user["email"]=email;
     user["birthdate"] = birthdate;
+    user["number"] = number;
 
     QJsonDocument user_d(user);
     QByteArray user_b = user_d.toJson();

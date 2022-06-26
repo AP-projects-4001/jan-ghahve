@@ -15,7 +15,7 @@ class siginup : public QWidget
 public:
     explicit siginup(QWidget *parent = nullptr);
     ~siginup();
-    bool validate_signup_data(QString name, QString id, QString email, QString birthdate, QString pass, QString conf_pass);
+    bool validate_signup_data(QString name, QString id, QString email, QString birthdate, QString pass, QString conf_pass, QString number);
 
 private slots:
     void on_pbn_submit_clicked();

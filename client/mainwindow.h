@@ -19,14 +19,11 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QString id, QWidget *parent = nullptr);
     ~MainWindow();
-    void get_user_infor(QString id);
+    void get_user_info(QString id);
     void get_all_users();
-    void test_function();
     void add_safebar();
 
 private slots:
-    void on_test_clicked();
-
     void on_listWidget_itemClicked(QListWidgetItem *item);
 
 private:

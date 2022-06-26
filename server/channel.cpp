@@ -126,6 +126,15 @@ QByteArray Channel::get_chat_info(QString id1, QString id2)
     return chat_doc.toJson();
 }
 
+QByteArray Channel::get_all_info()
+{
+    QJsonObject data_obj;
+    data_obj = read_from_file(path);
+    data_obj.remove("users");
+    QJsonDocument data_doc(data_obj);
+    return data_doc.toJson();
+}
+
 void Channel::write_to_file(QString file_path, QJsonObject result)
 {
     QJsonDocument result_doc(result);

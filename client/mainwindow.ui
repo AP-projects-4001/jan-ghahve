@@ -95,7 +95,7 @@ background-color:rgb(191, 215, 234);</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-image: url(C:/Users/Hkr/Desktop/BGchat.jpg);
+      <string notr="true">background-image: url(:/images/resourses/BGchat.jpg);
 border-radius:20px;
 background-color: palette(base);</string>
      </property>
@@ -206,19 +206,6 @@ border-radius: 20%;</string>
      </property>
     </widget>
    </widget>
-   <widget class="QPushButton" name="test">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>520</y>
-      <width>93</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>PushButton</string>
-    </property>
-   </widget>
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
@@ -281,7 +268,7 @@ border-radius: 20%;</string>
      <string>BirthDate :</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_6">
+   <widget class="QLabel" name="contact_name">
     <property name="geometry">
      <rect>
       <x>920</x>
@@ -298,7 +285,7 @@ border-radius: 20%;</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_7">
+   <widget class="QLabel" name="contact_phoneNumber">
     <property name="geometry">
      <rect>
       <x>920</x>
@@ -315,7 +302,7 @@ border-radius: 20%;</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_8">
+   <widget class="QLabel" name="contact_id">
     <property name="geometry">
      <rect>
       <x>920</x>
@@ -332,7 +319,7 @@ border-radius: 20%;</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_9">
+   <widget class="QLabel" name="contact_birhdate">
     <property name="geometry">
      <rect>
       <x>920</x>
@@ -356,7 +343,7 @@ border-radius: 20%;</string>
      <x>0</x>
      <y>0</y>
      <width>1053</width>
-     <height>26</height>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menusetting">
