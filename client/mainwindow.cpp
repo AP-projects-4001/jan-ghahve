@@ -16,14 +16,14 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     QJsonDocument request_d(request);
     QByteArray request_b = request_d.toJson();
 
-    client = new MyClient();
+   client = new MyClient();
     if(client->connect_to_server()){
         QByteArray response = client->request_to_server(&request_b);
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         user_data = response_d.object();
     }
 
-    //send message
+//    send message
     QJsonObject message;
     message["status"] = "message";
     message["id1"] = user_data["id"];
@@ -37,23 +37,31 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     }
 
     //get chat
-    QJsonObject chat;
-    QJsonObject chatReq;
-    chatReq["status"] = "chatInfo";
-    chatReq["id1"] = user_data["id"];
-    chatReq["id2"] = "d";//contact_info["id"];
-    QJsonDocument chatReq_d(chatReq);
-    QByteArray chatReq_b = chatReq_d.toJson();
-    if(client->is_client_connectd()){
-        QByteArray response = client->request_to_server(&chatReq_b);
-        QJsonDocument response_d = QJsonDocument::fromJson(response);
-        chat = response_d.object();
-        QFile file("chat.json");
-        file.open(QIODevice::WriteOnly);
-        file.write(response);
-        file.close();
-    }
+//    QJsonObject chat;
+//    QJsonObject chatReq;
+//    chatReq["status"] = "chatInfo";
+//    chatReq["id1"] = user_data["id"];
+//    chatReq["id2"] = "d";//contact_info["id"];
+//    QJsonDocument chatReq_d(chatReq);
+//    QByteArray chatReq_b = chatReq_d.toJson();
+//    if(client->is_client_connectd()){
+//        QByteArray response = client->request_to_server(&chatReq_b);
+//        QJsonDocument response_d = QJsonDocument::fromJson(response);
+//        chat = response_d.object();
+//        QFile file("chat.json");
+//        file.open(QIODevice::WriteOnly);
+//        file.write(response);
+//        file.close();
+//    }
 
+    while (true) {
+        if(client->is_client_connectd()){
+            QByteArray response = client->message_recieved();
+            QJsonDocument response_d = QJsonDocument::fromJson(response);
+            QJsonObject response_obj = response_d.object();
+            qDebug() << response_obj["message"];
+        }
+    }
 }
 
 MainWindow::~MainWindow()

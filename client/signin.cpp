@@ -55,7 +55,7 @@ void signin::on_pbn_ok_clicked()
     if(client->connect_to_server()){
         QByteArray response = client->request_to_server(&user_b);
         QString msg = QString(response);
-        if(msg == "accepted login"){
+        if(msg == "accepted"){
             client->disconnect_from_server();
             this->close();
             this->destroy(true, true);

@@ -53,6 +53,14 @@ bool MyClient::is_client_connectd()
     return clientSocket->ConnectedState;
 }
 
+QByteArray MyClient::message_recieved()
+{
+    if(clientSocket->waitForReadyRead(-1)){
+        return clientSocket->readAll();
+    }
+    return 0;
+}
+
 
 //void MyClient::send_message(QByteArray *message, QString id1, QString id2)
 //{

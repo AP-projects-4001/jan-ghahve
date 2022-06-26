@@ -60,7 +60,7 @@ QString Channel::signin(QJsonObject data)
         //qDebug()<<"user in database : "<<user["id"]<<"     "<<user["password"]<<"  |  "<<"data inputed : "<<data["id"]<<"     "<<data["password"];
         if((user["id"] == data["id"])&&(user["password"]==data["password"]))
         {
-            return "accepted login";
+            return "accepted";
         }
         else if((user["id"] == data["id"])&&(user["password"]!=data["password"]))
         {

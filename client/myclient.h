@@ -16,7 +16,7 @@ public:
     void disconnect_from_server();
     void send_message(QByteArray* message, QString id1, QString id2);
     bool is_client_connectd();
-
+    QByteArray message_recieved();
 private:
     QTcpSocket *clientSocket;
     QByteArray *data;
