@@ -31,7 +31,7 @@ void MyServer::on_thread_finished(qintptr socketdiscriptor)
     }
 }
 
-void MyServer::on_message_recieved22(QString recieverId, QString message)
+void MyServer::on_message_recieved(QString recieverId, QString message)
 {
     QString id;
     for(int i=0; i<threads.length(); i++){
@@ -63,7 +63,7 @@ void MyServer::incomingConnection(qintptr socketDescriptor)
     // once a thread is not needed, it will be beleted later
     connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     connect(thread, SIGNAL(thread_finished(qintptr)), this, SLOT(on_thread_finished(qintptr)));
-    QObject::connect(thread, &MyThread::message_recieved, this, &MyServer::on_message_recieved22);
+    QObject::connect(thread, &MyThread::message_recieved, this, &MyServer::on_message_recieved);
     QObject::connect(thread, &MyThread::user_authenticated, this, &MyServer::on_user_authenticated);
     thread->start();
 }
