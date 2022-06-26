@@ -9,8 +9,8 @@
 #include "ui_signin.h"
 #include "myclient.h"
 #include "mainwindow.h"
-
 #include <QLineEdit>
+#include "loading.h"
 
 signin::signin(QWidget *parent) :
     QDialog(parent),
@@ -18,6 +18,8 @@ signin::signin(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->led_pass->setEchoMode(QLineEdit::Password);
+    ui->pbn_ok->setDefault(true);
+    ui->pbn_ok->setFocus();
 }
 
 signin::~signin()
@@ -74,6 +76,23 @@ void signin::on_response_recieved(QByteArray response)
     else
     {
         QMessageBox::warning(this, "signin error", msg);
+        if(msg=="incorrect username")
+        {
+            ui->led_name->setStyleSheet("border: 1px solid red");
+        }
+        else if(msg=="incorrect password")
+        {
+            ui->led_pass->setStyleSheet("border: 1px solid red");
+        }
     }
+}
+
+
+void signin::on_pbn_cancel_clicked()
+{
+    loading* loading_page = new loading();
+    loading_page->setFixedSize(205,239);
+    loading_page->show();
+    this->close();
 }
 

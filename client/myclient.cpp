@@ -40,7 +40,6 @@ MyClient::MyClient(QString status ,QByteArray *data,QObject *parent)
     connect(clientSocket,SIGNAL(connected()),this,SLOT(connectedToServer()));
     connect(clientSocket,SIGNAL(bytesWritten(qint64)),this,SLOT(writingData()));
     connect(clientSocket,SIGNAL(readyRead()),this,SLOT(readingData()));
-    //connect(clientSocket,SIGNAL(disconnect()),this,SLOT(disconnectedFromServer()));
 }
 
 
