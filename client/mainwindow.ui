@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>851</width>
+    <width>1053</width>
     <height>608</height>
    </rect>
   </property>
@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgb(191, 215, 234);</string>
+   <string notr="true">background-color:rgb(170, 192, 209);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QGroupBox" name="groupBox_2">
@@ -28,7 +28,7 @@
     </property>
     <property name="styleSheet">
      <string notr="true">border:hide;
-background-color:rgb(170, 192, 209);</string>
+background-color:rgb(191, 215, 234);</string>
     </property>
     <property name="title">
      <string/>
@@ -36,9 +36,9 @@ background-color:rgb(170, 192, 209);</string>
     <widget class="QPlainTextEdit" name="plainTextEdit">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>10</x>
        <y>0</y>
-       <width>501</width>
+       <width>511</width>
        <height>61</height>
       </rect>
      </property>
@@ -80,7 +80,7 @@ border-radius: 20%;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">border:hide;
-background-color:rgb(170, 192, 209);</string>
+background-color:rgb(191, 215, 234);</string>
     </property>
     <property name="title">
      <string/>
@@ -88,9 +88,9 @@ background-color:rgb(170, 192, 209);</string>
     <widget class="QTextEdit" name="textEdit">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>0</x>
        <y>0</y>
-       <width>571</width>
+       <width>581</width>
        <height>341</height>
       </rect>
      </property>
@@ -112,40 +112,43 @@ background-color: palette(base);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">border:hide;
-background-color:rgb(170, 192, 209);</string>
+background-color:rgb(191, 215, 234);</string>
     </property>
     <property name="title">
      <string/>
     </property>
-    <widget class="QLineEdit" name="lineEdit">
+    <widget class="QPushButton" name="pushButton_2">
      <property name="geometry">
       <rect>
-       <x>80</x>
-       <y>10</y>
-       <width>491</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border-radius: 20%;
-color:black;
-background-color:white;</string>
-     </property>
-    </widget>
-    <widget class="QGraphicsView" name="graphicsView">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
+       <x>40</x>
        <y>10</y>
        <width>61</width>
        <height>51</height>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: hide; 
-border-radius:25%; 
-background-color: palette(base);
-</string>
+      <string notr="true">background-color:white;
+border-radius: 20%;</string>
+     </property>
+     <property name="text">
+      <string>aks</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>10</y>
+       <width>71</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:white;
+border-radius: 20%;</string>
+     </property>
+     <property name="text">
+      <string>Name</string>
      </property>
     </widget>
    </widget>
@@ -159,7 +162,7 @@ background-color: palette(base);
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:rgb(170, 192, 209);
+     <string notr="true">background-color:rgb(191, 215, 234);
 border:hide;
 </string>
     </property>
@@ -169,11 +172,37 @@ border:hide;
     <widget class="QListWidget" name="listWidget">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>50</y>
-       <width>161</width>
-       <height>391</height>
+       <x>20</x>
+       <y>30</y>
+       <width>181</width>
+       <height>451</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border:visible;
+font-size:18px;
+background-color:rgb(255, 255, 255);
+QListWidgetItem{
+color : red;
+background-color: red;
+}</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_3">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>430</y>
+       <width>41</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgb(25, 130, 196);
+border-radius: 20%;</string>
+     </property>
+     <property name="text">
+      <string>S</string>
      </property>
     </widget>
    </widget>
@@ -190,30 +219,164 @@ border:hide;
      <string>PushButton</string>
     </property>
    </widget>
+   <widget class="QGraphicsView" name="graphicsView">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>80</y>
+      <width>211</width>
+      <height>191</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>400</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PhoneNum :</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>360</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Username :</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>320</y>
+      <width>61</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string> Name :</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>440</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>BirthDate :</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>920</x>
+      <y>320</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white;
+border-radius: 20%;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>920</x>
+      <y>400</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white;
+border-radius: 20%;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>920</x>
+      <y>360</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white;
+border-radius: 20%;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>920</x>
+      <y>440</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white;
+border-radius: 20%;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>851</width>
+     <width>1053</width>
      <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menusetting">
     <property name="title">
-     <string>setting</string>
+     <string>More</string>
     </property>
     <addaction name="separator"/>
     <addaction name="actionprofile"/>
+    <addaction name="separator"/>
     <addaction name="actionlvl_3_graph"/>
-    <addaction name="actionchange_password"/>
+    <addaction name="separator"/>
+    <addaction name="actionProfile"/>
+    <addaction name="separator"/>
+    <addaction name="actionLogout"/>
    </widget>
    <addaction name="menusetting"/>
   </widget>
   <action name="actionprofile">
    <property name="text">
-    <string>profile</string>
+    <string>setting</string>
    </property>
   </action>
   <action name="actionlvl_3_graph">
@@ -224,6 +387,16 @@ border:hide;
   <action name="actionchange_password">
    <property name="text">
     <string>change password</string>
+   </property>
+  </action>
+  <action name="actionProfile">
+   <property name="text">
+    <string>Profile</string>
+   </property>
+  </action>
+  <action name="actionLogout">
+   <property name="text">
+    <string>Logout</string>
    </property>
   </action>
  </widget>

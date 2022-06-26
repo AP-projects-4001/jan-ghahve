@@ -111,7 +111,7 @@ void MainWindow::add_safebar()
 {
     QListWidget* list = ui->listWidget;
     QListWidgetItem* item = new QListWidgetItem("pain");
-
+//    item->setBackground(Qt::blue);
     list->addItem(item);
 
 }
@@ -122,3 +122,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     ui->textEdit->insertPlainText("pain");
 }
 
+void MainWindow::on_test_clicked()
+{
+
+}
