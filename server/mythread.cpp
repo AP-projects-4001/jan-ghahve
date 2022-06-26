@@ -51,25 +51,33 @@ void MyThread::readyRead()
     QByteArray response;
 
     data_obj.remove("status");
-    if(status == "register"){
+    //Checking request of client (register, login, message, getInfo, chatInfo)
+    if(status == "register")
+    {
         msg = channel.signup(data_obj);
         response = msg.toUtf8();
     }
-    else if(status == "login"){
+    else if(status == "login")
+    {
         msg = channel.signin(data_obj);
         response = msg.toUtf8();
     }
-    else if(status == "getInfo"){
+    else if(status == "getInfo")
+    {
         response = channel.get_info(data_obj["id"].toString());
-    }else if(status == "message"){
+    }
+    else if(status == "message")
+    {
         channel.send_message(data_obj);
         msg = "ok";
         response = msg.toUtf8();
     }
-    else if(status == "chatInfo"){
+    else if(status == "chatInfo")
+    {
         response = channel.get_chat_info(data_obj["id1"].toString(), data_obj["id2"].toString());
     }
 
+    //Get a responce from "channel", then Send it to the Client
     socket->write(response);
 }
 

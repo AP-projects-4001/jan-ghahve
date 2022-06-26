@@ -17,6 +17,7 @@ private:
     QString path;
     void write_to_file(QString file_path, QJsonObject result);
     QJsonObject read_from_file(QString file_path);
+    //QMutex attribute
 };
 
 #endif // CHANNEL_H

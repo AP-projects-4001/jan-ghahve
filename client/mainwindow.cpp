@@ -77,4 +77,3 @@ void MainWindow::test_function()
         contact_info = response_d.object();
     }
 }
-
