@@ -3,19 +3,26 @@
 #include <QFile>
 #include "channel.h"
 
-Channel::Channel(QObject *parent)
+Channel::Channel(QMutex *inp_mutex ,QObject *parent)
     : QObject{parent}
 {
     path = "database.json";
-    //create QMutex
+    this->ch_mutex = inp_mutex;
 }
 
 //returns "Username already taken" or "accepted"
-QString Channel::signup(QJsonObject data)
+QString Channel::signup(QJsonObject data) //data = new user data
 {
+    qDebug()<<data["id"]<<" want to Lock the file";
+    //----LOCK ----
+    ch_mutex->lock();
+    qDebug()<<data["id"]<<" Locked the file";
+
     QJsonArray json_arr, profiles_arr;
     QJsonObject json_obj;
+
     json_obj = read_from_file(path);
+
     json_arr = json_obj["users"].toArray();
     profiles_arr = json_obj["profiles"].toArray();
 
@@ -30,7 +37,15 @@ QString Channel::signup(QJsonObject data)
         }
     }
     if(!username_uique)
+    {
+        qDebug()<<data["id"]<<" want to unLock the file";
+        //---- UnLock -----
+        ch_mutex->unlock();
+        qDebug()<<data["id"]<<" unLocked the file";
+
         return "Username already taken";
+    }
+
 
     user["id"] = data["id"];
     user["password"] = data["password"];
@@ -43,13 +58,21 @@ QString Channel::signup(QJsonObject data)
     result["profiles"] = profiles_arr;
 
     write_to_file(path, result);
-
+    qDebug()<<data["id"]<<" want to unLock the file";
+    //---- UnLock -----
+    ch_mutex->unlock();
+    qDebug()<<data["id"]<<" unLocked the file";
     return "accepted";
 }
 
 //returns status of signing in: "accepted login", "incorrect username" or "incorrect password"
 QString Channel::signin(QJsonObject data)
 {
+    qDebug()<<data["id"]<<" want to Lock the file";
+    //----LOCK ----
+    ch_mutex->lock();
+    qDebug()<<data["id"]<<" Locked the file";
+
     QJsonArray json_arr;
     QJsonObject json_obj;
     json_obj = read_from_file(path);
@@ -61,13 +84,25 @@ QString Channel::signin(QJsonObject data)
         user = user_ref.toObject();
         if((user["id"] == data["id"])&&(user["password"]==data["password"]))
         {
+            qDebug()<<data["id"]<<" want to unLock the file";
+            //---- UnLock -----
+            ch_mutex->unlock();
+            qDebug()<<data["id"]<<" unLocked the file";
             return "accepted login";
         }
         else if((user["id"] == data["id"])&&(user["password"]!=data["password"]))
         {
+            qDebug()<<data["id"]<<" want to unLock the file";
+            //---- UnLock -----
+            ch_mutex->unlock();
+            qDebug()<<data["id"]<<" unLocked the file";
             return "incorrect password";
         }
     }
+    qDebug()<<data["id"]<<" want to unLock the file";
+    //---- UnLock -----
+    ch_mutex->unlock();
+    qDebug()<<data["id"]<<" unLocked the file";
     return "incorrect Username";
 }
 
@@ -96,6 +131,11 @@ QByteArray Channel::get_info(QString id)
 //append new message in the messages databse
 void Channel::send_message(QJsonObject data)
 {
+    qDebug()<<data["id1"]<<"%"<<data["id2"]<<" want to Lock the file";
+    //----LOCK ----
+    ch_mutex->lock();
+    qDebug()<<data["id1"]<<"%"<<data["id2"]<<" Locked the file";
+
     //--------- at first open pv-chat file ---------
     //file name can be : id1 + "%" + id2 + ".json"
     QString file_path = data["id1"].toString() + "%" + data["id2"].toString() + ".json";
@@ -123,10 +163,20 @@ void Channel::send_message(QJsonObject data)
     QJsonObject result;
     result["messages"] = msg_arr;
     write_to_file(file_path, result);
+
+    qDebug()<<data["id1"]<<"%"<<data["id2"]<<" want to unLock the file";
+    //---- UnLock -----
+    ch_mutex->unlock();
+    qDebug()<<data["id1"]<<"%"<<data["id2"]<<" unLocked the file";
 }
 
 QByteArray Channel::get_chat_info(QString id1, QString id2)
 {
+    qDebug()<<id1<<"%"<<id2<<" want to Lock the file";
+    //----LOCK ----
+    ch_mutex->lock();
+    qDebug()<<id1<<"%"<<id2<<" Locked the file";
+
     //file name can be : id1 + "%" + id2 + ".json"
     QString file_path = id1 + "%" + id2 + ".json";
     QJsonObject chat_obj;
@@ -141,6 +191,12 @@ QByteArray Channel::get_chat_info(QString id1, QString id2)
     }
     //return whole chat messages
     QJsonDocument chat_doc(chat_obj);
+
+    qDebug()<<id1<<"%"<<id2<<" want to unLock the file";
+    //---- UnLock -----
+    ch_mutex->unlock();
+    qDebug()<<id1<<"%"<<id2<<" unLocked the file";
+
     return chat_doc.toJson();
 }
 
@@ -148,24 +204,20 @@ QByteArray Channel::get_chat_info(QString id1, QString id2)
 
 void Channel::write_to_file(QString file_path, QJsonObject result)
 {
-    //QMutex  Lock
     QJsonDocument result_doc(result);
     QFile file(file_path);
     file.open(QIODevice::WriteOnly);
     file.write(result_doc.toJson());
     file.close();
-    //QMutex unLock
 }
 
 QJsonObject Channel::read_from_file(QString file_path)
 {
-    //QMutex  Lock
     QFile file(file_path);
     QJsonObject json_obj;
     if(file.open(QIODevice::ReadOnly)){
         QByteArray b = file.readAll();
         file.close();
-        //QMutex unLock
         QJsonDocument json_doc = QJsonDocument::fromJson(b);
         json_obj = json_doc.object();
     }

@@ -3,11 +3,13 @@
 
 #include <QObject>
 #include <QJsonObject>
+#include <qmutex.h>
+
 class Channel : public QObject
 {
     Q_OBJECT
 public:
-    explicit Channel(QObject *parent = nullptr);
+    explicit Channel(QMutex *inp_mutex ,QObject *parent = nullptr);
     QString signup(QJsonObject data);
     QString signin(QJsonObject data);
     QByteArray get_info(QString id);
@@ -17,7 +19,7 @@ private:
     QString path;
     void write_to_file(QString file_path, QJsonObject result);
     QJsonObject read_from_file(QString file_path);
-    //QMutex attribute
+    QMutex *ch_mutex;
 };
 
 #endif // CHANNEL_H

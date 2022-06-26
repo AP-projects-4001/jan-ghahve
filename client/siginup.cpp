@@ -14,6 +14,8 @@ siginup::siginup(QWidget *parent) :
 {
     ui->setupUi(this);
     client = new MyClient();
+    ui->pbn_submit->setDefault(true);
+    ui->pbn_submit->setFocus();
 }
 
 siginup::~siginup()
@@ -22,7 +24,7 @@ siginup::~siginup()
 }
 
 //Checking validation of inputs
-bool siginup::validate_signup_data(QString name, QString id, QString email, QString phone_number, QString birthdate, QString pass, QString conf_pass)
+bool siginup::validate_signup_data(QString name, QString id, QString email, QString birthdate, QString pass, QString conf_pass)
 {
     if(id.length() == 0){
         QMessageBox::warning(this, "Invalid input", "User name field cannot be empty!");
@@ -40,10 +42,6 @@ bool siginup::validate_signup_data(QString name, QString id, QString email, QStr
         QMessageBox::warning(this, "Invalid input", "Email field cannot be empty!");
         return false;
     }
-    else if(phone_number.length() == 0){
-        QMessageBox::warning(this, "Invalid input", "Phone Number field cannot be empty!");
-        return false;
-    }
     else if(birthdate.length() == 0){
         QMessageBox::warning(this, "Invalid input", "Birh date field cannot be empty!");
         return false;
@@ -57,17 +55,16 @@ bool siginup::validate_signup_data(QString name, QString id, QString email, QStr
 
 void siginup::on_pbn_submit_clicked()
 {
-    QString id, name, pass, email, phone_number, birthdate, conf_pass;
+    QString id, name, pass, email, birthdate, conf_pass;
     name = ui->lineEdit->text();
     id = ui->led_name->text();
     pass = ui->led_pass->text();
     email = ui->led_email->text();
-    phone_number = ui->led_phonenumb->text();
     birthdate =  ui->dateEdit->text();
     conf_pass = ui->conf_pass->text();
 
     //Checking validation of inputs
-    if(!validate_signup_data(name, id, email, phone_number, birthdate, pass, conf_pass))
+    if(!validate_signup_data(name, id, email, birthdate, pass, conf_pass))
         return;
 
     //Creating an instance to set data on it, then sending it to the server
@@ -92,6 +89,7 @@ void siginup::on_pbn_submit_clicked()
             this->destroy(true, true);
             this->deleteLater();
             //Go to the main window(chat window)
+            qDebug()<<"sign up finished, continue to mainWindow";
             MainWindow* main_window = new MainWindow(id);
             main_window->show();
         }

@@ -4,12 +4,13 @@
 #include <QThread>
 #include <QTcpSocket>
 #include <QDebug>
+#include <QMutex>
 
 class MyThread : public QThread
 {
     Q_OBJECT
 public:
-    explicit MyThread(qintptr ID, QObject *parent = nullptr);
+    explicit MyThread(QMutex *inp_mutex,qintptr ID, QObject *parent = nullptr);
 
     void run();
 signals:
@@ -22,6 +23,7 @@ public slots:
 private:
     QTcpSocket* socket;
     qintptr socketDescriptor;
+    QMutex *tr_mutex;
 };
 
 #endif // MYTHREAD_H

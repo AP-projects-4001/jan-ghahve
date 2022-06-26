@@ -2,6 +2,7 @@
 #define MYSERVER_H
 
 #include <QTcpServer>
+#include <QMutex>
 
 class MyServer : public QTcpServer
 {
@@ -13,6 +14,8 @@ public:
 protected:
     void incomingConnection(qintptr socketDescriptor);
 
+private:
+    QMutex *server_mutex;
 };
 
 #endif // MYSERVER_H

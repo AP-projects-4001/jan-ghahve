@@ -4,7 +4,7 @@
 MyServer::MyServer(QObject *parent)
     : QTcpServer{parent}
 {
-
+    server_mutex = new QMutex;
 }
 
 void MyServer::startServer()
@@ -29,7 +29,7 @@ void MyServer::incomingConnection(qintptr socketDescriptor)
     qDebug() << socketDescriptor << " Connecting...";
 
     // Every new connection will be run in a newly created thread
-    MyThread *thread = new MyThread(socketDescriptor, this);
+    MyThread *thread = new MyThread(server_mutex,socketDescriptor, this);
 
     // connect signal/slot
     // once a thread is not needed, it will be beleted later

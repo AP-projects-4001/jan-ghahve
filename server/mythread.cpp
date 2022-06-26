@@ -4,10 +4,11 @@
 #include "mythread.h"
 #include "channel.h"
 
-MyThread::MyThread(qintptr ID, QObject *parent) :
+MyThread::MyThread(QMutex *inp_mutex,qintptr ID, QObject *parent) :
     QThread(parent)
 {
     this->socketDescriptor = ID;
+    this->tr_mutex = inp_mutex;
 }
 
 void MyThread::run()
@@ -46,7 +47,8 @@ void MyThread::readyRead()
 
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
     QJsonObject data_obj = data_doc.object();
-    Channel channel;
+    Channel channel(tr_mutex);
+    //-------TEST-----
     QString msg, status = data_obj["status"].toString();
     QByteArray response;
 

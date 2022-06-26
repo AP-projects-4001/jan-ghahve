@@ -9,6 +9,7 @@
 #include "myclient.h"
 #include "mainwindow.h"
 #include "loading.h"
+#include <QLineEdit>
 
 signin::signin(QWidget *parent) :
     QDialog(parent),
@@ -16,6 +17,9 @@ signin::signin(QWidget *parent) :
 {
     ui->setupUi(this);
     client = new MyClient();
+    ui->pbn_ok->setDefault(true);
+    ui->pbn_ok->setFocus();
+    ui->led_pass->setEchoMode(QLineEdit::Password);
 }
 
 signin::~signin()
