@@ -1,7 +1,6 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonArray>
-#include <qtconcurrentrun.h>
 #include <QTcpSocket>
 #include "mainwindow.h"
 #include "mythread.h"
