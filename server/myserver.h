@@ -4,6 +4,7 @@
 #include <QTcpServer>
 #include <QMap>
 #include "mythread.h"
+#include <QMutex>
 
 class MyServer : public QTcpServer
 {
@@ -19,9 +20,12 @@ private slots:
 
 protected:
     void incomingConnection(qintptr socketDescriptor);
+
 private:
     QList<MyThread*> threads;
     QMap<qintptr,QString> data;//{"socketdiscriptor":"id"}
+    QMutex *server_mutex;
+
 };
 
 #endif // MYSERVER_H

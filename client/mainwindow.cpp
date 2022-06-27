@@ -114,6 +114,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     }
 }
 
+
 void MainWindow::on_messagerecievd1(QString senderId, QString message)
 {
     if(senderId == contact_info["id"].toString()){
@@ -138,4 +139,5 @@ void MainWindow::on_pbn_send_clicked()
     }
 
 }
+
 

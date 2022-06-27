@@ -4,6 +4,7 @@
 #include <QThread>
 #include <QTcpSocket>
 #include <QDebug>
+#include <QMutex>
 
 class MyThread : public QThread
 {
@@ -14,6 +15,7 @@ public:
     QString get_userId();
     void set_userId(QString id);
     QString get_state();
+
     void run();
     void on_new_message_recieved(QString senderId, QString recieverId, QString message);
 
@@ -33,6 +35,8 @@ private:
     qintptr socketDescriptor;
     QString userId;
     QString state="";
+    QMutex *tr_mutex;
+
 };
 
 #endif // MYTHREAD_H
