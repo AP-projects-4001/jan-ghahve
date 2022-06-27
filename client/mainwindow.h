@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QVBoxLayout>
+#include <QPushButton>
 #include <QListWidget>
 
 QT_BEGIN_NAMESPACE
@@ -24,7 +24,9 @@ private slots:
 
     void on_listWidget_itemClicked(QListWidgetItem *item);
 
+
 private:
     Ui::MainWindow *ui;
+    void pain();
 };
 #endif // MAINWINDOW_H

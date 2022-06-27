@@ -6,8 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    QObject::connect(ui->test,&QPushButton::clicked,this,&MainWindow::add_safebar);
+    pain();
+//    QObject::connect(ui->test,&QPushButton::clicked,this,&MainWindow::add_safebar);
 
 }
 
@@ -29,7 +29,16 @@ void MainWindow::add_safebar()
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
     //mitoni itemi ke click shode estefade koni (to vorodi tabe ferestade)
-    ui->textEdit->insertPlainText("pain");
+//    ui->textEdit->insertPlainText("pain");
+}
+
+void MainWindow::pain()
+{
+    ui->pbn_send->setStyleSheet("*{border-image: url(:/images/send.png);"
+                                "background-color:rgb(191, 215, 234);"
+                                "border-radius: 20%;"
+                                "background-position:center;}"
+                                "*:hover{background-color:rgb(30, 157, 230);}");
 }
 
 void MainWindow::on_test_clicked()
