@@ -6,6 +6,7 @@
 #include "ui_siginup.h"
 #include "myclient.h"
 #include "mainwindow.h"
+#include "loading.h"
 
 siginup::siginup(QWidget *parent) :
     QWidget(parent),
@@ -13,6 +14,8 @@ siginup::siginup(QWidget *parent) :
 {
     ui->setupUi(this);
     client = new MyClient();
+    ui->pbn_submit->setDefault(true);
+    ui->pbn_submit->setFocus();
 }
 
 siginup::~siginup()
@@ -20,6 +23,8 @@ siginup::~siginup()
     delete ui;
 }
 
+
+//Checking validation of inputs
 bool siginup::validate_signup_data(QString name, QString id, QString email, QString birthdate, QString pass, QString conf_pass, QString number)
 {
     if(id.length() == 0){
@@ -64,9 +69,12 @@ void siginup::on_pbn_submit_clicked()
     conf_pass = ui->conf_pass->text();
     number = ui->led_phonenumb->text();
 
+
+    //Checking validation of inputs
     if(!validate_signup_data(name, id, email, birthdate, pass, conf_pass, number))
         return;
 
+    //Creating an instance to set data on it, then sending it to the server
     QJsonObject user;
     user["status"] = "register";
     user["id"] = id;
@@ -80,13 +88,17 @@ void siginup::on_pbn_submit_clicked()
     QByteArray user_b = user_d.toJson();
 
     if(client->connect_to_server()){
+        //Sending data to the server and waiting for getting a response from it
         QByteArray response = client->request_to_server(&user_b);
         QString msg = QString(response);
+        //Check response(Successful or not)
         if(msg == "accepted"){
             client->disconnect_from_server();
             this->close();
             this->destroy(true, true);
             this->deleteLater();
+            //Go to the main window(chat window)
+            qDebug()<<"sign up finished, continue to mainWindow";
             MainWindow* main_window = new MainWindow(id);
             main_window->show();
         }
@@ -95,5 +107,15 @@ void siginup::on_pbn_submit_clicked()
             QMessageBox::warning(this, "signup error", msg);
         }
     }
+}
+
+
+void siginup::on_pbn_cancel_clicked()
+{
+    //Back to the loading page
+    loading* loading_page = new loading();
+    loading_page->setFixedSize(205,239);
+    loading_page->show();
+    this->close();
 }
 

@@ -18,6 +18,7 @@ MyClient::~MyClient()
 
 bool MyClient::connect_to_server()
 {
+    //Start to connect to the server
     qDebug() << "Start\n";
     clientSocket = new QTcpSocket;
     clientSocket->connectToHost("127.0.0.1",1025);
@@ -32,9 +33,11 @@ bool MyClient::connect_to_server()
 
 QByteArray MyClient::request_to_server(QByteArray *data)
 {
+    //Sending data to the server and waiting for getting a response
     clientSocket->write(*data);
     while(clientSocket->waitForBytesWritten(-1));
     if(clientSocket->waitForReadyRead(-1)){
+        //Getting the responce and returning it
         QByteArray response = clientSocket->readAll();
         return response;
     }

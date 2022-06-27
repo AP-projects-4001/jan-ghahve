@@ -1,7 +1,6 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonArray>
-#include <qtconcurrentrun.h>
 #include <QTcpSocket>
 #include "mainwindow.h"
 #include "mythread.h"
@@ -13,6 +12,8 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    pain();
+//    QObject::connect(ui->test,&QPushButton::clicked,this,&MainWindow::add_safebar);
 
     client = new MyClient();
     get_user_info(id);
@@ -74,10 +75,16 @@ void MainWindow::get_all_users()
     }
 }
 
-
+void MainWindow::pain()
+{
+    ui->pbn_send->setStyleSheet("*{border-image: url(:/images/send.png);"
+                                "background-color:rgb(191, 215, 234);"
+                                "border-radius: 20%;"
+                                "background-position:center;}"
+                                "*:hover{background-color:rgb(30, 157, 230);}");
+}
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
-    //mitoni itemi ke click shode estefade koni (to vorodi tabe ferestade)
     QString id = item->text();
     QJsonObject request;
     request["status"] = "userInfo";
@@ -114,6 +121,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     }
 }
 
+
 void MainWindow::on_messagerecievd1(QString senderId, QString message)
 {
     if(senderId == contact_info["id"].toString()){
@@ -138,4 +146,5 @@ void MainWindow::on_pbn_send_clicked()
     }
 
 }
+
 

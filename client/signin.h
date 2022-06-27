@@ -20,6 +20,8 @@ public:
 private slots:
     void on_pbn_ok_clicked();
 
+    void on_pbn_cancel_clicked();
+
 private:
     Ui::signin *ui;
     MyClient* client;

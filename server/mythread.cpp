@@ -4,10 +4,11 @@
 #include "mythread.h"
 #include "channel.h"
 
-MyThread::MyThread(qintptr ID, QObject *parent) :
+MyThread::MyThread(QMutex *inp_mutex,qintptr ID, QObject *parent) :
     QThread(parent)
 {
     this->socketDescriptor = ID;
+    this->tr_mutex = inp_mutex;
 }
 
 qintptr MyThread::get_socketdiscriptor()
@@ -81,16 +82,20 @@ void MyThread::readyRead()
 
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
     QJsonObject data_obj = data_doc.object();
-    Channel channel;
+    Channel channel(tr_mutex);
+    //-------TEST-----
     QString msg, status = data_obj["status"].toString();
     QByteArray response;
 
     data_obj.remove("status");
-    if(status == "register"){
+    //Checking request of client (register, login, message, getInfo, chatInfo)
+    if(status == "register")
+    {
         msg = channel.signup(data_obj);
         response = msg.toUtf8();
     }
-    else if(status == "login"){
+    else if(status == "login")
+    {
         msg = channel.signin(data_obj);
         response = msg.toUtf8();
     }
@@ -99,18 +104,22 @@ void MyThread::readyRead()
         set_userId(data_obj["id"].toString());
         state = data_obj["state"].toString();
         emit user_authenticated(this->socketDescriptor, this->userId);
-    }else if(status == "message"){
+    }
+    else if(status == "message"){
+
         channel.send_message(data_obj);
         msg = "ok";
         response = msg.toUtf8();
         emit message_recieved(data_obj["id1"].toString(), data_obj["id2"].toString(), data_obj["message"].toString());
     }
-    else if(status == "chatInfo"){
+    else if(status == "chatInfo")
+    {
         response = channel.get_chat_info(data_obj["id1"].toString(), data_obj["id2"].toString());
     } else if(status == "allUsersInfo"){
         response = channel.get_all_info();
     }
 
+    //Get a responce from "channel", then Send it to the Client
     socket->write(response);
     socket->waitForBytesWritten(-1);
 }

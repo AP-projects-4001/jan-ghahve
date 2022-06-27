@@ -4,7 +4,8 @@
 MyServer::MyServer(QObject *parent)
     : QTcpServer{parent}
 {
-    //threads = new QList<MyThread>;
+
+    server_mutex = new QMutex;
 }
 
 void MyServer::startServer()
@@ -20,6 +21,7 @@ void MyServer::startServer()
         qDebug() << "Listening to port " << port << "...";
     }
 }
+
 
 void MyServer::on_thread_finished(qintptr socketdiscriptor)
 {
@@ -50,6 +52,8 @@ void MyServer::on_user_authenticated(qintptr socketdiscriptor, QString id)
     data.insert(socketdiscriptor, id);
 }
 
+
+
 // This function is called by QTcpServer when a new connection is available.
 void MyServer::incomingConnection(qintptr socketDescriptor)
 {
@@ -57,7 +61,7 @@ void MyServer::incomingConnection(qintptr socketDescriptor)
     qDebug() << socketDescriptor << " Connecting...";
 
     // Every new connection will be run in a newly created thread
-    MyThread *thread = new MyThread(socketDescriptor, this);
+    MyThread *thread = new MyThread(server_mutex,socketDescriptor, this);
 
     threads.push_back(thread);
     // connect signal/slot
