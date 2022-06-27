@@ -13,6 +13,7 @@ siginup::siginup(QWidget *parent) :
     ui(new Ui::siginup)
 {
     ui->setupUi(this);
+    setFixedSize(size());
     client = new MyClient();
     ui->pbn_submit->setDefault(true);
     ui->pbn_submit->setFocus();
@@ -71,7 +72,7 @@ void siginup::on_pbn_submit_clicked()
 
 
     //Checking validation of inputs
-    if(!validate_signup_data(name, id, email, birthdate, pass, conf_pass))
+    if(!validate_signup_data(name, id, email, birthdate, pass, conf_pass,number))
         return;
 
     //Creating an instance to set data on it, then sending it to the server

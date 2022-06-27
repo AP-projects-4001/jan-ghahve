@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/images">
         <file>resourses/BGchat.jpg</file>
+        <file>resourses/search1.png</file>
+        <file>resourses/send.png</file>
     </qresource>
 </RCC>

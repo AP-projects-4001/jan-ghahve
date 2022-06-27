@@ -26,6 +26,9 @@
      <height>41</height>
     </rect>
    </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 15%;</string>
@@ -42,6 +45,9 @@ border-radius: 15%;</string>
      <width>93</width>
      <height>41</height>
     </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(253, 240, 213);

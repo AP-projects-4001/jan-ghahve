@@ -1,7 +1,6 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonArray>
-#include <qtconcurrentrun.h>
 #include <QTcpSocket>
 #include "mainwindow.h"
 #include "mythread.h"
@@ -13,7 +12,8 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    pain();
+    setFixedSize(size());
+      pain();
 //    QObject::connect(ui->test,&QPushButton::clicked,this,&MainWindow::add_safebar);
 
     client = new MyClient();
@@ -78,11 +78,19 @@ void MainWindow::get_all_users()
 
 void MainWindow::pain()
 {
-    ui->pbn_send->setStyleSheet("*{border-image: url(:/images/send.png);"
+    ui->pbn_send->setStyleSheet("*{border-image: url(:/images/resourses/send.png);"
                                 "background-color:rgb(191, 215, 234);"
                                 "border-radius: 20%;"
                                 "background-position:center;}"
                                 "*:hover{background-color:rgb(30, 157, 230);}");
+    ui->menubar->resize(20,5);
+    ui->menubar->setStyleSheet(
+                               "font-size:15px;"
+                               );
+
+    ui->menusetting->setStyleSheet("background-color:rgb(253, 240, 213);"
+
+                                   );
 }
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
@@ -97,10 +105,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         QByteArray response = client->request_to_server(&request_b);
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         contact_info = response_d.object();
-        ui->contact_name->setText(contact_info["name"].toString());
-        ui->contact_id->setText(contact_info["id"].toString());
-        ui->contact_phoneNumber->setText(contact_info["number"].toString());
-        ui->contact_birhdate->setText(contact_info["birthdate"].toString());
+
     }
 
     //get chat

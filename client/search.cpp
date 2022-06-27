@@ -6,6 +6,7 @@ search::search(QWidget *parent) :
     ui(new Ui::search)
 {
     ui->setupUi(this);
+    setFixedSize(size());
 }
 
 search::~search()
