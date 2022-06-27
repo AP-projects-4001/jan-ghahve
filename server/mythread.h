@@ -10,7 +10,7 @@ class MyThread : public QThread
 {
     Q_OBJECT
 public:
-    explicit MyThread(qintptr ID, QObject *parent = nullptr);
+    explicit MyThread(QMutex *inp_mutex, qintptr ID, QObject *parent = nullptr);
     qintptr get_socketdiscriptor();
     QString get_userId();
     void set_userId(QString id);

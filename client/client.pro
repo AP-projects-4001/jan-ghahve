@@ -13,21 +13,29 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     myclient.cpp \
+    mythread.cpp \
     siginup.cpp \
-    signin.cpp
+    signin.cpp \
+    setting.cpp \
+    search.cpp
 
 HEADERS += \
     loading.h \
     mainwindow.h \
     myclient.h \
+    mythread.h \
     siginup.h \
-    signin.h
+    signin.h \
+    setting.h \
+    search.h
 
 FORMS += \
     loading.ui \
     mainwindow.ui \
     siginup.ui \
-    signin.ui
+    signin.ui \
+    setting.ui \
+    search.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
