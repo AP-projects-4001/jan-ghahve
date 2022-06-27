@@ -13,13 +13,14 @@ public:
     qintptr get_socketdiscriptor();
     QString get_userId();
     void set_userId(QString id);
+    QString get_state();
     void run();
-    void on_new_message_recieved(QString senderId, QString message);
+    void on_new_message_recieved(QString senderId, QString recieverId, QString message);
 
 signals:
     void error(QTcpSocket::SocketError sockererror);
     void thread_finished(qintptr socketdiscriptor);
-    void message_recieved(QString recieverId, QString message);
+    void message_recieved(QString senderId, QString recieverId, QString message);
     void user_authenticated(qintptr socketdiscriptor, QString id);
 
 public slots:
@@ -31,6 +32,7 @@ private:
     QTcpSocket* socket;
     qintptr socketDescriptor;
     QString userId;
+    QString state="";
 };
 
 #endif // MYTHREAD_H

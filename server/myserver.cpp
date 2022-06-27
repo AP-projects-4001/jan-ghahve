@@ -26,18 +26,19 @@ void MyServer::on_thread_finished(qintptr socketdiscriptor)
 
     for(int i=0; i<threads.length(); i++){
         if(threads.at(i)->get_socketdiscriptor() == socketdiscriptor){
+            data.remove(socketdiscriptor);
             threads.removeAt(i);
         }
     }
 }
 
-void MyServer::on_message_recieved(QString recieverId, QString message)
+void MyServer::on_message_recieved(QString senderId, QString recieverId, QString message)
 {
     QString id;
-    for(int i=0; i<threads.length(); i++){
-        id = data.value(threads.at(0)->get_socketdiscriptor());
-        if(id == recieverId){
-            threads.at(i)->on_new_message_recieved(recieverId, message);
+    for(int i=0; i< threads.length(); i++){
+        id = data.value(threads.at(i)->get_socketdiscriptor());
+        if(id == recieverId && threads.at(i)->get_state() == "reciever"){
+            threads.at(i)->on_new_message_recieved(senderId, recieverId, message);
             break;
         }
     }

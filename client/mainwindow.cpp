@@ -1,8 +1,12 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonArray>
+#include <qtconcurrentrun.h>
+#include <QTcpSocket>
 #include "mainwindow.h"
+#include "mythread.h"
 #include "ui_mainwindow.h"
+#include <iostream>
 
 MainWindow::MainWindow(QString id, QWidget *parent)
     : QMainWindow(parent)
@@ -13,31 +17,13 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     client = new MyClient();
     get_user_info(id);
     get_all_users();
-//    send message
-//    QJsonObject message;
-//    message["status"] = "message";
-//    message["id1"] = user_data["id"];
-//    message["id2"] = "d";//contact_info["id"];
-//    message["message"] = "Hello!";
-//    QJsonDocument message_d(message);
-//    QByteArray message_b = message_d.toJson();
+    client->disconnect_from_server();
+    MyThread* thread = new MyThread(user_data["id"].toString());
+    QObject::connect(thread, &MyThread::message_recieved1, this, &MainWindow::on_messagerecievd1);
+    thread->start();
 
-//    if(client->is_client_connectd()){
-//        client->request_to_server(&message_b);
-//    }
-
-
-
-//    while (true) {
-//        if(client->is_client_connectd()){
-//            QByteArray response = client->message_recieved();
-//            QJsonDocument response_d = QJsonDocument::fromJson(response);
-//            QJsonObject response_obj = response_d.object();
-//            qDebug() << response_obj["message"];
-//        }
-//    }
-
-//    QObject::connect(ui->test,&QPushButton::clicked,this,&MainWindow::add_safebar);
+    client = new MyClient();
+    client->connect_to_server();
 
 }
 
@@ -126,5 +112,30 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         file.write(response);
         file.close();
     }
+}
+
+void MainWindow::on_messagerecievd1(QString senderId, QString message)
+{
+    if(senderId == contact_info["id"].toString()){
+        ui->ted_chat->append(message);
+    }
+}
+
+
+void MainWindow::on_pbn_send_clicked()
+{
+    //    send message
+    QJsonObject message;
+    message["status"] = "message";
+    message["id1"] = user_data["id"];
+    message["id2"] = contact_info["id"];
+    message["message"] = ui->ted_message->toPlainText();
+    QJsonDocument message_d(message);
+    QByteArray message_b = message_d.toJson();
+
+    if(client->is_client_connectd()){
+        client->request_to_server(&message_b);
+    }
+
 }
 

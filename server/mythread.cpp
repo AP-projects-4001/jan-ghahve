@@ -25,6 +25,11 @@ void MyThread::set_userId(QString id)
     this->userId = id;
 }
 
+QString MyThread::get_state()
+{
+    return state;
+}
+
 void MyThread::run()
 {
     qDebug() << " Thread started";
@@ -51,16 +56,18 @@ void MyThread::run()
     exec();
 }
 
-void MyThread::on_new_message_recieved(QString senderId, QString message)
+void MyThread::on_new_message_recieved(QString senderId, QString recieverId, QString message)
 {
     QJsonObject message_obj;
     message_obj["sender"] = senderId;
+    message_obj["reciever"] = recieverId;
     message_obj["message"] = message;
     QJsonDocument message_doc(message_obj);
     QByteArray message_b = message_doc.toJson();
     if(socket->ConnectedState){
         socket->write(message_b);
         socket->waitForBytesWritten(-1);
+        qDebug() << this->socketDescriptor << " Data out" << message_b;
     }
 }
 
@@ -90,12 +97,13 @@ void MyThread::readyRead()
     else if(status == "userInfo"){
         response = channel.get_info(data_obj["id"].toString());
         set_userId(data_obj["id"].toString());
+        state = data_obj["state"].toString();
         emit user_authenticated(this->socketDescriptor, this->userId);
     }else if(status == "message"){
         channel.send_message(data_obj);
         msg = "ok";
         response = msg.toUtf8();
-        emit message_recieved(data_obj["id2"].toString(), data_obj["message"].toString());
+        emit message_recieved(data_obj["id1"].toString(), data_obj["id2"].toString(), data_obj["message"].toString());
     }
     else if(status == "chatInfo"){
         response = channel.get_chat_info(data_obj["id1"].toString(), data_obj["id2"].toString());
