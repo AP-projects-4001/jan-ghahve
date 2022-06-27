@@ -20,7 +20,7 @@
   <widget class="QPushButton" name="pbn_cancel">
    <property name="geometry">
     <rect>
-     <x>150</x>
+     <x>60</x>
      <y>370</y>
      <width>91</width>
      <height>41</height>
@@ -69,7 +69,7 @@ border-color : rgb(98, 98, 98);</string>
    <property name="title">
     <string>Form</string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
