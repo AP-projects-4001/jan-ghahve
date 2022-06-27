@@ -92,7 +92,7 @@ border: hide;
 color:rgb(249, 87, 56);</string>
    </property>
    <property name="text">
-    <string>Forget PassWord?</string>
+    <string>Forget Password?</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pbn_cancel">

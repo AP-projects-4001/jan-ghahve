@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPushButton>
 #include <QJsonObject>
 #include "myclient.h"
 #include <QVBoxLayout>
@@ -28,8 +29,10 @@ private slots:
     void on_messagerecievd1(QString senderId, QString message);
     void on_pbn_send_clicked();
 
+
 private:
     Ui::MainWindow *ui;
+    void pain();
     MyClient *client;
     QJsonObject user_data;
     QJsonObject contact_info;

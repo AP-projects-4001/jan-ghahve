@@ -110,7 +110,7 @@ border-radius: 10%;</string>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>252</x>
+     <x>262</x>
      <y>180</y>
      <width>61</width>
      <height>29</height>
@@ -128,7 +128,7 @@ color:rgb(245, 223, 187);</string>
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>180</x>
      <y>180</y>
      <width>61</width>
      <height>29</height>

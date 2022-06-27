@@ -1,4 +1,4 @@
-QT       += core gui network
+QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,30 +12,23 @@ SOURCES += \
     loading.cpp \
     main.cpp \
     mainwindow.cpp \
-    myclient.cpp \
-    mythread.cpp \
-    siginup.cpp \
-    signin.cpp \
     setting.cpp \
-    search.cpp
+    siginup.cpp \
+    signin.cpp
 
 HEADERS += \
     loading.h \
     mainwindow.h \
-    myclient.h \
-    mythread.h \
-    siginup.h \
-    signin.h \
     setting.h \
-    search.h
+    siginup.h \
+    signin.h
 
 FORMS += \
     loading.ui \
     mainwindow.ui \
-    siginup.ui \
-    signin.ui \
     setting.ui \
-    search.ui
+    siginup.ui \
+    signin.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
