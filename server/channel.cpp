@@ -88,7 +88,7 @@ QString Channel::signin(QJsonObject data)
             //---- UnLock -----
             ch_mutex->unlock();
             qDebug()<<data["id"]<<" unLocked the file";
-            return "accepted login";
+            return "accepted";
         }
         else if((user["id"] == data["id"])&&(user["password"]!=data["password"]))
         {

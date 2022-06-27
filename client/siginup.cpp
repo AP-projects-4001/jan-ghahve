@@ -72,7 +72,8 @@ void siginup::on_pbn_submit_clicked()
 
 
     //Checking validation of inputs
-    if(!validate_signup_data(name, id, email, birthdate, pass, conf_pass,number))
+
+    if(!validate_signup_data(name, id, email, birthdate, pass, conf_pass, number))
         return;
 
     //Creating an instance to set data on it, then sending it to the server
