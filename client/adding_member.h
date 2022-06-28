@@ -12,7 +12,7 @@ class adding_member : public QDialog
     Q_OBJECT
 
 public:
-    explicit adding_member(QWidget *parent = nullptr);
+    explicit adding_member(QString id, QWidget *parent = nullptr);
     ~adding_member();
 
 private:

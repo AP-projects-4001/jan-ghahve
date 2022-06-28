@@ -25,6 +25,7 @@ public:
     void add_safebar();
     void get_user_contacts();
     bool is_already_added(QString id);
+    QStringList get_user_contacts_from_file();
 
 private slots:
     void on_usersFound(QStringList users);
@@ -44,5 +45,6 @@ private:
     QJsonObject contact_info;
     QJsonObject all_users;
     bool chat_switched;
+    QArrayData user_contacts;
 };
 #endif // MAINWINDOW_H

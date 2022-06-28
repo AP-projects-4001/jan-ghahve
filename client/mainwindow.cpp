@@ -7,6 +7,7 @@
 #include "mythread.h"
 #include "ui_mainwindow.h"
 #include "search.h"
+#include "adding_member.h"
 
 MainWindow::MainWindow(QString id, QWidget *parent)
     : QMainWindow(parent)
@@ -92,14 +93,22 @@ void MainWindow::get_user_contacts()
         QJsonDocument respones_d = QJsonDocument::fromJson(response_b);
         QJsonArray response_arr = respones_d.array();
 
+        QFile file("contacts.json");
+        file.open(QIODevice::WriteOnly);
         QListWidget* list = ui->listWidget;
         QJsonObject user;
+        QStringList usersIds;
         for(QJsonValueRef userRef:response_arr){
             user = userRef.toObject();
             QListWidgetItem* item = new QListWidgetItem(user["id"].toString());
         //    item->setBackground(Qt::blue);
             list->addItem(item);
+            usersIds.append(user["id"].toString());
         }
+        QByteArray data;
+        QDataStream dataStreamWrite(&data, QIODevice::WriteOnly);
+        dataStreamWrite << usersIds;
+        file.close();
     }
 }
 
@@ -116,6 +125,11 @@ void MainWindow::on_usersFound(QStringList users)
 {
     QListWidget* list = ui->listWidget;
 
+    QFile file("contacts.json");
+    file.open(QIODevice::ReadOnly);
+    QByteArray data = file.readAll();
+    QJsonDocument data_d = QJsonDocument::fromJson(data);
+
     QJsonObject user;
     QString user_id;
     for(QString id:users){
@@ -125,6 +139,11 @@ void MainWindow::on_usersFound(QStringList users)
         QListWidgetItem* item = new QListWidgetItem(id);
     //    item->setBackground(Qt::blue);
         list->addItem(item);
+        user["id"] = id;
+
+        QJsonArray data_arr = data_d.array();
+        data_arr.append(user);
+
     }
 }
 
@@ -220,7 +239,9 @@ void MainWindow::on_pbn_send_clicked()
 
 void MainWindow::on_newgroup_clicked()
 {
- ui->ted_chat->append("PAin");
+    adding_member* add_member = new adding_member(user_data["id"].toString(), this);
+    add_member->show();
+
 }
 
 
