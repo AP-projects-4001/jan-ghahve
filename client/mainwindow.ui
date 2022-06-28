@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgb(30, 157, 230);
+   <string notr="true">background-color:rgb(191, 215, 234);
 
 </string>
   </property>
@@ -31,6 +31,7 @@
     <property name="styleSheet">
      <string notr="true">border:hide;
 background-color:rgb(30, 157, 230);
+background-color:rgb(191, 215, 234);
 </string>
     </property>
     <property name="title">
@@ -48,7 +49,7 @@ background-color:rgb(30, 157, 230);
      <property name="styleSheet">
       <string notr="true">border: hide; 
 border-radius:10px; 
-background-color:rgb(191, 215, 234);
+background-color:rgb(240, 240, 240);
 font-size:19px;
 
 </string>
@@ -70,6 +71,7 @@ font-size:19px;
       <string notr="true">background-color:rgb(191, 215, 234);
 border-color: white; 
 border-radius:10px; 
+background-color:rgb(240, 240, 240);
 
 
 </string>
@@ -91,7 +93,7 @@ border-radius:10px;
       </property>
       <property name="styleSheet">
        <string notr="true">border-image: url(:/images/send.png);
-background-color:rgb(191, 215, 234);
+background-color:rgb(240, 240, 240);
 border-radius: 20%;
 background-position:center;
 hover{
@@ -117,7 +119,7 @@ hover{
     <property name="styleSheet">
      <string notr="true">border:hide;
 background-color:rgb(30, 157, 230);
-</string>
+background-color:rgb(191, 215, 234);</string>
     </property>
     <property name="title">
      <string/>
@@ -146,14 +148,16 @@ font-size:19px;</string>
     <property name="geometry">
      <rect>
       <x>220</x>
-      <y>0</y>
+      <y>10</y>
       <width>581</width>
-      <height>61</height>
+      <height>51</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border:hide;
-background-color:rgb(30, 157, 230);</string>
+     <string notr="true">border: 1px solid gray;
+border-radius : 10px;
+background-color:rgb(30, 157, 230);
+background-color:rgb(191, 215, 234);</string>
     </property>
     <property name="title">
      <string/>
@@ -161,8 +165,8 @@ background-color:rgb(30, 157, 230);</string>
     <widget class="QPushButton" name="pushButton_2">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>10</y>
+       <x>60</x>
+       <y>0</y>
        <width>51</width>
        <height>51</height>
       </rect>
@@ -181,19 +185,52 @@ border-radius: 25px;</string>
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>90</x>
-       <y>20</y>
+       <x>130</x>
+       <y>10</y>
        <width>101</width>
        <height>31</height>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:white;
+      <string notr="true">border:hide;
 border-radius: 20%;
 font-size:22px;</string>
      </property>
      <property name="text">
       <string>Name</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>19</y>
+       <width>63</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border:hide;</string>
+     </property>
+     <property name="text">
+      <string>Online</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>20</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgb(0, 255, 127);
+border-radius:100%;</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>
@@ -207,8 +244,8 @@ font-size:22px;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color:rgb(30, 157, 230);
-
+     <string notr="true">
+background-color:rgb(191, 215, 234);
 border-radius:7px; 
 
 </string>
@@ -228,8 +265,9 @@ border-radius:7px;
      <property name="styleSheet">
       <string notr="true">border:hide;
 font-size:18px;
-background-color:rgb(191, 215, 234);
-border-radius:8px;</string>
+background-color:rgb(245, 245, 245);
+border-radius:8px;
+</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_3">
@@ -245,7 +283,7 @@ border-radius:8px;</string>
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:rgb(191, 215, 234);
+      <string notr="true">background-color:rgb(245, 245, 245);
 border-radius: 20%;
 border-image: url(:/images/resourses/search1.png);</string>
      </property>
@@ -253,18 +291,34 @@ border-image: url(:/images/resourses/search1.png);</string>
       <string/>
      </property>
     </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>0</y>
+       <width>63</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>30</y>
-      <width>63</width>
+      <x>50</x>
+      <y>20</y>
+      <width>151</width>
       <height>20</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">font-weight:bold;</string>
+    </property>
     <property name="text">
-     <string>Name</string>
+     <string>JAN-GHAHVE</string>
     </property>
    </widget>
   </widget>

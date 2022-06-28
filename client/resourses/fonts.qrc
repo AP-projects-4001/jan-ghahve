@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>Lato-Black.ttf</file>
+        <file>Lato-BlackItalic.ttf</file>
+        <file>Lato-Bold.ttf</file>
+        <file>Lato-BoldItalic.ttf</file>
+        <file>Lato-Italic.ttf</file>
+        <file>Lato-Light.ttf</file>
+        <file>Lato-LightItalic.ttf</file>
+        <file>Lato-Regular.ttf</file>
+        <file>Lato-Thin.ttf</file>
+        <file>Lato-ThinItalic.ttf</file>
+    </qresource>
+</RCC>

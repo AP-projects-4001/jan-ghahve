@@ -7,21 +7,28 @@ adding_member::adding_member(QWidget *parent) :
 {
     ui->setupUi(this);
     setFixedSize(size());
-    QListWidgetItem* item = new QListWidgetItem("item");
-    QListWidgetItem* item2 = new QListWidgetItem("item");
-    QListWidgetItem* item3 = new QListWidgetItem("item");
 
-    item->setForeground(Qt::blue);
-    item->setBackground(Qt::gray);
-    ui->listWidget->setStyleSheet("QListWidget:item{height: 40px;border: 2px solid red;}");
+
+    //age code kar nakard va ina, onja ke add mikoni ghablesh ina ro bezar
+    ui->listWidget->setStyleSheet(
+                "QListWidget:item"
+                "{"
+                "height: 30px;"
+                "border: 1px solid gray;"
+                "border-radius: 6px;"
+                "}"
+                "QListWidget:item:selected"
+                "{"
+                "background-color:gray;"
+                "}"
+                "*{"
+                "background-color:rgb(253, 240, 213);"
+                "border-radius: 10%;"
+                "font-size:18px;"
+                "font:url(:/new/prefix1/Lato-Italic.ttf)"
+                "}");
     ui->listWidget->setCursor(Qt::PointingHandCursor);
-    ui->listWidget->setSpacing(5);
-    ui->listWidget->addItem(item);
-    ui->listWidget->addItem(item2);
-    ui->listWidget->addItem(item3);
-
-
-
+    ui->listWidget->setSpacing(0);
 
 }
 
