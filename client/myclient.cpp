@@ -33,12 +33,14 @@ bool MyClient::connect_to_server()
 
 QByteArray MyClient::request_to_server(QByteArray *data)
 {
+    //Encoding
     //Sending data to the server and waiting for getting a response
     clientSocket->write(*data);
     while(clientSocket->waitForBytesWritten(-1));
     if(clientSocket->waitForReadyRead(-1)){
         //Getting the responce and returning it
         QByteArray response = clientSocket->readAll();
+        //Decoding
         return response;
     }
     return 0;

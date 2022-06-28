@@ -75,7 +75,9 @@ void MyThread::on_new_message_recieved(QString senderId, QString recieverId, QSt
 void MyThread::readyRead()
 {
     // get the information
+
     QByteArray Data = socket->readAll();
+    //Decoding
 
     // will write on server side window
     qDebug() << socketDescriptor << " Data in: " << Data;
@@ -122,8 +124,13 @@ void MyThread::readyRead()
     else if(status == "userContacts"){
         response = channel.get_user_contacts(data_obj["id"].toString());
     }
+    else if(status == "allUsersContacts")
+    {
+            response = channel.get_all_contacts();
+    }
 
     //Get a responce from "channel", then Send it to the Client
+    //Encoding
     socket->write(response);
     socket->waitForBytesWritten(-1);
 }

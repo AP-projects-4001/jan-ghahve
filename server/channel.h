@@ -17,6 +17,7 @@ public:
     QByteArray get_chat_info(QString id1, QString id2);
     QByteArray get_all_info();
     QByteArray get_user_contacts(QString id);
+    QByteArray get_all_contacts();
 
 private:
     QString path;

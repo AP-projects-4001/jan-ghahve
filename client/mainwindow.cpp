@@ -6,6 +6,7 @@
 #include "mythread.h"
 #include "ui_mainwindow.h"
 #include "search.h"
+#include "geraph.h"
 
 MainWindow::MainWindow(QString id, QWidget *parent)
     : QMainWindow(parent)
@@ -16,6 +17,7 @@ MainWindow::MainWindow(QString id, QWidget *parent)
       pain();
 //    QObject::connect(ui->test,&QPushButton::clicked,this,&MainWindow::add_safebar);
       QObject::connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
+      QObject::connect(ui->actionlvl_3_graph,&QAction::triggered,this,&MainWindow::on_graph_clicked);
 
     client = new MyClient();
     get_user_info(id);
@@ -102,6 +104,20 @@ void MainWindow::get_user_contacts()
     }
 }
 
+void MainWindow::get_allUsers_contacts()
+{
+    QJsonObject req;
+    req["status"] = "allUsersContacts";
+    QJsonDocument req_doc(req);
+    QByteArray req_b = req_doc.toJson();
+    if(client->is_client_connectd()){
+        QByteArray response_b = client->request_to_server(&req_b);
+        QJsonDocument respones_d = QJsonDocument::fromJson(response_b);
+        QJsonObject response_obj = respones_d.object();
+        this->all_users_contacts = response_obj;
+    }
+}
+
 void MainWindow::on_usersFound(QStringList users)
 {
     QListWidget* list = ui->listWidget;
@@ -141,7 +157,8 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     QJsonDocument request_doc(request);
     QByteArray request_b = request_doc.toJson();
 
-    if(client->is_client_connectd()){
+    if(client->is_client_connectd())
+    {
         QByteArray response = client->request_to_server(&request_b);
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         contact_info = response_d.object();
@@ -195,7 +212,8 @@ void MainWindow::on_pbn_send_clicked()
     QJsonDocument message_d(message);
     QByteArray message_b = message_d.toJson();
 
-    if(client->is_client_connectd()){
+    if(client->is_client_connectd())
+    {
         client->request_to_server(&message_b);
     }
     ui->ted_chat->append(user_data["id"].toString()+":" + message_content);
@@ -203,9 +221,18 @@ void MainWindow::on_pbn_send_clicked()
 
 void MainWindow::on_newgroup_clicked()
 {
- ui->ted_chat->append("PAin");
+    ui->ted_chat->append("PAin");
 }
 
+void MainWindow::on_graph_clicked()
+{
+
+    QString myUsername;
+    myUsername = user_data["id"].toString();
+    get_allUsers_contacts();
+    geraph *graph_window = new geraph(myUsername,all_users_contacts);
+    graph_window->show();
+}
 
 
 void MainWindow::on_pbn_search_clicked()

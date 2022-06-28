@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QJsonObject>
+#include <QJsonArray>
 #include "myclient.h"
 #include <QVBoxLayout>
 #include <QListWidget>
@@ -24,6 +25,7 @@ public:
     void get_all_users();
     void add_safebar();
     void get_user_contacts();
+    void get_allUsers_contacts();
 
 private slots:
     void on_usersFound(QStringList users);
@@ -31,7 +33,7 @@ private slots:
     void on_messagerecievd1(QString senderId, QString message);
     void on_pbn_send_clicked();
     void on_newgroup_clicked();
-
+    void on_graph_clicked();
 
     void on_pbn_search_clicked();
 
@@ -42,6 +44,7 @@ private:
     QJsonObject user_data;
     QJsonObject contact_info;
     QJsonObject all_users;
+    QJsonObject all_users_contacts;
     bool chat_switched;
 };
 #endif // MAINWINDOW_H
