@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>search</class>
- <widget class="QWidget" name="search">
+ <class>showingProf</class>
+ <widget class="QWidget" name="showingProf">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>339</width>
-    <height>257</height>
+    <width>400</width>
+    <height>388</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,28 +17,12 @@
    <string notr="true">background-color:rgb(191, 215, 234);
 </string>
   </property>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>40</y>
-     <width>121</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:rgb(0, 48, 73);</string>
-   </property>
-   <property name="text">
-    <string>Search By Name :</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>80</y>
-     <width>151</width>
+     <x>81</x>
+     <y>215</y>
+     <width>73</width>
      <height>20</height>
     </rect>
    </property>
@@ -46,15 +30,31 @@
     <string notr="true">color:rgb(0, 48, 73);</string>
    </property>
    <property name="text">
-    <string>Search By Username :</string>
+    <string>Username :</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>81</x>
+     <y>181</y>
+     <width>51</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(0, 48, 73);</string>
+   </property>
+   <property name="text">
+    <string> Name :</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>120</y>
-     <width>141</width>
+     <x>81</x>
+     <y>249</y>
+     <width>81</width>
      <height>20</height>
     </rect>
    </property>
@@ -62,91 +62,123 @@
     <string notr="true">color:rgb(0, 48, 73);</string>
    </property>
    <property name="text">
-    <string>Search By Number :</string>
+    <string>PhoneNum :</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLabel" name="contact_birhdate">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>40</y>
-     <width>141</width>
-     <height>26</height>
+     <x>209</x>
+     <y>283</y>
+     <width>121</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 10%;</string>
    </property>
+   <property name="text">
+    <string/>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLabel" name="contact_phoneNumber">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>80</y>
-     <width>141</width>
-     <height>26</height>
+     <x>209</x>
+     <y>249</y>
+     <width>121</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 10%;</string>
    </property>
+   <property name="text">
+    <string/>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_3">
+  <widget class="QLabel" name="contact_id">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>120</y>
-     <width>141</width>
-     <height>26</height>
+     <x>209</x>
+     <y>215</y>
+     <width>121</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 10%;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graphicsView">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>10</y>
+     <width>151</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius: 60%;
+background-color: palette(base);</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>81</x>
+     <y>283</y>
+     <width>70</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(0, 48, 73);</string>
+   </property>
+   <property name="text">
+    <string>BirthDate :</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="contact_name">
+   <property name="geometry">
+    <rect>
+     <x>209</x>
+     <y>181</y>
+     <width>121</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(253, 240, 213);
+border-radius: 10%;</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>262</x>
-     <y>180</y>
-     <width>61</width>
+     <x>160</x>
+     <y>330</y>
+     <width>93</width>
      <height>29</height>
     </rect>
-   </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(0, 48, 73);
 border-radius: 10px;
-color:rgb(245, 223, 187);</string>
+color:rgb(34, 119, 255)</string>
    </property>
    <property name="text">
-    <string>Ok</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_2">
-   <property name="geometry">
-    <rect>
-     <x>180</x>
-     <y>180</y>
-     <width>61</width>
-     <height>29</height>
-    </rect>
-   </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:rgb(0, 48, 73);
-border-radius: 10px;
-color:rgb(245, 223, 187);</string>
-   </property>
-   <property name="text">
-    <string>Cancel</string>
+    <string>Close</string>
    </property>
   </widget>
  </widget>

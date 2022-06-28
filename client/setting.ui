@@ -40,6 +40,9 @@ background-color: palette(base);</string>
      <height>29</height>
     </rect>
    </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(0, 48, 73);
 border-radius: 10px;
@@ -52,11 +55,14 @@ color:rgb(34, 119, 255)</string>
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>310</x>
      <y>400</y>
      <width>81</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(0, 48, 73);
@@ -70,11 +76,14 @@ color:rgb(245, 223, 187);</string>
   <widget class="QPushButton" name="pushButton_3">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>30</x>
      <y>400</y>
      <width>81</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(0, 48, 73);
@@ -85,7 +94,7 @@ color:rgb(245, 223, 187);</string>
     <string>Cancel</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -111,6 +120,9 @@ color:rgb(245, 223, 187);</string>
        <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 10%;</string>
       </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
     <item row="1" column="0">
@@ -128,6 +140,9 @@ border-radius: 10%;</string>
       <property name="styleSheet">
        <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 10%;</string>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
@@ -147,6 +162,9 @@ border-radius: 10%;</string>
        <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 10%;</string>
       </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
     <item row="3" column="0">
@@ -165,9 +183,33 @@ border-radius: 10%;</string>
        <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 10%;</string>
       </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QPushButton" name="pushButton_4">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>400</y>
+     <width>81</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(0, 48, 73);
+border-radius: 10px;
+color:rgb(245, 223, 187);</string>
+   </property>
+   <property name="text">
+    <string>edit</string>
+   </property>
   </widget>
  </widget>
  <resources/>

@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>BGchat.jpg</file>
+        <file>send.png</file>
+        <file>search1.png</file>
+    </qresource>
+</RCC>

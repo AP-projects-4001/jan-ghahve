@@ -15,6 +15,9 @@ public:
     explicit loading(QWidget *parent = nullptr);
     ~loading();
 
+private slots:
+    void on_pbn_siginup_clicked();
+    void on_pbn_signin_clicked();
 private:
     Ui::loading *ui;
 };

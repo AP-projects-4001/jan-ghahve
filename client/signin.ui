@@ -92,7 +92,7 @@ border: hide;
 color:rgb(249, 87, 56);</string>
    </property>
    <property name="text">
-    <string>Forget PassWord?</string>
+    <string>Forget Password?</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pbn_cancel">
@@ -103,6 +103,9 @@ color:rgb(249, 87, 56);</string>
      <width>91</width>
      <height>41</height>
     </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(0, 48, 73);
@@ -121,6 +124,9 @@ color:rgb(245, 223, 187);</string>
      <width>91</width>
      <height>41</height>
     </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(0, 48, 73);
