@@ -48,6 +48,9 @@ border-radius:20px;
 background-color: palette(base);
 </string>
      </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
     </widget>
     <widget class="QPushButton" name="pushButton">
      <property name="geometry">
@@ -98,6 +101,9 @@ background-color:rgb(191, 215, 234);</string>
       <string notr="true">background-image: url(C:/Users/Hkr/Desktop/BGchat.jpg);
 border-radius:20px;
 background-color: palette(base);</string>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
