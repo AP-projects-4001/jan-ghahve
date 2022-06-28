@@ -138,7 +138,8 @@ void Channel::send_message(QJsonObject data)
 
     //--------- at first open pv-chat file ---------
     //file name can be : id1 + "%" + id2 + ".json"
-    QString file_path = data["id1"].toString() + "%" + data["id2"].toString() + ".json";
+    QString id1 = data["id1"].toString(), id2=data["id2"].toString();
+    QString file_path = id1+ "%" + id2 + ".json";
     QJsonObject msg_obj;
     QJsonArray msg_arr;
 
@@ -147,22 +148,65 @@ void Channel::send_message(QJsonObject data)
     if(msg_obj.empty())//the file didn't open
     {
         //file name can be : id2 + "%" + id1 + ".json"
-        file_path = data["id2"].toString() + "%" + data["id1"].toString() + ".json";
+        file_path = id2 + "%" +id1 + ".json";
         msg_obj = read_from_file(file_path);
     }
     //chat messages loaded to msg_obj
 
-    msg_arr = msg_obj["messages"].toArray();
+    if(msg_obj.empty()){
+        msg_obj["max"] = 0;
+    }
+    int max = msg_obj["max"].toInt() + 1;
+    msg_obj["max"] = max;
+
     QJsonObject message;
     message["sender"] = data["id1"];
     message["message"] = data["message"];
-    //append new message in the messages array
-    msg_arr.append(message);
+    msg_obj[QString::number(max)] = message;
 
     //new chat messages(msg_arr) are overwritten in the database
-    QJsonObject result;
-    result["messages"] = msg_arr;
-    write_to_file(file_path, result);
+    write_to_file(file_path, msg_obj);
+
+    //modifying contacts file
+    // adding id2 to id1's contacts
+    QJsonObject contact;
+    contact["id"] = id2;
+    contact["status"] = "user";
+    QJsonObject contacts_obj;
+    contacts_obj = read_from_file("contacts.json");
+
+    QJsonArray userContacts = contacts_obj[id1].toArray();
+    QJsonObject user;
+    bool contact2_found = false, contact1_found = false;
+    for(QJsonValueRef userRef:userContacts){
+        user = userRef.toObject();
+        if(user["id"].toString() == id2){
+            contact2_found = true;
+            break;
+        }
+    }
+    if(!contact2_found){
+        userContacts.append(contact);
+    }
+    contacts_obj[id1] = userContacts;
+
+    //adding id1 to id2's contacts
+    contact["id"] = id1;
+    userContacts = contacts_obj[id2].toArray();
+    for(QJsonValueRef userRef:userContacts){
+        user = userRef.toObject();
+        if(user["id"].toString() == id1){
+            contact1_found = true;
+            break;
+        }
+    }
+    if(!contact1_found){
+        userContacts.append(contact);
+    }
+    contacts_obj[id2] = userContacts;
+
+    //writing contacts to file
+    write_to_file("contacts.json", contacts_obj);
 
     qDebug()<<data["id1"]<<"%"<<data["id2"]<<" want to unLock the file";
     //---- UnLock -----
@@ -208,6 +252,19 @@ QByteArray Channel::get_all_info()
     data_obj.remove("users");
     QJsonDocument data_doc(data_obj);
     return data_doc.toJson();
+}
+
+QByteArray Channel::get_user_contacts(QString id)
+{
+    //----LOCK ----
+    ch_mutex->lock();
+
+    QJsonObject all_contacts = read_from_file("contacts.json");
+    QJsonArray userContacts = all_contacts[id].toArray();
+    QJsonDocument userContacts_doc(userContacts);
+    //---- UnLock -----
+    ch_mutex->unlock();
+    return userContacts_doc.toJson();
 }
 
 //------------------ Working with Files ------------------

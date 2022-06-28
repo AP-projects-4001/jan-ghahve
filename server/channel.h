@@ -16,6 +16,7 @@ public:
     void send_message(QJsonObject data);
     QByteArray get_chat_info(QString id1, QString id2);
     QByteArray get_all_info();
+    QByteArray get_user_contacts(QString id);
 
 private:
     QString path;

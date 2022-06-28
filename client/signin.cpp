@@ -1,5 +1,3 @@
-//signin.cpp
-
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <qbytearray.h>
