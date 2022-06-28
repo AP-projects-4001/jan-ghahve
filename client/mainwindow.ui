@@ -248,6 +248,19 @@ border-image: url(:/images/resourses/search1.png);</string>
      </property>
     </widget>
    </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>63</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Name</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="cursor">
@@ -280,8 +293,6 @@ border-image: url(:/images/resourses/search1.png);</string>
     <addaction name="actionprofile"/>
     <addaction name="separator"/>
     <addaction name="actionlvl_3_graph"/>
-    <addaction name="separator"/>
-    <addaction name="actionProfile"/>
     <addaction name="separator"/>
     <addaction name="actionLogout"/>
     <addaction name="separator"/>
