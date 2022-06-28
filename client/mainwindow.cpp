@@ -2,6 +2,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QTcpSocket>
+#include <QtCore>
 #include "mainwindow.h"
 #include "mythread.h"
 #include "ui_mainwindow.h"
@@ -102,13 +103,24 @@ void MainWindow::get_user_contacts()
     }
 }
 
+bool MainWindow::is_already_added(QString id)
+{
+    QListWidget* list = ui->listWidget;
+    QList<QListWidgetItem *> items = list->findItems(id, Qt::MatchExactly);
+    if(items.size() > 0)
+        return true;
+    return false;
+}
+
 void MainWindow::on_usersFound(QStringList users)
 {
     QListWidget* list = ui->listWidget;
 
     QJsonObject user;
+    QString user_id;
     for(QString id:users){
-        if(id == user_data["id"].toString())
+        user_id = user_data["id"].toString();
+        if(id == user_id || is_already_added(id))
             continue;
         QListWidgetItem* item = new QListWidgetItem(id);
     //    item->setBackground(Qt::blue);
@@ -178,6 +190,11 @@ void MainWindow::on_messagerecievd1(QString senderId, QString message)
 {
     if(senderId == contact_info["id"].toString()){
         ui->ted_chat->append(senderId + ":" + message);
+    }else{
+       QListWidget* list = ui->listWidget;
+       if(!is_already_added(senderId)){
+           list->addItem(senderId);
+       }
     }
 }
 
@@ -205,7 +222,6 @@ void MainWindow::on_newgroup_clicked()
 {
  ui->ted_chat->append("PAin");
 }
-
 
 
 void MainWindow::on_pbn_search_clicked()

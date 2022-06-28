@@ -24,6 +24,7 @@ public:
     void get_all_users();
     void add_safebar();
     void get_user_contacts();
+    bool is_already_added(QString id);
 
 private slots:
     void on_usersFound(QStringList users);
