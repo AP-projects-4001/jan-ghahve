@@ -30,6 +30,7 @@ private slots:
     void on_listWidget_itemClicked(QListWidgetItem *item);
     void on_messagerecievd1(QString senderId, QString message);
     void on_pbn_send_clicked();
+    void on_newgroup_clicked();
 
 
     void on_pbn_search_clicked();

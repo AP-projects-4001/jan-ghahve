@@ -15,6 +15,7 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     setFixedSize(size());
       pain();
 //    QObject::connect(ui->test,&QPushButton::clicked,this,&MainWindow::add_safebar);
+      QObject::connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
 
     client = new MyClient();
     get_user_info(id);
@@ -33,6 +34,8 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+
 
 void MainWindow::get_user_info(QString id)
 {
@@ -126,7 +129,7 @@ void MainWindow::pain()
                                );
 
     ui->menusetting->setStyleSheet("background-color:rgb(253, 240, 213);"
-
+                                   "border-radius: 20%;"
                                    );
 }
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
@@ -196,6 +199,11 @@ void MainWindow::on_pbn_send_clicked()
         client->request_to_server(&message_b);
     }
     ui->ted_chat->append(user_data["id"].toString()+":" + message_content);
+}
+
+void MainWindow::on_newgroup_clicked()
+{
+ ui->ted_chat->append("PAin");
 }
 
 
