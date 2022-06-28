@@ -72,6 +72,7 @@ void MainWindow::get_all_users()
             if(user["id"] == user_data["id"])
                 continue;
             QListWidgetItem* item = new QListWidgetItem(user["id"].toString());
+
         //    item->setBackground(Qt::blue);
             list->addItem(item);
         }

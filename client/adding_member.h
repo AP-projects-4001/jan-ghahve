@@ -2,6 +2,7 @@
 #define ADDING_MEMBER_H
 
 #include <QDialog>
+#include <QListWidget>
 
 namespace Ui {
 class adding_member;

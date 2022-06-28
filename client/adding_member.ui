@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>727</width>
+    <width>653</width>
     <height>427</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:rgb(191, 215, 234);
+</string>
   </property>
   <widget class="QListWidget" name="listWidget">
    <property name="geometry">
@@ -22,15 +26,30 @@
      <height>371</height>
     </rect>
    </property>
+   <property name="cursor" stdset="0">
+    <cursorShape>ArrowCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(253, 240, 213);
+border-radius: 10%;</string>
+   </property>
   </widget>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>570</x>
-     <y>310</y>
+     <x>510</x>
+     <y>300</y>
      <width>93</width>
      <height>29</height>
     </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(0, 48, 73);
+border-radius: 10px;
+color:rgb(245, 223, 187);</string>
    </property>
    <property name="text">
     <string>Ok</string>
@@ -39,11 +58,19 @@
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>570</x>
-     <y>360</y>
+     <x>510</x>
+     <y>350</y>
      <width>93</width>
      <height>29</height>
     </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(0, 48, 73);
+border-radius: 10px;
+color:rgb(245, 223, 187);</string>
    </property>
    <property name="text">
     <string>Cancel</string>
