@@ -1,4 +1,6 @@
-QT       += core gui
+QT       += core gui\
+            network
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -9,26 +11,43 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    adding_member.cpp \
     loading.cpp \
     main.cpp \
     mainwindow.cpp \
     setting.cpp \
     siginup.cpp \
-    signin.cpp
+    signin.cpp \
+    myclient.cpp \
+    mythread.cpp \
+    search.cpp \
+    geraph.cpp \
+    profile.cpp
+
 
 HEADERS += \
+    adding_member.h \
     loading.h \
     mainwindow.h \
     setting.h \
     siginup.h \
-    signin.h
+    signin.h \
+    myclient.h \
+    mythread.h \
+    geraph.h \
+    search.h \
+    profile.h
 
 FORMS += \
+    adding_member.ui \
     loading.ui \
     mainwindow.ui \
     setting.ui \
     siginup.ui \
-    signin.ui
+    signin.ui \
+    profile.ui \
+    search.ui \
+    geraph.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
