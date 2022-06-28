@@ -53,6 +53,9 @@ font-size:19px;
 
 </string>
      </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
     </widget>
     <widget class="QGroupBox" name="groupBox_5">
      <property name="geometry">
@@ -133,6 +136,9 @@ background-color:rgb(30, 157, 230);
 border-radius:10px;
 background-color: palette(base);
 font-size:19px;</string>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
