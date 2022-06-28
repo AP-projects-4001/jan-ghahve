@@ -88,7 +88,7 @@ void MyThread::readyRead()
     QByteArray response;
 
     data_obj.remove("status");
-    //Checking request of client (register, login, message, getInfo, chatInfo)
+    //Checking request of client (register, login, message, userInfo, chatInfo, allUsersInfo, userContacts)
     if(status == "register")
     {
         msg = channel.signup(data_obj);
@@ -115,8 +115,12 @@ void MyThread::readyRead()
     else if(status == "chatInfo")
     {
         response = channel.get_chat_info(data_obj["id1"].toString(), data_obj["id2"].toString());
-    } else if(status == "allUsersInfo"){
+    }
+    else if(status == "allUsersInfo"){
         response = channel.get_all_info();
+    }
+    else if(status == "userContacts"){
+        response = channel.get_user_contacts(data_obj["id"].toString());
     }
 
     //Get a responce from "channel", then Send it to the Client

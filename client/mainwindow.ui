@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>834</width>
+    <width>820</width>
     <height>548</height>
    </rect>
   </property>
@@ -49,7 +49,7 @@ background-color:rgb(30, 157, 230);
       <string notr="true">border: hide; 
 border-radius:10px; 
 background-color:rgb(191, 215, 234);
-
+font-size:19px;
 
 </string>
      </property>
@@ -82,6 +82,9 @@ border-radius:10px;
         <width>41</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
       </property>
       <property name="styleSheet">
        <string notr="true">border-image: url(:/images/send.png);
@@ -126,10 +129,10 @@ background-color:rgb(30, 157, 230);
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-image: url(:/images/BGchat.jpg);
+      <string notr="true">border-image: url(:/images/resourses/BGchat.jpg);
 border-radius:10px;
 background-color: palette(base);
-</string>
+font-size:19px;</string>
      </property>
     </widget>
    </widget>
@@ -157,6 +160,9 @@ background-color:rgb(30, 157, 230);</string>
        <width>51</width>
        <height>51</height>
       </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color:white;
@@ -189,28 +195,28 @@ font-size:22px;</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>40</y>
       <width>201</width>
-      <height>501</height>
+      <height>461</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:rgb(30, 157, 230);
-border:1px solid gray;
+
 border-radius:7px; 
 
 </string>
     </property>
     <property name="title">
-     <string>GroupBox</string>
+     <string/>
     </property>
     <widget class="QListWidget" name="listWidget">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
+       <y>30</y>
        <width>181</width>
-       <height>471</height>
+       <height>421</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -220,24 +226,40 @@ background-color:rgb(191, 215, 234);
 border-radius:8px;</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_3">
+    <widget class="QPushButton" name="pbn_search">
      <property name="geometry">
       <rect>
        <x>150</x>
-       <y>430</y>
+       <y>410</y>
        <width>31</width>
        <height>31</height>
       </rect>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
       <string notr="true">background-color:rgb(191, 215, 234);
 border-radius: 20%;
-border-image: url(:/images/search1.png);</string>
+border-image: url(:/images/resourses/search1.png);</string>
      </property>
      <property name="text">
       <string/>
      </property>
     </widget>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>63</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Name</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -245,11 +267,23 @@ border-image: url(:/images/search1.png);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>834</width>
-     <height>26</height>
+     <width>820</width>
+     <height>28</height>
     </rect>
    </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="defaultUp">
+    <bool>false</bool>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
+   </property>
    <widget class="QMenu" name="menusetting">
+    <property name="cursor">
+     <cursorShape>ArrowCursor</cursorShape>
+    </property>
     <property name="title">
      <string>More</string>
     </property>
@@ -267,8 +301,6 @@ border-image: url(:/images/search1.png);</string>
     <addaction name="actionprofile"/>
     <addaction name="separator"/>
     <addaction name="actionlvl_3_graph"/>
-    <addaction name="separator"/>
-    <addaction name="actionProfile"/>
     <addaction name="separator"/>
     <addaction name="actionLogout"/>
     <addaction name="separator"/>

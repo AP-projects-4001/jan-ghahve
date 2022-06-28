@@ -40,6 +40,9 @@ background-color: palette(base);</string>
      <height>29</height>
     </rect>
    </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(0, 48, 73);
 border-radius: 10px;
@@ -58,6 +61,9 @@ color:rgb(34, 119, 255)</string>
      <height>31</height>
     </rect>
    </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(0, 48, 73);
 border-radius: 10px;
@@ -75,6 +81,9 @@ color:rgb(245, 223, 187);</string>
      <width>81</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(0, 48, 73);
@@ -189,6 +198,9 @@ border-radius: 10%;</string>
      <width>81</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(0, 48, 73);

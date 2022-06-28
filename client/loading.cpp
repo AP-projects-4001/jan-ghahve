@@ -8,6 +8,7 @@ loading::loading(QWidget *parent) :
     ui(new Ui::loading)
 {
     ui->setupUi(this);
+    setFixedSize(size());
 }
 
 loading::~loading()
