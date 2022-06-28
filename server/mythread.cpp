@@ -122,6 +122,9 @@ void MyThread::readyRead()
     else if(status == "userContacts"){
         response = channel.get_user_contacts(data_obj["id"].toString());
     }
+    else if(status == "allUsersContacts"){
+        response = channel.get_all_contacts();
+    }
 
     //Get a responce from "channel", then Send it to the Client
     socket->write(response);
