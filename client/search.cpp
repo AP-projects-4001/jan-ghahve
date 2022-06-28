@@ -20,6 +20,7 @@ search::search(MyClient* client,QWidget *parent) :
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         all_users = response_d.object();
     }
+    setFixedSize(size());
 }
 
 search::~search()

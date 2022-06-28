@@ -14,6 +14,7 @@ signin::signin(QWidget *parent) :
     ui(new Ui::signin)
 {
     ui->setupUi(this);
+    setFixedSize(size());
     client = new MyClient();
     ui->pbn_ok->setDefault(true);
     ui->pbn_ok->setFocus();
