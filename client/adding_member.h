@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "myclient.h"
+#include <QListWidget>
 
 namespace Ui {
 class adding_member;

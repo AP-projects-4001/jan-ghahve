@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>727</width>
+    <width>653</width>
     <height>427</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:rgb(191, 215, 234);
+</string>
   </property>
   <widget class="QListWidget" name="listWidget">
    <property name="geometry">
@@ -22,15 +26,31 @@
      <height>371</height>
     </rect>
    </property>
+   <property name="cursor" stdset="0">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(253, 240, 213);
+border-radius: 10%;
+</string>
+   </property>
   </widget>
   <widget class="QPushButton" name="pbn_ok">
    <property name="geometry">
     <rect>
-     <x>570</x>
-     <y>310</y>
+     <x>510</x>
+     <y>300</y>
      <width>93</width>
      <height>29</height>
     </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(0, 48, 73);
+border-radius: 10px;
+color:rgb(245, 223, 187);</string>
    </property>
    <property name="text">
     <string>Ok</string>
@@ -39,11 +59,19 @@
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>570</x>
-     <y>360</y>
+     <x>510</x>
+     <y>350</y>
      <width>93</width>
      <height>29</height>
     </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(0, 48, 73);
+border-radius: 10px;
+color:rgb(245, 223, 187);</string>
    </property>
    <property name="text">
     <string>Cancel</string>
@@ -52,27 +80,55 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>70</x>
      <y>50</y>
-     <width>63</width>
-     <height>20</height>
+     <width>71</width>
+     <height>21</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>:/new/prefix1/Lato-Italic.ttf</family>
+     <pointsize>8</pointsize>
+     <italic>false</italic>
+     <bold>false</bold>
+     <underline>false</underline>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font-size:28px;
+font: 8pt &quot;:/new/prefix1/Lato-Italic.ttf&quot;;
+</string>
+   </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>Name :</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>240</y>
-     <width>63</width>
+     <x>20</x>
+     <y>190</y>
+     <width>181</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>add member from here -&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>80</y>
+     <width>113</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(253, 240, 213);
+border-radius: 10%;</string>
    </property>
   </widget>
  </widget>

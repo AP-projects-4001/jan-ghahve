@@ -160,11 +160,39 @@ void MainWindow::pain()
     ui->menubar->resize(20,5);
     ui->menubar->setStyleSheet(
                                "font-size:15px;"
+
                                );
 
     ui->menusetting->setStyleSheet("background-color:rgb(253, 240, 213);"
                                    "border-radius: 20%;"
                                    );
+    ui->listWidget->setStyleSheet("QListWidget:item"
+                                 "{"
+                                    "height: 30px;"
+                                    "font-weight: bold;"
+                                    "border: 1px solid gray;"
+                                    "border-right:hide;"
+                                    "border-left:hide;"
+                                    "border-top:hide"
+                                 "}"
+                                 "QListWidget:item:selected"
+                                  "{"
+                                       "background-color:rgb(213,213,213);"
+                                       "border: 1px solid gray;"
+                                       "border-right:hide;"
+                                       "border-left:hide;"
+                                       "border-top:hide;"
+                                       "color:black;"
+                                  "}"
+
+                                 "*{"
+                                  "border:hide;"
+                                  "font-size:18px;"
+                                  "background-color:rgb(240, 240, 240);;"
+                                  "border-radius:8px;"
+                                  "font:url(:/new/prefix1/Lato-Italic.ttf)"
+                                  "}"
+                                  );
 }
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
