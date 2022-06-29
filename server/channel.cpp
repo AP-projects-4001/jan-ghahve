@@ -257,6 +257,16 @@ QByteArray Channel::get_user_contacts(QString id)
     ch_mutex->unlock();
     return userContacts_doc.toJson();
 }
+QByteArray Channel::get_all_contacts()
+{
+    //----LOCK ----
+    ch_mutex->lock();
+    QJsonObject contacts = read_from_file("contacts.json");
+    QJsonDocument contacts_doc(contacts);
+    //---- UnLock -----
+    ch_mutex->unlock();
+    return contacts_doc.toJson();
+}
 
 QByteArray Channel::get_all_contacts()
 {
@@ -363,6 +373,7 @@ QStringList Channel::send_message_to_group(QJsonObject data)
 //------------------ Working with Files ------------------
 void Channel::write_to_file(QString file_path, QJsonObject result)
 {
+    //Encoding
     QJsonDocument result_doc(result);
     QFile file(file_path);
     file.open(QIODevice::WriteOnly);
@@ -376,6 +387,7 @@ QJsonObject Channel::read_from_file(QString file_path)
     QJsonObject json_obj;
     if(file.open(QIODevice::ReadOnly)){
         QByteArray b = file.readAll();
+        //Decoding
         file.close();
         QJsonDocument json_doc = QJsonDocument::fromJson(b);
         json_obj = json_doc.object();

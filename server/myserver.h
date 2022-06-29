@@ -5,6 +5,7 @@
 #include <QMap>
 #include "mythread.h"
 #include <QMutex>
+#include <QTcpServer>
 
 class MyServer : public QTcpServer
 {
