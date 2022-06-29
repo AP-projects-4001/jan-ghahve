@@ -20,7 +20,6 @@ MainWindow::MainWindow(QString id, QWidget *parent)
 //    QObject::connect(ui->test,&QPushButton::clicked,this,&MainWindow::add_safebar);
       QObject::connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
       QObject::connect(ui->actionlvl_3_graph,&QAction::triggered,this,&MainWindow::on_graph_clicked);
-    connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
     connect(ui->actionNew_Channel,&QAction::triggered,this,&MainWindow::on_newchannel_clicked);
 
     client = new MyClient();
