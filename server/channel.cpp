@@ -1,4 +1,4 @@
-﻿#include <QJsonDocument>
+#include <QJsonDocument>
 #include <QJsonArray>
 #include <QFile>
 #include "channel.h"
@@ -6,7 +6,7 @@
 Channel::Channel(QMutex *inp_mutex ,QObject *parent)
     : QObject{parent}
 {
-    path = "database.json";
+    path = "users.json";
     this->ch_mutex = inp_mutex;
 }
 
@@ -110,6 +110,7 @@ QString Channel::signin(QJsonObject data)
 QByteArray Channel::get_info(QString id)
 {
     QJsonObject json_obj;
+    //if id belongs to a user
     QJsonArray profiles_arr;
     json_obj = read_from_file(path);
     profiles_arr = json_obj["profiles"].toArray();
@@ -125,6 +126,20 @@ QByteArray Channel::get_info(QString id)
             return temp_doc.toJson();
         }
     }
+
+    //if id belongs to a groupe
+    json_obj = read_from_file("groupes.json");
+    user = json_obj[id].toObject();
+    if(!user.isEmpty()){
+        user["id"] = id;
+        user["name"] = id;
+        user["status"] = "groupe";
+        user.remove("max");
+        QJsonDocument user_doc(user);
+        return user_doc.toJson();
+    }
+
+    //if id belong to a channel
     return 0;
 }
 
@@ -169,44 +184,10 @@ void Channel::send_message(QJsonObject data)
 
     //modifying contacts file
     // adding id2 to id1's contacts
-    QJsonObject contact;
-    contact["id"] = id2;
-    contact["status"] = "user";
-    QJsonObject contacts_obj;
-    contacts_obj = read_from_file("contacts.json");
-
-    QJsonArray userContacts = contacts_obj[id1].toArray();
-    QJsonObject user;
-    bool contact2_found = false, contact1_found = false;
-    for(QJsonValueRef userRef:userContacts){
-        user = userRef.toObject();
-        if(user["id"].toString() == id2){
-            contact2_found = true;
-            break;
-        }
-    }
-    if(!contact2_found){
-        userContacts.append(contact);
-    }
-    contacts_obj[id1] = userContacts;
+    add_contact(id1, id2, "user");
 
     //adding id1 to id2's contacts
-    contact["id"] = id1;
-    userContacts = contacts_obj[id2].toArray();
-    for(QJsonValueRef userRef:userContacts){
-        user = userRef.toObject();
-        if(user["id"].toString() == id1){
-            contact1_found = true;
-            break;
-        }
-    }
-    if(!contact1_found){
-        userContacts.append(contact);
-    }
-    contacts_obj[id2] = userContacts;
-
-    //writing contacts to file
-    write_to_file("contacts.json", contacts_obj);
+    add_contact(id2, id1, "user");
 
     qDebug()<<data["id1"]<<"%"<<data["id2"]<<" want to unLock the file";
     //---- UnLock -----
@@ -214,25 +195,35 @@ void Channel::send_message(QJsonObject data)
     qDebug()<<data["id1"]<<"%"<<data["id2"]<<" unLocked the file";
 }
 
-QByteArray Channel::get_chat_info(QString id1, QString id2)
+QByteArray Channel::get_chat_info(QString id1, QString id2, QString chat)
 {
     qDebug()<<id1<<"%"<<id2<<" want to Lock the file";
     //----LOCK ----
     ch_mutex->lock();
     qDebug()<<id1<<"%"<<id2<<" Locked the file";
 
-    //file name can be : id1 + "%" + id2 + ".json"
-    QString file_path = id1 + "%" + id2 + ".json";
+    QString file_path;
     QJsonObject chat_obj;
 
-    chat_obj = read_from_file(file_path);
+    if(chat.isEmpty()){
+        //file name can be : id1 + "%" + id2 + ".json"
+        file_path = id1 + "%" + id2 + ".json";
 
-    if(chat_obj.empty()) //the file didn't open
-    {
-        //file name can be : id2 + "%" + id1 + ".json"
-        file_path = id2 + "%" + id1 + ".json";
+        chat_obj = read_from_file(file_path);
+
+        if(chat_obj.empty()) //the file didn't open
+        {
+            //file name can be : id2 + "%" + id1 + ".json"
+            file_path = id2 + "%" + id1 + ".json";
+            chat_obj = read_from_file(file_path);
+        }
+    }
+    else if(chat == "groupe"){
+        file_path = id2 + ".json";
         chat_obj = read_from_file(file_path);
     }
+
+
     //return whole chat messages
     QJsonDocument chat_doc(chat_obj);
 
@@ -276,6 +267,97 @@ QByteArray Channel::get_all_contacts()
     //---- UnLock -----
     ch_mutex->unlock();
     return contacts_doc.toJson();
+}
+
+QString Channel::create_groupe(QJsonObject data)
+{
+    //----LOCK ----
+    ch_mutex->lock();
+    //modify groupe file
+    QJsonObject all_data = read_from_file("groupes.json");
+    QString team_name = data["name"].toString();
+    int max = data["max"].toInt();
+    if(!all_data[team_name].isNull()){
+        //---- UnLock -----
+        ch_mutex->unlock();
+        return "not accepted";
+    }
+    data.remove("name");
+    all_data[team_name] = data;
+    write_to_file("groups.json", all_data);
+
+    //modify contacts file
+    QString id1;
+    for(int i=1;i<=max;i++){
+        id1 = data[QString::number(i)].toString();
+        add_contact(id1, team_name, "groupe");
+    }
+    //---- UnLock -----
+    ch_mutex->unlock();
+    return "accepted";
+}
+
+void Channel::add_contact(QString id1, QString id2, QString status)
+{
+    QJsonObject contact;
+    contact["id"] = id2;
+    contact["status"] = status;
+    QJsonObject contacts_obj;
+    contacts_obj = read_from_file("contacts.json");
+
+    QJsonArray userContacts = contacts_obj[id1].toArray();
+    QJsonObject user;
+    bool contact_found = false;
+    for(QJsonValueRef userRef:userContacts){
+        user = userRef.toObject();
+        if(user["id"].toString() == id2){
+            contact_found = true;
+            break;
+        }
+    }
+    if(!contact_found){
+        userContacts.append(contact);
+    }
+    contacts_obj[id1] = userContacts;
+    write_to_file("contacts.json", contacts_obj);
+}
+
+QStringList Channel::send_message_to_groupe(QJsonObject data)
+{
+    //----LOCK ----
+    ch_mutex->lock();
+    //saving message to database
+    QString file_path = data["id2"].toString() + ".json";
+    QJsonObject msg_obj = read_from_file(file_path);
+    if(msg_obj.empty()){
+        msg_obj["max"] = 0;
+    }
+    int max = msg_obj["max"].toInt() + 1;
+    msg_obj["max"] = max;
+
+    QString senderId = data["id1"].toString();
+    QJsonObject message;
+    message["sender"] = senderId;
+    message["message"] = data["message"];
+    msg_obj[QString::number(max)] = message;
+    //new chat messages are overwritten in the database
+    write_to_file(file_path, msg_obj);
+
+    //sendig message to all online users
+    msg_obj = read_from_file("groupes.json");
+    data = msg_obj[data["id2"].toString()].toObject();
+    int max_number = data["max"].toInt();
+    QString id;
+    QStringList all_ids;
+    for(int i=1;i<=max_number; i++){
+        id = data[QString::number(i)].toString();
+        if(id == senderId)
+            continue;
+        all_ids.append(id);
+    }
+    //---- UnLock -----
+    ch_mutex->unlock();
+    return all_ids;
 }
 
 //------------------ Working with Files ------------------

@@ -17,12 +17,13 @@ public:
     QString get_state();
 
     void run();
-    void on_new_message_recieved(QString senderId, QString recieverId, QString message);
+    void on_new_message_recieved(QString senderId, QString recieverId, QString message, QString chatId);
 
 signals:
     void error(QTcpSocket::SocketError sockererror);
     void thread_finished(qintptr socketdiscriptor);
     void message_recieved(QString senderId, QString recieverId, QString message);
+    void message_groupe_recieved(QString, QString, QStringList, QString);
     void user_authenticated(qintptr socketdiscriptor, QString id);
 
 public slots:

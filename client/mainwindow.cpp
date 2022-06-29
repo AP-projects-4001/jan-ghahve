@@ -21,6 +21,7 @@ MainWindow::MainWindow(QString id, QWidget *parent)
 
     client = new MyClient();
     get_user_info(id);
+    ui->user_name->setText(user_data["name"].toString());
     get_user_contacts();
     client->disconnect_from_server();
     MyThread* thread = new MyThread(user_data["id"].toString());
@@ -66,16 +67,13 @@ void MainWindow::get_all_users()
 
         all_users = response_d.object();
         QJsonArray data_arr = all_users["profiles"].toArray();
-        QListWidget* list = ui->listWidget;
 
         QJsonObject user;
         for(QJsonValueRef user_ref:data_arr){
             user = user_ref.toObject();
             if(user["id"] == user_data["id"])
                 continue;
-            QListWidgetItem* item = new QListWidgetItem(user["id"].toString());
-        //    item->setBackground(Qt::blue);
-            list->addItem(item);
+            add_item_to_listwidget(user["id"].toString());
         }
 
     }
@@ -93,21 +91,27 @@ void MainWindow::get_user_contacts()
         QJsonDocument respones_d = QJsonDocument::fromJson(response_b);
         QJsonArray response_arr = respones_d.array();
 
-        QFile file("contacts.json");
+        QFile file(user_data["id"].toString() + "%contacts.txt");
         file.open(QIODevice::WriteOnly);
-        QListWidget* list = ui->listWidget;
+        QTextStream stream(&file);
+
         QJsonObject user;
-        QStringList usersIds;
+        QString status, id;
         for(QJsonValueRef userRef:response_arr){
             user = userRef.toObject();
-            QListWidgetItem* item = new QListWidgetItem(user["id"].toString());
-        //    item->setBackground(Qt::blue);
-            list->addItem(item);
-            usersIds.append(user["id"].toString());
+            status = user["status"].toString();
+            id = user["id"].toString();
+            add_item_to_listwidget(id);
+            if(status == "user"){
+                stream << id << ',';
+            }
+            else if(status == "groupe"){
+                stream << "g%" << id << ',';
+            }
+            else if(status == "channel"){
+                stream << "c%" << id << ',';
+            }
         }
-        QByteArray data;
-        QDataStream dataStreamWrite(&data, QIODevice::WriteOnly);
-        dataStreamWrite << usersIds;
         file.close();
     }
 }
@@ -121,14 +125,18 @@ bool MainWindow::is_already_added(QString id)
     return false;
 }
 
-void MainWindow::on_usersFound(QStringList users)
+void MainWindow::add_item_to_listwidget(QString name)
 {
     QListWidget* list = ui->listWidget;
+    QListWidgetItem* item = new QListWidgetItem(name);
+    list->addItem(item);
+}
 
-    QFile file("contacts.json");
-    file.open(QIODevice::ReadOnly);
-    QByteArray data = file.readAll();
-    QJsonDocument data_d = QJsonDocument::fromJson(data);
+void MainWindow::on_usersFound(QStringList users)
+{
+    QFile file(user_data["id"].toString() + "%contacts.txt");
+    file.open(QIODevice::Append);
+    QTextStream stream(&file);
 
     QJsonObject user;
     QString user_id;
@@ -136,15 +144,10 @@ void MainWindow::on_usersFound(QStringList users)
         user_id = user_data["id"].toString();
         if(id == user_id || is_already_added(id))
             continue;
-        QListWidgetItem* item = new QListWidgetItem(id);
-    //    item->setBackground(Qt::blue);
-        list->addItem(item);
-        user["id"] = id;
-
-        QJsonArray data_arr = data_d.array();
-        data_arr.append(user);
-
+        add_item_to_listwidget(id);
+        stream << id << ',';
     }
+    file.close();
 }
 
 void MainWindow::pain()
@@ -165,6 +168,7 @@ void MainWindow::pain()
 }
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
+    ui->ted_message->setReadOnly(false);
     QString id = item->text();
     QJsonObject request;
     request["status"] = "userInfo";
@@ -176,14 +180,17 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         QByteArray response = client->request_to_server(&request_b);
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         contact_info = response_d.object();
+        ui->contact_name->setText(contact_info["name"].toString());
     }
     ui->ted_chat->clear();
+
     //get chat
     QJsonObject chat;
     QJsonObject chatReq;
     chatReq["status"] = "chatInfo";
     chatReq["id1"] = user_data["id"];
     chatReq["id2"] = contact_info["id"];
+    chatReq["chat"] = contact_info["status"];
     QJsonDocument chatReq_d(chatReq);
     QByteArray chatReq_b = chatReq_d.toJson();
     if(client->is_client_connectd()){
@@ -205,15 +212,19 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 }
 
 
-void MainWindow::on_messagerecievd1(QString senderId, QString message)
+void MainWindow::on_messagerecievd1(QString senderId, QString message, QString chatId)
 {
-    if(senderId == contact_info["id"].toString()){
+    if(senderId == contact_info["id"].toString() || chatId == contact_info["id"].toString()){
         ui->ted_chat->append(senderId + ":" + message);
     }else{
-       QListWidget* list = ui->listWidget;
-       if(!is_already_added(senderId)){
-           list->addItem(senderId);
-       }
+        QFile file(user_data["id"].toString() + "%contacts.txt");
+        file.open(QIODevice::Append);
+        QTextStream stream(&file);
+        if(!is_already_added(senderId)){
+            add_item_to_listwidget(senderId);
+            stream << senderId << ',';
+        }
+        file.close();
     }
 }
 
@@ -224,7 +235,11 @@ void MainWindow::on_pbn_send_clicked()
     QString message_content = ui->ted_message->toPlainText();
     ui->ted_message->clear();
     QJsonObject message;
-    message["status"] = "message";
+    if(contact_info["status"].toString() == "groupe"){
+        message["status"] = "messageToGroupe";
+    }else{
+        message["status"] = "message";
+    }
     message["id1"] = user_data["id"];
     message["id2"] = contact_info["id"];
     message["message"] = message_content;
@@ -239,9 +254,9 @@ void MainWindow::on_pbn_send_clicked()
 
 void MainWindow::on_newgroup_clicked()
 {
-    adding_member* add_member = new adding_member(user_data["id"].toString(), this);
+    adding_member* add_member = new adding_member(user_data["id"].toString(), client, this);
+    connect(add_member, &adding_member::groupe_created, this, &MainWindow::on_groupecreated);
     add_member->show();
-
 }
 
 
@@ -250,5 +265,15 @@ void MainWindow::on_pbn_search_clicked()
     search* search_dialog = new search(client,this);
     connect(search_dialog, &search::users_found, this, &MainWindow::on_usersFound);
     search_dialog->show();
+}
+
+void MainWindow::on_groupecreated(QString id)
+{
+    QFile file(user_data["id"].toString() + "%contacts.txt");
+    file.open(QIODevice::Append);
+    QTextStream stream(&file);
+    stream << "g%" << id << ',';
+    file.close();
+    add_item_to_listwidget(id);
 }
 

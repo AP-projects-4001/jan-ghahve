@@ -48,10 +48,10 @@ void MyThread::readyRead()
 
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
     QJsonObject data_obj = data_doc.object();
-    if(data_obj["reciever"].toString() == id){
+//    if(data_obj["reciever"].toString() == id){
         qDebug() << data_obj;
-        emit message_recieved1(data_obj["sender"].toString(), data_obj["message"].toString());
-    }
+        emit message_recieved1(data_obj["sender"].toString(), data_obj["message"].toString(), data_obj["chat"].toString());
+    //}
 }
 
 void MyThread::disconnected()

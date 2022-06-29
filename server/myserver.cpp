@@ -40,11 +40,22 @@ void MyServer::on_message_recieved(QString senderId, QString recieverId, QString
     for(int i=0; i< threads.length(); i++){
         id = data.value(threads.at(i)->get_socketdiscriptor());
         if(id == recieverId && threads.at(i)->get_state() == "reciever"){
-            threads.at(i)->on_new_message_recieved(senderId, recieverId, message);
+            threads.at(i)->on_new_message_recieved(senderId, recieverId, message, "");
             break;
         }
     }
 
+}
+
+void MyServer::on_message_groupe_recieved(QString senderId, QString chatId ,QStringList recieverIds, QString message)
+{
+    QString id;
+    for(int i=0; i< threads.length(); i++){
+        id = data.value(threads.at(i)->get_socketdiscriptor());
+        if(recieverIds.contains(id) && threads.at(i)->get_state() == "reciever"){
+            threads.at(i)->on_new_message_recieved(senderId, id, message, chatId);
+        }
+    }
 }
 
 void MyServer::on_user_authenticated(qintptr socketdiscriptor, QString id)
@@ -70,5 +81,6 @@ void MyServer::incomingConnection(qintptr socketDescriptor)
     connect(thread, SIGNAL(thread_finished(qintptr)), this, SLOT(on_thread_finished(qintptr)));
     QObject::connect(thread, &MyThread::message_recieved, this, &MyServer::on_message_recieved);
     QObject::connect(thread, &MyThread::user_authenticated, this, &MyServer::on_user_authenticated);
+    connect(thread, &MyThread::message_groupe_recieved, this, &MyServer::on_message_groupe_recieved);
     thread->start();
 }
