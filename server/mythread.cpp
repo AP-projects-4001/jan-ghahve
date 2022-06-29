@@ -126,15 +126,15 @@ void MyThread::readyRead()
     else if(status == "allUsersContacts"){
         response = channel.get_all_contacts();
     }
-    else if(status == "createGroupe"){
-        msg = channel.create_groupe(data_obj);
+    else if(status == "createGroup"){
+        msg = channel.create_group(data_obj);
         response = msg.toUtf8();
     }
-    else if(status == "messageToGroupe"){
-        QStringList allIds = channel.send_message_to_groupe(data_obj);
+    else if(status == "messageToGroup"){
+        QStringList allIds = channel.send_message_to_group(data_obj);
         msg = "ok";
         response = msg.toUtf8();
-        emit message_groupe_recieved(data_obj["id1"].toString(), data_obj["id2"].toString(), allIds, data_obj["message"].toString());
+        emit message_group_recieved(data_obj["id1"].toString(), data_obj["id2"].toString(), allIds, data_obj["message"].toString());
     }
 
     //Get a responce from "channel", then Send it to the Client

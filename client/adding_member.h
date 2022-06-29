@@ -20,7 +20,7 @@ private slots:
     void on_pbn_ok_clicked();
 
 signals:
-    void groupe_created(QString);
+    void group_created(QString);
 
 private:
     Ui::adding_member *ui;

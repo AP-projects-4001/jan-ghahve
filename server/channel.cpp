@@ -127,13 +127,13 @@ QByteArray Channel::get_info(QString id)
         }
     }
 
-    //if id belongs to a groupe
-    json_obj = read_from_file("groupes.json");
+    //if id belongs to a group
+    json_obj = read_from_file("groups.json");
     user = json_obj[id].toObject();
     if(!user.isEmpty()){
         user["id"] = id;
         user["name"] = id;
-        user["status"] = "groupe";
+        user["status"] = "group";
         user.remove("max");
         QJsonDocument user_doc(user);
         return user_doc.toJson();
@@ -218,7 +218,7 @@ QByteArray Channel::get_chat_info(QString id1, QString id2, QString chat)
             chat_obj = read_from_file(file_path);
         }
     }
-    else if(chat == "groupe"){
+    else if(chat == "group"){
         file_path = id2 + ".json";
         chat_obj = read_from_file(file_path);
     }
@@ -269,12 +269,12 @@ QByteArray Channel::get_all_contacts()
     return contacts_doc.toJson();
 }
 
-QString Channel::create_groupe(QJsonObject data)
+QString Channel::create_group(QJsonObject data)
 {
     //----LOCK ----
     ch_mutex->lock();
-    //modify groupe file
-    QJsonObject all_data = read_from_file("groupes.json");
+    //modify group file
+    QJsonObject all_data = read_from_file("groups.json");
     QString team_name = data["name"].toString();
     int max = data["max"].toInt();
     if(!all_data[team_name].isNull()){
@@ -290,7 +290,7 @@ QString Channel::create_groupe(QJsonObject data)
     QString id1;
     for(int i=1;i<=max;i++){
         id1 = data[QString::number(i)].toString();
-        add_contact(id1, team_name, "groupe");
+        add_contact(id1, team_name, "group");
     }
     //---- UnLock -----
     ch_mutex->unlock();
@@ -322,7 +322,7 @@ void Channel::add_contact(QString id1, QString id2, QString status)
     write_to_file("contacts.json", contacts_obj);
 }
 
-QStringList Channel::send_message_to_groupe(QJsonObject data)
+QStringList Channel::send_message_to_group(QJsonObject data)
 {
     //----LOCK ----
     ch_mutex->lock();
@@ -344,7 +344,7 @@ QStringList Channel::send_message_to_groupe(QJsonObject data)
     write_to_file(file_path, msg_obj);
 
     //sendig message to all online users
-    msg_obj = read_from_file("groupes.json");
+    msg_obj = read_from_file("groups.json");
     data = msg_obj[data["id2"].toString()].toObject();
     int max_number = data["max"].toInt();
     QString id;

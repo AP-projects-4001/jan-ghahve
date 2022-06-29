@@ -42,12 +42,12 @@ void adding_member::on_pbn_ok_clicked()
 {
     QString team_name = "aaa";
     if(team_name.isEmpty()){
-        QMessageBox::warning(this, "Invalid input", "You must choose a groupe name!");
+        QMessageBox::warning(this, "Invalid input", "You must choose a group name!");
         return;
     }
     QListWidget* list = ui->listWidget;
     QJsonObject req_obj;
-    req_obj["status"] = "createGroupe";
+    req_obj["status"] = "createGroup";
     req_obj["name"] = team_name;
     req_obj["1"] = user_id;
     int counter =0;
@@ -68,10 +68,10 @@ void adding_member::on_pbn_ok_clicked()
     QByteArray response = client->request_to_server(&req_b);
     QString response_str = QString::fromUtf8(response);
     if(response_str == "not accepted"){
-        QMessageBox::warning(this, "Invalid input", "The groupe name has been taken!");
+        QMessageBox::warning(this, "Invalid input", "The group name has been taken!");
         return;
     }
-    emit groupe_created(team_name);
+    emit group_created(team_name);
     this->close();
 }
 

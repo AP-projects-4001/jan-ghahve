@@ -105,7 +105,7 @@ void MainWindow::get_user_contacts()
             if(status == "user"){
                 stream << id << ',';
             }
-            else if(status == "groupe"){
+            else if(status == "group"){
                 stream << "g%" << id << ',';
             }
             else if(status == "channel"){
@@ -235,8 +235,8 @@ void MainWindow::on_pbn_send_clicked()
     QString message_content = ui->ted_message->toPlainText();
     ui->ted_message->clear();
     QJsonObject message;
-    if(contact_info["status"].toString() == "groupe"){
-        message["status"] = "messageToGroupe";
+    if(contact_info["status"].toString() == "group"){
+        message["status"] = "messageToGroup";
     }else{
         message["status"] = "message";
     }
@@ -255,7 +255,7 @@ void MainWindow::on_pbn_send_clicked()
 void MainWindow::on_newgroup_clicked()
 {
     adding_member* add_member = new adding_member(user_data["id"].toString(), client, this);
-    connect(add_member, &adding_member::groupe_created, this, &MainWindow::on_groupecreated);
+    connect(add_member, &adding_member::group_created, this, &MainWindow::on_groupcreated);
     add_member->show();
 }
 
@@ -267,7 +267,7 @@ void MainWindow::on_pbn_search_clicked()
     search_dialog->show();
 }
 
-void MainWindow::on_groupecreated(QString id)
+void MainWindow::on_groupcreated(QString id)
 {
     QFile file(user_data["id"].toString() + "%contacts.txt");
     file.open(QIODevice::Append);

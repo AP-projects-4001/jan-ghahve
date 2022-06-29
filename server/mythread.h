@@ -23,7 +23,7 @@ signals:
     void error(QTcpSocket::SocketError sockererror);
     void thread_finished(qintptr socketdiscriptor);
     void message_recieved(QString senderId, QString recieverId, QString message);
-    void message_groupe_recieved(QString, QString, QStringList, QString);
+    void message_group_recieved(QString, QString, QStringList, QString);
     void user_authenticated(qintptr socketdiscriptor, QString id);
 
 public slots:
