@@ -132,6 +132,7 @@ void MainWindow::add_item_to_listwidget(QString name)
     QListWidget* list = ui->listWidget;
     QListWidgetItem* item = new QListWidgetItem(name);
     list->addItem(item);
+}
 void MainWindow::get_allUsers_contacts()
 {
     QJsonObject req;
