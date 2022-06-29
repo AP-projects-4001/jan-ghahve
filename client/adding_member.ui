@@ -117,7 +117,7 @@ font: 8pt &quot;:/new/prefix1/Lato-Italic.ttf&quot;;
     <string>add member from here -&gt;</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="led_name">
    <property name="geometry">
     <rect>
      <x>40</x>

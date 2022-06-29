@@ -129,11 +129,21 @@ void MyThread::readyRead()
         response = channel.get_all_contacts();
     }
     else if(status == "createGroup"){
-        msg = channel.create_group(data_obj);
+        msg = channel.create_group_or_channel(data_obj, "group");
         response = msg.toUtf8();
     }
     else if(status == "messageToGroup"){
-        QStringList allIds = channel.send_message_to_group(data_obj);
+        QStringList allIds = channel.send_message_to_group_or_channel(data_obj, "group");
+        msg = "ok";
+        response = msg.toUtf8();
+        emit message_group_recieved(data_obj["id1"].toString(), data_obj["id2"].toString(), allIds, data_obj["message"].toString());
+    }
+    else if(status == "createChannel"){
+        msg = channel.create_group_or_channel(data_obj, "channel");
+        response = msg.toUtf8();
+    }
+    else if(status == "messageToChannel"){
+        QStringList allIds = channel.send_message_to_group_or_channel(data_obj, "channel");
         msg = "ok";
         response = msg.toUtf8();
         emit message_group_recieved(data_obj["id1"].toString(), data_obj["id2"].toString(), allIds, data_obj["message"].toString());
