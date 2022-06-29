@@ -23,13 +23,19 @@ public:
     void get_user_info(QString id);
     void get_all_users();
     void add_safebar();
+    void get_user_contacts();
+    bool is_already_added(QString id);
+    QStringList get_user_contacts_from_file();
+    void add_item_to_listwidget(QString name);
 
 private slots:
+    void on_usersFound(QStringList users);
     void on_listWidget_itemClicked(QListWidgetItem *item);
-    void on_messagerecievd1(QString senderId, QString message);
+    void on_messagerecievd1(QString senderId, QString message, QString chatId);
     void on_pbn_send_clicked();
     void on_newgroup_clicked();
-
+    void on_pbn_search_clicked();
+    void on_groupcreated(QString id);
 
 private:
     Ui::MainWindow *ui;
@@ -39,5 +45,6 @@ private:
     QJsonObject contact_info;
     QJsonObject all_users;
     bool chat_switched;
+    QArrayData user_contacts;
 };
 #endif // MAINWINDOW_H

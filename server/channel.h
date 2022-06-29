@@ -14,8 +14,13 @@ public:
     QString signin(QJsonObject data);
     QByteArray get_info(QString id);
     void send_message(QJsonObject data);
-    QByteArray get_chat_info(QString id1, QString id2);
+    QByteArray get_chat_info(QString id1, QString id2, QString chat);
     QByteArray get_all_info();
+    QByteArray get_user_contacts(QString id);
+    QByteArray get_all_contacts();
+    QString create_group(QJsonObject data);
+    void add_contact(QString id1, QString id2, QString status);
+    QStringList send_message_to_group(QJsonObject data);
 
 private:
     QString path;

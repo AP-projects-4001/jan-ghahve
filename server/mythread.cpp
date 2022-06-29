@@ -57,12 +57,13 @@ void MyThread::run()
     exec();
 }
 
-void MyThread::on_new_message_recieved(QString senderId, QString recieverId, QString message)
+void MyThread::on_new_message_recieved(QString senderId, QString recieverId, QString message, QString chatId)
 {
     QJsonObject message_obj;
     message_obj["sender"] = senderId;
     message_obj["reciever"] = recieverId;
     message_obj["message"] = message;
+    message_obj["chat"] = chatId;
     QJsonDocument message_doc(message_obj);
     QByteArray message_b = message_doc.toJson();
     if(socket->ConnectedState){
@@ -88,7 +89,7 @@ void MyThread::readyRead()
     QByteArray response;
 
     data_obj.remove("status");
-    //Checking request of client (register, login, message, getInfo, chatInfo)
+    //Checking request of client (register, login, message, userInfo, chatInfo, allUsersInfo, userContacts)
     if(status == "register")
     {
         msg = channel.signup(data_obj);
@@ -114,9 +115,26 @@ void MyThread::readyRead()
     }
     else if(status == "chatInfo")
     {
-        response = channel.get_chat_info(data_obj["id1"].toString(), data_obj["id2"].toString());
-    } else if(status == "allUsersInfo"){
+        response = channel.get_chat_info(data_obj["id1"].toString(), data_obj["id2"].toString(), data_obj["chat"].toString());
+    }
+    else if(status == "allUsersInfo"){
         response = channel.get_all_info();
+    }
+    else if(status == "userContacts"){
+        response = channel.get_user_contacts(data_obj["id"].toString());
+    }
+    else if(status == "allUsersContacts"){
+        response = channel.get_all_contacts();
+    }
+    else if(status == "createGroup"){
+        msg = channel.create_group(data_obj);
+        response = msg.toUtf8();
+    }
+    else if(status == "messageToGroup"){
+        QStringList allIds = channel.send_message_to_group(data_obj);
+        msg = "ok";
+        response = msg.toUtf8();
+        emit message_group_recieved(data_obj["id1"].toString(), data_obj["id2"].toString(), allIds, data_obj["message"].toString());
     }
 
     //Get a responce from "channel", then Send it to the Client
