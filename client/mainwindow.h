@@ -36,6 +36,8 @@ private slots:
     void on_newgroup_clicked();
     void on_pbn_search_clicked();
     void on_groupcreated(QString id);
+    void on_newchannel_clicked();
+    void on_channelcreated(QString id);
 
 private:
     Ui::MainWindow *ui;

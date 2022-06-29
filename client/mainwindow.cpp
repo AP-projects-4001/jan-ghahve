@@ -17,7 +17,8 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     setFixedSize(size());
       pain();
 //    QObject::connect(ui->test,&QPushButton::clicked,this,&MainWindow::add_safebar);
-      QObject::connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
+    connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
+    connect(ui->actionNew_Channel,&QAction::triggered,this,&MainWindow::on_newchannel_clicked);
 
     client = new MyClient();
     get_user_info(id);
@@ -263,8 +264,11 @@ void MainWindow::on_pbn_send_clicked()
     QString message_content = ui->ted_message->toPlainText();
     ui->ted_message->clear();
     QJsonObject message;
-    if(contact_info["status"].toString() == "group"){
+    QString status = contact_info["status"].toString();
+    if(status == "group"){
         message["status"] = "messageToGroup";
+    }else if(status == "channel"){
+        message["status"] = "messageToChannel";
     }else{
         message["status"] = "message";
     }
@@ -282,7 +286,7 @@ void MainWindow::on_pbn_send_clicked()
 
 void MainWindow::on_newgroup_clicked()
 {
-    adding_member* add_member = new adding_member(user_data["id"].toString(), client, this);
+    adding_member* add_member = new adding_member(user_data["id"].toString(), client, "group", this);
     connect(add_member, &adding_member::group_created, this, &MainWindow::on_groupcreated);
     add_member->show();
 }
@@ -301,6 +305,23 @@ void MainWindow::on_groupcreated(QString id)
     file.open(QIODevice::Append);
     QTextStream stream(&file);
     stream << "g%" << id << ',';
+    file.close();
+    add_item_to_listwidget(id);
+}
+
+void MainWindow::on_newchannel_clicked()
+{
+    adding_member* add_member = new adding_member(user_data["id"].toString(), client, "channel", this);
+    connect(add_member, &adding_member::group_created, this, &MainWindow::on_groupcreated);
+    add_member->show();
+}
+
+void MainWindow::on_channelcreated(QString id)
+{
+    QFile file(user_data["id"].toString() + "%contacts.txt");
+    file.open(QIODevice::Append);
+    QTextStream stream(&file);
+    stream << "c%" << id << ',';
     file.close();
     add_item_to_listwidget(id);
 }
