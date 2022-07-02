@@ -1,3 +1,23 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #include "mythread.h"
 #include <QDebug>
 #include <QJsonDocument>
@@ -48,10 +68,14 @@ void MyThread::readyRead()
 
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
     QJsonObject data_obj = data_doc.object();
-//    if(data_obj["reciever"].toString() == id){
-        qDebug() << data_obj;
-        emit message_recieved1(data_obj["sender"].toString(), data_obj["message"].toString(), data_obj["chat"].toString());
-    //}
+    QString status = data_obj["status"].toString();
+    qDebug() << data_obj;
+    if(status == "message"){
+        emit message_recieved(data_obj["sender"].toString(), data_obj["message"].toString(), data_obj["chat"].toString());
+    }
+    else if(status == "groupCreated"){
+        emit group_created(data_obj["id"].toString());
+    }
 }
 
 void MyThread::disconnected()

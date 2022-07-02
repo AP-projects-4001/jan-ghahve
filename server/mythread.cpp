@@ -60,10 +60,25 @@ void MyThread::run()
 void MyThread::on_new_message_recieved(QString senderId, QString recieverId, QString message, QString chatId)
 {
     QJsonObject message_obj;
+    message_obj["status"] = "message";
     message_obj["sender"] = senderId;
     message_obj["reciever"] = recieverId;
     message_obj["message"] = message;
     message_obj["chat"] = chatId;
+    QJsonDocument message_doc(message_obj);
+    QByteArray message_b = message_doc.toJson();
+    if(socket->ConnectedState){
+        socket->write(message_b);
+        socket->waitForBytesWritten(-1);
+        qDebug() << this->socketDescriptor << " Data out" << message_b;
+    }
+}
+
+void MyThread::on_new_group_created(QString id)
+{
+    QJsonObject message_obj;
+    message_obj["status"] = "groupCreated";
+    message_obj["id"] = id;
     QJsonDocument message_doc(message_obj);
     QByteArray message_b = message_doc.toJson();
     if(socket->ConnectedState){
@@ -129,7 +144,13 @@ void MyThread::readyRead()
         response = channel.get_all_contacts();
     }
     else if(status == "createGroup"){
-        msg = channel.create_group_or_channel(data_obj, "group");
+        QStringList allIds = channel.create_group_or_channel(data_obj, "group");
+        if(allIds.empty()){
+            msg = "not accepted";
+        }else{
+            emit group_or_channel_created(data_obj["name"].toString(), allIds);
+            msg = "ok";
+        }
         response = msg.toUtf8();
     }
     else if(status == "messageToGroup"){
@@ -139,7 +160,13 @@ void MyThread::readyRead()
         emit message_group_recieved(data_obj["id1"].toString(), data_obj["id2"].toString(), allIds, data_obj["message"].toString());
     }
     else if(status == "createChannel"){
-        msg = channel.create_group_or_channel(data_obj, "channel");
+        QStringList allIds = channel.create_group_or_channel(data_obj, "channel");
+        if(allIds.empty()){
+            msg = "not accepted";
+        }else{
+            emit group_or_channel_created(data_obj["name"].toString(), allIds);
+            msg = "ok";
+        }
         response = msg.toUtf8();
     }
     else if(status == "messageToChannel"){
@@ -147,6 +174,14 @@ void MyThread::readyRead()
         msg = "ok";
         response = msg.toUtf8();
         emit message_group_recieved(data_obj["id1"].toString(), data_obj["id2"].toString(), allIds, data_obj["message"].toString());
+    }
+    else if(status == "channelInfo"){
+        response = channel.channelInfo(data_obj["id"].toString());
+    }
+    else if(status == "modifyAdmins"){
+        channel.modify_channel_admins(data_obj["id"].toString(), data_obj["admins"].toString());
+        msg = "ok";
+        response = msg.toUtf8();
     }
 
     //Get a responce from "channel", then Send it to the Client

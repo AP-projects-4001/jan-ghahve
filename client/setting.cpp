@@ -13,3 +13,5 @@ setting::~setting()
 {
     delete ui;
 }
+
+

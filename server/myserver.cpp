@@ -62,6 +62,17 @@ void MyServer::on_user_authenticated(qintptr socketdiscriptor, QString id)
     data.insert(socketdiscriptor, id);
 }
 
+void MyServer::on_group_or_channel_created(QString id,QStringList ids)
+{
+    QString user_id;
+    for(int i=0; i< threads.length(); i++){
+        user_id = data.value(threads.at(i)->get_socketdiscriptor());
+        if(ids.contains(user_id) && threads.at(i)->get_state() == "reciever"){
+            threads.at(i)->on_new_group_created(id);
+        }
+    }
+}
+
 
 
 // This function is called by QTcpServer when a new connection is available.
@@ -81,5 +92,6 @@ void MyServer::incomingConnection(qintptr socketDescriptor)
     QObject::connect(thread, &MyThread::message_recieved, this, &MyServer::on_message_recieved);
     QObject::connect(thread, &MyThread::user_authenticated, this, &MyServer::on_user_authenticated);
     connect(thread, &MyThread::message_group_recieved, this, &MyServer::on_message_group_recieved);
+    connect(thread, &MyThread::group_or_channel_created, this, &MyServer::on_group_or_channel_created);
     thread->start();
 }

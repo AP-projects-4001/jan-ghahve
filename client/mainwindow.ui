@@ -80,6 +80,9 @@ background-color:rgb(240, 240, 240);
       <string/>
      </property>
      <widget class="QPushButton" name="pbn_send">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -162,7 +165,7 @@ background-color:rgb(191, 215, 234);</string>
     <property name="title">
      <string/>
     </property>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="pbn_profile">
      <property name="geometry">
       <rect>
        <x>60</x>

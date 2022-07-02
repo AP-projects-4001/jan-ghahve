@@ -18,6 +18,7 @@ public:
 
     void run();
     void on_new_message_recieved(QString senderId, QString recieverId, QString message, QString chatId);
+    void on_new_group_created(QString id);
 
 signals:
     void error(QTcpSocket::SocketError sockererror);
@@ -25,6 +26,7 @@ signals:
     void message_recieved(QString senderId, QString recieverId, QString message);
     void message_group_recieved(QString, QString, QStringList, QString);
     void user_authenticated(qintptr socketdiscriptor, QString id);
+    void group_or_channel_created(QString,QStringList);
 
 public slots:
     void readyRead();
