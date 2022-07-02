@@ -5,7 +5,7 @@
 #include "adding_member.h"
 #include "ui_adding_member.h"
 
-adding_member::adding_member(QString id, MyClient* client, QWidget *parent) :
+adding_member::adding_member(QString id, MyClient* client, QString chat, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::adding_member)
 {
@@ -13,6 +13,7 @@ adding_member::adding_member(QString id, MyClient* client, QWidget *parent) :
     setFixedSize(size());
     user_id = id;
     this->client = client;
+    this->chat = chat;
     QFile file(id + "%contacts.txt");
     if(file.open(QIODevice::ReadOnly)){
         QTextStream stream(&file);
@@ -63,15 +64,19 @@ adding_member::~adding_member()
 
 void adding_member::on_pbn_ok_clicked()
 {
-    QString team_name = "aaa";
-    if(team_name.isEmpty()){
-        QMessageBox::warning(this, "Invalid input", "You must choose a group name!");
+    QString name = ui->led_name->text();
+    if(name.isEmpty()){
+        QMessageBox::warning(this, "Invalid input", "You must choose a name!");
         return;
     }
     QListWidget* list = ui->listWidget;
     QJsonObject req_obj;
-    req_obj["status"] = "createGroup";
-    req_obj["name"] = team_name;
+    if(chat == "group"){
+        req_obj["status"] = "createGroup";
+    }else{
+        req_obj["status"] = "createChannel";
+    }
+    req_obj["name"] = name;
     req_obj["1"] = user_id;
     int counter =0;
     for(int i=0; i< numbOfContacts; i++){
@@ -91,10 +96,20 @@ void adding_member::on_pbn_ok_clicked()
     QByteArray response = client->request_to_server(&req_b);
     QString response_str = QString::fromUtf8(response);
     if(response_str == "not accepted"){
-        QMessageBox::warning(this, "Invalid input", "The group name has been taken!");
+        QMessageBox::warning(this, "Invalid input", "The name has been taken!");
         return;
     }
-    emit group_created(team_name);
+    if(chat == "group"){
+        emit group_created(name);
+    }else{
+        emit group_created(name);
+    }
+    this->close();
+}
+
+
+void adding_member::on_pushButton_2_clicked()
+{
     this->close();
 }
 

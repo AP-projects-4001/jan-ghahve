@@ -18,9 +18,9 @@ public:
     QByteArray get_all_info();
     QByteArray get_user_contacts(QString id);
     QByteArray get_all_contacts();
-    QString create_group(QJsonObject data);
+    QString create_group_or_channel(QJsonObject data, QString chat);
     void add_contact(QString id1, QString id2, QString status);
-    QStringList send_message_to_group(QJsonObject data);
+    QStringList send_message_to_group_or_channel(QJsonObject data, QString chat);
 
 private:
     QString path;

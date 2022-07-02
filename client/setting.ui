@@ -17,7 +17,7 @@
    <string notr="true">background-color:rgb(191, 215, 234);
 </string>
   </property>
-  <widget class="QGraphicsView" name="graphicsView">
+  <widget class="QGraphicsView" name="image_graphicsView">
    <property name="geometry">
     <rect>
      <x>140</x>
@@ -31,7 +31,7 @@
 background-color: palette(base);</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="pbn_chaneImage">
    <property name="geometry">
     <rect>
      <x>160</x>
@@ -52,7 +52,7 @@ color:rgb(34, 119, 255)</string>
     <string>Change Pic</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="pbn_save">
    <property name="geometry">
     <rect>
      <x>310</x>
@@ -73,7 +73,7 @@ color:rgb(245, 223, 187);</string>
     <string>Save</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_3">
+  <widget class="QPushButton" name="pbn_cancel">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -97,25 +97,15 @@ color:rgb(245, 223, 187);</string>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>220</y>
+     <x>40</x>
+     <y>210</y>
      <width>331</width>
-     <height>141</height>
+     <height>169</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="styleSheet">
-       <string notr="true">color:rgb(0, 48, 73);</string>
-      </property>
-      <property name="text">
-       <string>Change name :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="lineEdit">
+    <item row="4" column="1">
+     <widget class="QLineEdit" name="led_password">
       <property name="styleSheet">
        <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 10%;</string>
@@ -125,18 +115,39 @@ border-radius: 10%;</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_2">
+    <item row="5" column="0">
+     <widget class="QLabel" name="lbl_birth">
       <property name="styleSheet">
        <string notr="true">color:rgb(0, 48, 73);</string>
       </property>
       <property name="text">
-       <string>Change Username :</string>
+       <string>Change BirthDate:</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="lineEdit_2">
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_username">
+      <property name="styleSheet">
+       <string notr="true">color:rgb(0, 48, 73);</string>
+      </property>
+      <property name="text">
+       <string>Username :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QDateEdit" name="dateEdit">
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(253, 240, 213);
+border-radius: 10%;</string>
+      </property>
+      <property name="buttonSymbols">
+       <enum>QAbstractSpinBox::UpDownArrows</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="led_email">
       <property name="styleSheet">
        <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 10%;</string>
@@ -147,7 +158,7 @@ border-radius: 10%;</string>
      </widget>
     </item>
     <item row="2" column="0">
-     <widget class="QLabel" name="label_3">
+     <widget class="QLabel" name="lbl_phonenum">
       <property name="styleSheet">
        <string notr="true">color:rgb(0, 48, 73);</string>
       </property>
@@ -156,8 +167,18 @@ border-radius: 10%;</string>
       </property>
      </widget>
     </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="lbl_email">
+      <property name="styleSheet">
+       <string notr="true">color:rgb(0, 48, 73);</string>
+      </property>
+      <property name="text">
+       <string>Change Email:</string>
+      </property>
+     </widget>
+    </item>
     <item row="2" column="1">
-     <widget class="QLineEdit" name="lineEdit_3">
+     <widget class="QLineEdit" name="led_phonenum">
       <property name="styleSheet">
        <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 10%;</string>
@@ -167,8 +188,8 @@ border-radius: 10%;</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="label_4">
+    <item row="4" column="0">
+     <widget class="QLabel" name="lbl_password">
       <property name="styleSheet">
        <string notr="true">color:rgb(0, 48, 73);</string>
       </property>
@@ -177,8 +198,29 @@ border-radius: 10%;</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="lineEdit_4">
+    <item row="1" column="0">
+     <widget class="QLabel" name="lbl_name">
+      <property name="styleSheet">
+       <string notr="true">color:rgb(0, 48, 73);</string>
+      </property>
+      <property name="text">
+       <string>Change Name:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="led_username">
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(253, 240, 213);
+border-radius: 10%;</string>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="led_name">
       <property name="styleSheet">
        <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 10%;</string>
@@ -190,7 +232,7 @@ border-radius: 10%;</string>
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="pushButton_4">
+  <widget class="QPushButton" name="pbn_edit">
    <property name="geometry">
     <rect>
      <x>220</x>
