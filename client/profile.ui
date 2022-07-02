@@ -21,14 +21,14 @@
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>180</y>
+     <y>170</y>
      <width>331</width>
-     <height>141</height>
+     <height>169</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="2" column="0">
-     <widget class="QLabel" name="label_3">
+     <widget class="QLabel" name="lbl_phonenum">
       <property name="styleSheet">
        <string notr="true">color:rgb(0, 48, 73);</string>
       </property>
@@ -37,61 +37,8 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_2">
-      <property name="styleSheet">
-       <string notr="true">color:rgb(0, 48, 73);</string>
-      </property>
-      <property name="text">
-       <string>Username :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="styleSheet">
-       <string notr="true">color:rgb(0, 48, 73);</string>
-      </property>
-      <property name="text">
-       <string>Name :</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="lineEdit_2">
-      <property name="styleSheet">
-       <string notr="true">background-color:rgb(253, 240, 213);
-border-radius: 10%;</string>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="lineEdit">
-      <property name="styleSheet">
-       <string notr="true">background-color:rgb(253, 240, 213);
-border-radius: 10%;</string>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLineEdit" name="lineEdit_3">
-      <property name="styleSheet">
-       <string notr="true">background-color:rgb(253, 240, 213);
-border-radius: 10%;</string>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="lineEdit_4">
+    <item row="4" column="1">
+     <widget class="QLineEdit" name="led_birth">
       <property name="styleSheet">
        <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 10%;</string>
@@ -102,7 +49,17 @@ border-radius: 10%;</string>
      </widget>
     </item>
     <item row="3" column="0">
-     <widget class="QLabel" name="label_4">
+     <widget class="QLabel" name="lbl_email">
+      <property name="styleSheet">
+       <string notr="true">color:rgb(0, 48, 73);</string>
+      </property>
+      <property name="text">
+       <string>Email:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="lbl_birth">
       <property name="styleSheet">
        <string notr="true">color:rgb(0, 48, 73);</string>
       </property>
@@ -111,9 +68,73 @@ border-radius: 10%;</string>
       </property>
      </widget>
     </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbl_username">
+      <property name="styleSheet">
+       <string notr="true">color:rgb(0, 48, 73);</string>
+      </property>
+      <property name="text">
+       <string>Username :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="led_phonenum">
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(253, 240, 213);
+border-radius: 10%;</string>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="led_email">
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(253, 240, 213);
+border-radius: 10%;</string>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="lbl_name">
+      <property name="styleSheet">
+       <string notr="true">color:rgb(0, 48, 73);</string>
+      </property>
+      <property name="text">
+       <string>Name:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="led_username">
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(253, 240, 213);
+border-radius: 10%;</string>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="led_name">
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(253, 240, 213);
+border-radius: 10%;</string>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
-  <widget class="QGraphicsView" name="graphicsView">
+  <widget class="QGraphicsView" name="image_graphicsView">
    <property name="geometry">
     <rect>
      <x>140</x>
@@ -127,7 +148,7 @@ border-radius: 10%;</string>
 background-color: palette(base);</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_3">
+  <widget class="QPushButton" name="pbn_close">
    <property name="geometry">
     <rect>
      <x>160</x>
