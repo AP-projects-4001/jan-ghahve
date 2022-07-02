@@ -268,16 +268,6 @@ QByteArray Channel::get_all_contacts()
     return contacts_doc.toJson();
 }
 
-QByteArray Channel::get_all_contacts()
-{
-    //----LOCK ----
-    ch_mutex->lock();
-    QJsonObject contacts = read_from_file("contacts.json");
-    QJsonDocument contacts_doc(contacts);
-    //---- UnLock -----
-    ch_mutex->unlock();
-    return contacts_doc.toJson();
-}
 
 QString Channel::create_group(QJsonObject data)
 {

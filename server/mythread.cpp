@@ -3,6 +3,7 @@
 #include <QJsonObject>
 #include "mythread.h"
 #include "channel.h"
+#include "Encryption/myencryption.h"
 
 MyThread::MyThread(QMutex *inp_mutex,qintptr ID, QObject *parent) :
     QThread(parent)
@@ -66,21 +67,24 @@ void MyThread::on_new_message_recieved(QString senderId, QString recieverId, QSt
     message_obj["chat"] = chatId;
     QJsonDocument message_doc(message_obj);
     QByteArray message_b = message_doc.toJson();
+    MyEncryption encryption;
     if(socket->ConnectedState){
+        QByteArray encoded_message = encryption.myEncode(message_b);
+        socket->write(encoded_message);
         socket->write(message_b);
         socket->waitForBytesWritten(-1);
-        qDebug() << this->socketDescriptor << " Data out" << message_b;
+        //qDebug() << this->socketDescriptor << " Data out" << message_b;
     }
 }
 
 void MyThread::readyRead()
 {
     // get the information
-
-    QByteArray Data = socket->readAll();
+    QByteArray encoded_Data = socket->readAll();
     //Decoding
-
     // will write on server side window
+    MyEncryption encryption;
+    QByteArray Data = encryption.myDecode(encoded_Data);
     qDebug() << socketDescriptor << " Data in: " << Data;
 
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
@@ -141,9 +145,11 @@ void MyThread::readyRead()
 
     //Get a responce from "channel", then Send it to the Client
     //Encoding
-    socket->write(response);
+    QByteArray encoded_response = encryption.myEncode(response);
+    socket->write(encoded_response);
     socket->waitForBytesWritten(-1);
 }
+
 
 void MyThread::disconnected()
 {

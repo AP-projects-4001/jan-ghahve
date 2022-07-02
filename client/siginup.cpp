@@ -93,6 +93,7 @@ void siginup::on_pbn_submit_clicked()
         //Sending data to the server and waiting for getting a response from it
         QByteArray response = client->request_to_server(&user_b);
         QString msg = QString(response);
+        qDebug()<<msg;
         //Check response(Successful or not)
         if(msg == "accepted"){
             client->disconnect_from_server();
