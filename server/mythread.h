@@ -32,7 +32,6 @@ public slots:
     void readyRead();
     void disconnected();
 
-
 private:
     QTcpSocket* socket;
     qintptr socketDescriptor;

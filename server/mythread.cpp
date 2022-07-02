@@ -3,6 +3,7 @@
 #include <QJsonObject>
 #include "mythread.h"
 #include "channel.h"
+#include "smtpthread.h"
 
 MyThread::MyThread(QMutex *inp_mutex,qintptr ID, QObject *parent) :
     QThread(parent)
@@ -111,6 +112,12 @@ void MyThread::readyRead()
     {
         msg = channel.signup(data_obj);
         response = msg.toUtf8();
+//        socket->disconnect();
+//        SmtpThread* smtpthread = new SmtpThread();
+//        smtpthread->start();
+//        Smtp* smtp = new Smtp("janghahve@gmail.com", "mxakpmwpmrjbqgzo", "smtp.gmail.com", 456);
+//        connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
+//        smtp->sendMail("janghahve@gmail.com", "alirezasamimi1381@gmail.com" , "salam","salam");
     }
     else if(status == "login")
     {
