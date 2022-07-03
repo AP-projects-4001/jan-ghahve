@@ -69,13 +69,14 @@ void MyThread::on_new_message_recieved(QString senderId, QString recieverId, QSt
     message_obj["message"] = message;
     message_obj["chat"] = chatId;
     QJsonDocument message_doc(message_obj);
-    QByteArray message_b = message_doc.toJson();
-    MyEncryption encryption;
+    QByteArray message_b = message_doc.toJson();  
     if(socket->ConnectedState){
-        QByteArray encoded_message = encryption.myEncode(message_b);
+        MyEncryption *encryption = new MyEncryption();
+        QByteArray encoded_message = encryption->myEncode(message_b);
         socket->write(encoded_message);
-        socket->write(message_b);
+        //socket->write(message_b);
         socket->waitForBytesWritten(-1);
+        delete encryption;
         //qDebug() << this->socketDescriptor << " Data out" << message_b;
     }
 }
@@ -98,6 +99,7 @@ void MyThread::readyRead()
 {
     // get the information
     QByteArray encoded_Data = socket->readAll();
+    //QByteArray Data = socket->readAll();
     //Decoding
     // will write on server side window
     MyEncryption *encryption = new MyEncryption();
@@ -179,6 +181,12 @@ void MyThread::readyRead()
         state = data_obj["state"].toString();
         emit user_authenticated(this->socketDescriptor, this->userId);
     }
+    else if(status == "userInfo_forEdit"){
+        response = channel.get_info_forEdit(data_obj["id"].toString());
+        set_userId(data_obj["id"].toString());
+        state = data_obj["state"].toString();
+        emit user_authenticated(this->socketDescriptor, this->userId);
+    }
     else if(status == "message"){
 
         channel.send_message(data_obj);
@@ -237,6 +245,8 @@ void MyThread::readyRead()
     else if(status == "modifyAdmins"){
         channel.modify_channel_admins(data_obj["id"].toString(), data_obj["admins"].toString());
         msg = "ok";
+    else if(status == "edit_profile"){
+        msg = channel.edit_profile(data_obj);
         response = msg.toUtf8();
     }
 
@@ -244,8 +254,9 @@ void MyThread::readyRead()
     //Encoding
     QByteArray encoded_response = encryption->myEncode(response);
     socket->write(encoded_response);
-    delete encryption;
+    //socket->write(response);
     socket->waitForBytesWritten(-1);
+    delete encryption;
 }
 
 

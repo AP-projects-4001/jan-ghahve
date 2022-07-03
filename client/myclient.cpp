@@ -34,8 +34,8 @@ bool MyClient::connect_to_server()
 QByteArray MyClient::request_to_server(QByteArray *data)
 {
     //Encoding
-    MyEncryption encryption;
-    QByteArray encoded_data = encryption.myEncode(*data);
+    MyEncryption *encryption = new MyEncryption();
+    QByteArray encoded_data = encryption->myEncode(*data);
     //Sending data to the server and waiting for getting a response
     clientSocket->write(encoded_data);
     while(clientSocket->waitForBytesWritten(-1));
@@ -43,9 +43,9 @@ QByteArray MyClient::request_to_server(QByteArray *data)
         //Getting the responce and returning it
         QByteArray response = clientSocket->readAll();
         //Decoding
-        QByteArray decoded_response = encryption.myDecode(response);
+        QByteArray decoded_response = encryption->myDecode(response);
+        delete encryption;
         return decoded_response;
-        //return response;
     }
     return 0;
 }
@@ -66,8 +66,9 @@ QByteArray MyClient::message_recieved()
 {
     if(clientSocket->waitForReadyRead(-1)){
         QByteArray resp_b = clientSocket->readAll();
-        MyEncryption encryption;
-        QByteArray decoded_response = encryption.myDecode(resp_b);
+        MyEncryption *encryption = new MyEncryption();
+        QByteArray decoded_response = encryption->myDecode(resp_b);
+        delete encryption;
         return decoded_response;
     }
     return 0;

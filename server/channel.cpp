@@ -2,6 +2,7 @@
 #include <QJsonArray>
 #include <QFile>
 #include "channel.h"
+#include "Encryption/myencryption.h"
 
 Channel::Channel(QMutex *inp_mutex ,QObject *parent)
     : QObject{parent}
@@ -116,6 +117,7 @@ QString Channel::signin(QJsonObject data)
     return "incorrect Username";
 }
 
+
 //Getting profile data from database
 QByteArray Channel::get_info(QString id)
 {
@@ -136,7 +138,6 @@ QByteArray Channel::get_info(QString id)
             return temp_doc.toJson();
         }
     }
-
     //if id belongs to a group
     json_obj = read_from_file("groups.json");
     user = json_obj[id].toObject();
@@ -161,6 +162,42 @@ QByteArray Channel::get_info(QString id)
         return user_doc.toJson();
     }
 
+    return 0;
+}
+
+QByteArray Channel::get_info_forEdit(QString id)
+{
+    QJsonObject json_obj;
+    //if id belongs to a user
+    QJsonArray profiles_arr;
+    QJsonArray users_arr;
+    json_obj = read_from_file(path);
+    profiles_arr = json_obj["profiles"].toArray();
+    users_arr = json_obj["users"].toArray();
+    QJsonObject user;
+    for(QJsonValueRef user_ref:qAsConst(profiles_arr))
+    {
+        user = user_ref.toObject();
+        //Find id in the whole database, then return it
+        if(user["id"] == id)
+        {
+            QJsonObject user2;
+            for(QJsonValueRef user_ref:qAsConst(users_arr))
+            {
+                user2 = user_ref.toObject();
+                //Find id in the whole database, then return it
+                if(user2["id"] == id)
+                {
+//                    QJsonObject pass;
+//                    pass["password"] = user2["password"].toString();
+                    user["password"] = user2["password"];
+                    break;
+                }
+            }
+            QJsonDocument temp_doc(user);
+            return temp_doc.toJson();
+        }
+    }
     return 0;
 }
 
@@ -402,16 +439,102 @@ void Channel::modify_channel_admins(QString id, QString admins)
     channel_obj["admins"] = admins;
     data_obj[id] = channel_obj;
     write_to_file("channels.json", data_obj);
+QString Channel::edit_profile(QJsonObject data)
+{
+    qDebug()<<data["id"]<<" want to Lock the file";
+    //----LOCK ----
+    ch_mutex->lock();
+    qDebug()<<data["id"]<<" Locked the file";
+
+    QJsonArray json_arr, profiles_arr;
+    QJsonObject json_obj;
+
+    json_obj = read_from_file(path);
+
+    json_arr = json_obj["users"].toArray();
+    profiles_arr = json_obj["profiles"].toArray();
+
+    bool number_uique = true;
+    bool email_uique = true;
+    QJsonObject user;
+    for(QJsonValueRef user_ref:qAsConst(profiles_arr))
+    {
+        user = user_ref.toObject();
+        if( (user["number"] == data["number"]) && (user["id"]!=data["id"]) ){
+            number_uique = false;
+            break;
+        }
+        else if( (user["email"]==data["email"]) && (user["id"]!=data["id"]) )
+        {
+            email_uique = false;
+            break;
+        }
+    }
+    if(!number_uique)
+    {
+        qDebug()<<data["id"]<<" want to unLock the file";
+        //---- UnLock -----
+        ch_mutex->unlock();
+        qDebug()<<data["id"]<<" unLocked the file";
+
+        return "PhoneNumber already taken";
+    }
+    if(!email_uique)
+    {
+        qDebug()<<data["id"]<<" want to unLock the file";
+        //---- UnLock -----
+        ch_mutex->unlock();
+        qDebug()<<data["id"]<<" unLocked the file";
+
+        return "Email already taken";
+    }
+    QJsonObject user3;
+    QJsonObject user4;
+    int location = 0;
+    for(QJsonValueRef user_ref:qAsConst(profiles_arr))
+    {
+        user3 = user_ref.toObject();
+        if(user3["id"] == data["id"])
+            break;
+        else
+            location = location+1;
+    }
+    json_arr.removeAt(location);
+    profiles_arr.removeAt(location);
+    QJsonObject temp;
+    temp["id"] = data["id"];
+    temp["password"] = data["password"];
+    json_arr.append(temp);
+    temp.remove("password");
+    temp["name"] = data["name"];
+    temp["birthdate"] = data["birthdate"];
+    temp["number"] = data["number"];
+    temp["email"] = data["email"];
+    profiles_arr.append(temp);
+
+    QJsonObject result;
+    result["users"] = json_arr;
+    result["profiles"] = profiles_arr;
+    write_to_file(path, result);
+    qDebug()<<data["id"]<<" want to unLock the file";
+    //---- UnLock -----
+    ch_mutex->unlock();
+    qDebug()<<data["id"]<<" unLocked the file";
+    return "accepted";
 }
 
 //------------------ Working with Files ------------------
 void Channel::write_to_file(QString file_path, QJsonObject result)
 {
-    //Encoding
     QJsonDocument result_doc(result);
     QFile file(file_path);
     file.open(QIODevice::WriteOnly);
-    file.write(result_doc.toJson());
+    QByteArray data_b = result_doc.toJson();
+    //Encoding
+    MyEncryption *encryption = new MyEncryption();;
+    QByteArray encoded_Data = encryption->myEncode(data_b);
+    file.write(encoded_Data);
+    delete encryption;
     file.close();
 }
 
@@ -420,10 +543,13 @@ QJsonObject Channel::read_from_file(QString file_path)
     QFile file(file_path);
     QJsonObject json_obj;
     if(file.open(QIODevice::ReadOnly)){
-        QByteArray b = file.readAll();
-        //Decoding
+        QByteArray encoded_data = file.readAll();
         file.close();
-        QJsonDocument json_doc = QJsonDocument::fromJson(b);
+        MyEncryption *encryption = new MyEncryption();;
+        QByteArray decoded_Data = encryption->myDecode(encoded_data);
+        delete encryption;
+        //Decoding
+        QJsonDocument json_doc = QJsonDocument::fromJson(decoded_Data);
         json_obj = json_doc.object();
     }
     return json_obj;

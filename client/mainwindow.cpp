@@ -10,6 +10,8 @@
 #include "adding_member.h"
 #include "geraph.h"
 #include "groupprofile.h"
+#include "profile.h"
+#include "setting.h"
 
 MainWindow::MainWindow(QString id, QWidget *parent)
     : QMainWindow(parent)
@@ -17,16 +19,16 @@ MainWindow::MainWindow(QString id, QWidget *parent)
 {
     ui->setupUi(this);
     setFixedSize(size());
-      pain();
+    pain();
 //    QObject::connect(ui->test,&QPushButton::clicked,this,&MainWindow::add_safebar);
     QObject::connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
     QObject::connect(ui->actionlvl_3_graph,&QAction::triggered,this,&MainWindow::on_graph_clicked);
     connect(ui->actionNew_Channel,&QAction::triggered,this,&MainWindow::on_newchannel_clicked);
-    connect(ui->actionProfile,&QAction::triggered,this,&MainWindow::on_profileclicked);
+    QObject::connect(ui->actionprofile,&QAction::triggered,this,&MainWindow::on_setting_clicked);
 
     client = new MyClient();
     get_user_info(id);
-    ui->user_name->setText(user_data["name"].toString());
+    ui->user_name->setText(user_data["id"].toString());
     get_user_contacts();
     client->disconnect_from_server();
     MyThread* thread = new MyThread(user_data["id"].toString());
@@ -376,3 +378,25 @@ void MainWindow::on_pbn_profile_clicked()
     groupProfile->show();
 }
 
+void MainWindow::on_setting_clicked()
+{
+
+//    Profile *profile_window = new Profile(user_data["id"].toString());
+//    profile_window->show();
+    QJsonObject user_alldata;
+    QJsonObject request;
+    request["status"] = "userInfo_forEdit";
+    request["id"] = user_data["id"];
+    QJsonDocument request_d(request);
+    QByteArray request_b = request_d.toJson();
+
+    if(client->connect_to_server()){
+        QByteArray response = client->request_to_server(&request_b);
+        QJsonDocument response_d = QJsonDocument::fromJson(response);
+        user_alldata = response_d.object();
+    }
+    setting *setting_window = new setting(user_alldata);
+    //this->close();
+    setting_window->show();
+    get_user_info(user_data["id"].toString());
+}
