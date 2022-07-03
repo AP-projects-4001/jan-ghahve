@@ -48,10 +48,6 @@ bool siginup::validate_signup_data(QString name, QString id, QString email, QStr
         QMessageBox::warning(this, "Invalid input", "Phone number field cannot be empty!");
         return false;
     }
-//    else if(birthdate.length() == 0){
-//        QMessageBox::warning(this, "Invalid input", "Birh date field cannot be empty!");
-//        return false;
-//    }
     else if(pass != conf_pass){
         QMessageBox::warning(this, "Invalid input", "Password and confirm password are different!");
         return false;

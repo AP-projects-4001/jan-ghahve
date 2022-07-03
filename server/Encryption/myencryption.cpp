@@ -16,7 +16,6 @@ MyEncryption::MyEncryption()
 
 QByteArray MyEncryption::myEncode(QByteArray plainText)
 {
-//    QAESEncryption encryption(QAESEncryption::AES_128, QAESEncryption::ECB ,QAESEncryption::Padding::ZERO);
     QAESEncryption encryption(QAESEncryption::AES_128, QAESEncryption::ECB);
     QByteArray encodedText = encryption.encode(plainText, KEY);
     return encodedText;
@@ -24,7 +23,6 @@ QByteArray MyEncryption::myEncode(QByteArray plainText)
 
 QByteArray MyEncryption::myDecode(QByteArray encodedText)
 {
-//    QAESEncryption encryption(QAESEncryption::AES_128, QAESEncryption::ECB ,QAESEncryption::Padding::ZERO);
     QAESEncryption encryption(QAESEncryption::AES_128, QAESEncryption::ECB);
     QByteArray decodedText = encryption.decode(encodedText, KEY);
     qDebug()<<" &IN ENCRYPTION MYDECODE& : decode shod! ghabl az halghe hastim!";

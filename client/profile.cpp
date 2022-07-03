@@ -38,7 +38,6 @@ void Profile::show_informations()
     ui->led_username->setText(user_data["id"].toString());
     ui->led_email->setText(user_data["email"].toString());
     ui->led_phonenum->setText(user_data["number"].toString());
-    //ui->led_birth->setText(user_data["birthdate"].toString());
     QDate date = QDate::fromString(user_data["birthdate"].toString(),"dd/MM/yyyy");
     ui->dateEdit->setDate(date);
     ui->dateEdit->setReadOnly(true);

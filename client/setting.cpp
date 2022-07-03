@@ -10,7 +10,6 @@ setting::setting(QJsonObject user_data ,QWidget *parent) :
 {
     ui->setupUi(this);
     setFixedSize(size());
-    qDebug()<<user_data;
     ui->led_email->setText(user_data["email"].toString());
     ui->led_email->setReadOnly(true);
 
@@ -22,17 +21,10 @@ setting::setting(QJsonObject user_data ,QWidget *parent) :
 
     ui->led_username->setText(user_data["id"].toString());
     ui->led_username->setReadOnly(true);
-    qDebug()<<"---------------------";
-    qDebug()<<user_data["birthdate"].toString();
+
     QDate date = QDate::fromString(user_data["birthdate"].toString(),"dd/MM/yyyy");
     ui->dateEdit->setDate(date);
     ui->dateEdit->setReadOnly(true);
-
-    //------- TEST -------
-//    QGraphicsScene scene;
-//    QPixmap pixmap(":/images/resourses/profile_image.jpg");
-//    scene.addPixmap(pixmap);
-//    ui->image_graphicsView->setScene(&scene);
 
     ui->pbn_cancel->hide();
     ui->pbn_save->hide();
@@ -72,7 +64,8 @@ void setting::on_pbn_cancel_clicked()
     ui->led_username->setText(this->user_data["id"].toString());
     ui->led_username->setReadOnly(true);
 
-    //ui->dateEdit->setDate(this.user_data["birthDate"].toString());
+    QDate date = QDate::fromString(user_data["birthdate"].toString(),"dd/MM/yyyy");
+    ui->dateEdit->setDate(date);
     ui->dateEdit->setReadOnly(true);
 
     ui->pbn_cancel->hide();

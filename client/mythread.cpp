@@ -31,14 +31,10 @@ void MyThread::run()
         MyEncryption *encryption = new MyEncryption();
         QByteArray encoded_data = encryption->myEncode(req_b);
         delete encryption;
-        //socket->write(req_doc.toJson());
         socket->write(encoded_data);
         socket->waitForBytesWritten(-1);
         if(socket->waitForReadyRead(-1)){
             socket->readAll();
-//            QByteArray response = socket->readAll();
-//            QByteArray decoded_response = encryption.myDecode(response);
-//            return decoded_response;
         }
     }
 
@@ -61,10 +57,7 @@ void MyThread::readyRead()
 
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
     QJsonObject data_obj = data_doc.object();
-//    if(data_obj["reciever"].toString() == id){
-        qDebug() << data_obj;
-        emit message_recieved1(data_obj["sender"].toString(), data_obj["message"].toString(), data_obj["chat"].toString());
-    //}
+    emit message_recieved1(data_obj["sender"].toString(), data_obj["message"].toString(), data_obj["chat"].toString());
 }
 
 void MyThread::disconnected()
