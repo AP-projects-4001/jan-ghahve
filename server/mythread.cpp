@@ -66,13 +66,14 @@ void MyThread::on_new_message_recieved(QString senderId, QString recieverId, QSt
     message_obj["message"] = message;
     message_obj["chat"] = chatId;
     QJsonDocument message_doc(message_obj);
-    QByteArray message_b = message_doc.toJson();
-    MyEncryption encryption;
+    QByteArray message_b = message_doc.toJson();  
     if(socket->ConnectedState){
-        QByteArray encoded_message = encryption.myEncode(message_b);
+        MyEncryption *encryption = new MyEncryption();
+        QByteArray encoded_message = encryption->myEncode(message_b);
         socket->write(encoded_message);
-        socket->write(message_b);
+        //socket->write(message_b);
         socket->waitForBytesWritten(-1);
+        delete encryption;
         //qDebug() << this->socketDescriptor << " Data out" << message_b;
     }
 }
@@ -81,10 +82,11 @@ void MyThread::readyRead()
 {
     // get the information
     QByteArray encoded_Data = socket->readAll();
+    //QByteArray Data = socket->readAll();
     //Decoding
     // will write on server side window
-    MyEncryption encryption;
-    QByteArray Data = encryption.myDecode(encoded_Data);
+    MyEncryption *encryption = new MyEncryption();
+    QByteArray Data = encryption->myDecode(encoded_Data);
     qDebug() << socketDescriptor << " Data in: " << Data;
 
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
@@ -108,6 +110,12 @@ void MyThread::readyRead()
     }
     else if(status == "userInfo"){
         response = channel.get_info(data_obj["id"].toString());
+        set_userId(data_obj["id"].toString());
+        state = data_obj["state"].toString();
+        emit user_authenticated(this->socketDescriptor, this->userId);
+    }
+    else if(status == "userInfo_forEdit"){
+        response = channel.get_info_forEdit(data_obj["id"].toString());
         set_userId(data_obj["id"].toString());
         state = data_obj["state"].toString();
         emit user_authenticated(this->socketDescriptor, this->userId);
@@ -152,12 +160,18 @@ void MyThread::readyRead()
         response = msg.toUtf8();
         emit message_group_recieved(data_obj["id1"].toString(), data_obj["id2"].toString(), allIds, data_obj["message"].toString());
     }
+    else if(status == "edit_profile"){
+        msg = channel.edit_profile(data_obj);
+        response = msg.toUtf8();
+    }
 
     //Get a responce from "channel", then Send it to the Client
     //Encoding
-    QByteArray encoded_response = encryption.myEncode(response);
+    QByteArray encoded_response = encryption->myEncode(response);
     socket->write(encoded_response);
+    //socket->write(response);
     socket->waitForBytesWritten(-1);
+    delete encryption;
 }
 
 

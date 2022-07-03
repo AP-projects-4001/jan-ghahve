@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include "Encrypton/myencryption.cpp"
 
 MyThread::MyThread(QString id) : id(id)
 {
@@ -26,10 +27,18 @@ void MyThread::run()
         req["id"] = id;
         req["state"] = "reciever";
         QJsonDocument req_doc(req);
-        socket->write(req_doc.toJson());
+        QByteArray req_b = req_doc.toJson();
+        MyEncryption *encryption = new MyEncryption();
+        QByteArray encoded_data = encryption->myEncode(req_b);
+        delete encryption;
+        //socket->write(req_doc.toJson());
+        socket->write(encoded_data);
         socket->waitForBytesWritten(-1);
         if(socket->waitForReadyRead(-1)){
-            QByteArray response = socket->readAll();
+            socket->readAll();
+//            QByteArray response = socket->readAll();
+//            QByteArray decoded_response = encryption.myDecode(response);
+//            return decoded_response;
         }
     }
 
@@ -44,7 +53,11 @@ void MyThread::run()
 void MyThread::readyRead()
 {
     // get the information
-    QByteArray Data = socket->readAll();
+    QByteArray encrypted_Data = socket->readAll();
+    //---------
+    MyEncryption* encryption = new MyEncryption();
+    QByteArray Data = encryption->myDecode(encrypted_Data);
+    delete encryption;
 
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
     QJsonObject data_obj = data_doc.object();

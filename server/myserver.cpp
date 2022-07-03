@@ -62,8 +62,6 @@ void MyServer::on_user_authenticated(qintptr socketdiscriptor, QString id)
     data.insert(socketdiscriptor, id);
 }
 
-
-
 // This function is called by QTcpServer when a new connection is available.
 void MyServer::incomingConnection(qintptr socketDescriptor)
 {

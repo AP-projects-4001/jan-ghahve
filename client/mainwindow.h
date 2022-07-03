@@ -42,6 +42,7 @@ private slots:
     void on_groupcreated(QString id);
     void on_newchannel_clicked();
     void on_channelcreated(QString id);
+    void on_setting_clicked();
 
 private:
     Ui::MainWindow *ui;
