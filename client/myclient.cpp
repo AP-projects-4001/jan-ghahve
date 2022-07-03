@@ -3,7 +3,7 @@
 #include "siginup.h"
 #include "signin.h"
 #include <QDebug>
-#include "Encrypton/myencryption.h"
+#include "Encryption/myencryption.h"
 
 MyClient::MyClient(QObject *parent)
     : QObject{parent}

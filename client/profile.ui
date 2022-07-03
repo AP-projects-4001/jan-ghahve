@@ -91,7 +91,7 @@ border-radius: 10%;</string>
      </widget>
     </item>
     <item row="0" column="0">
-     <widget class="QLabel" name="0">
+     <widget class="QLabel" name="lbl_uname">
       <property name="styleSheet">
        <string notr="true">color:rgb(0, 48, 73);</string>
       </property>

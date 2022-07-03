@@ -100,8 +100,8 @@ void MyThread::readyRead()
     QByteArray encoded_Data = socket->readAll();
     //Decoding
     // will write on server side window
-    MyEncryption encryption;
-    QByteArray Data = encryption.myDecode(encoded_Data);
+    MyEncryption *encryption = new MyEncryption();
+    QByteArray Data = encryption->myDecode(encoded_Data);
     qDebug() << socketDescriptor << " Data in: " << Data;
 
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
@@ -242,8 +242,9 @@ void MyThread::readyRead()
 
     //Get a responce from "channel", then Send it to the Client
     //Encoding
-    QByteArray encoded_response = encryption.myEncode(response);
+    QByteArray encoded_response = encryption->myEncode(response);
     socket->write(encoded_response);
+    delete encryption;
     socket->waitForBytesWritten(-1);
 }
 

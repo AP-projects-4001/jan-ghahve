@@ -25,7 +25,7 @@ void AuthenticationCode::on_pbn_ok_clicked()
     int number = ui->auth_code->text().toInt();
 
     user["status"] = "authenticationCode";
-    user["number"] = number;
+    user["auth"] = number;
 
     QJsonDocument json_doc(user);
     QByteArray json_b = json_doc.toJson();
