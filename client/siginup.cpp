@@ -5,8 +5,8 @@
 #include "siginup.h"
 #include "ui_siginup.h"
 #include "myclient.h"
-#include "mainwindow.h"
 #include "loading.h"
+#include "authenticationcode.h"
 
 siginup::siginup(QWidget *parent) :
     QWidget(parent),
@@ -85,7 +85,7 @@ void siginup::on_pbn_submit_clicked()
     user["email"]=email;
     user["birthdate"] = birthdate;
     user["number"] = number;
-
+    user["state"] = "signup";
     QJsonDocument user_d(user);
     QByteArray user_b = user_d.toJson();
 
@@ -94,22 +94,19 @@ void siginup::on_pbn_submit_clicked()
         QByteArray response = client->request_to_server(&user_b);
         QString msg = QString(response);
         //Check response(Successful or not)
-
         if(msg == "accepted"){
-            client->disconnect_from_server();
-            this->close();
-            this->destroy(true, true);
-            this->deleteLater();
-            //Go to the main window(chat window)
-            qDebug()<<"sign up finished, continue to mainWindow";
-            MainWindow* main_window = new MainWindow(id);
-            main_window->show();
-        }
-        else
-        {
+            AuthenticationCode *auth = new AuthenticationCode(user, client);
+            connect(auth, &AuthenticationCode::user_authenticated, this, &siginup::on_userauthenticated);
+            auth->show();
+        }else{
             QMessageBox::warning(this, "signup error", msg);
         }
     }
+}
+
+void siginup::on_userauthenticated()
+{
+    this->close();
 }
 
 

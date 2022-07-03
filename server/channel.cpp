@@ -10,21 +10,13 @@ Channel::Channel(QMutex *inp_mutex ,QObject *parent)
     this->ch_mutex = inp_mutex;
 }
 
-//returns "Username already taken" or "accepted"
-QString Channel::signup(QJsonObject data) //data = new user data
+QString Channel::signup_check(QJsonObject data)
 {
-    qDebug()<<data["id"]<<" want to Lock the file";
-    //----LOCK ----
-    ch_mutex->lock();
-    qDebug()<<data["id"]<<" Locked the file";
-
-    QJsonArray json_arr, profiles_arr;
+    QJsonArray json_arr;
     QJsonObject json_obj;
 
     json_obj = read_from_file(path);
-
     json_arr = json_obj["users"].toArray();
-    profiles_arr = json_obj["profiles"].toArray();
 
     bool username_uique = true;
     QJsonObject user;
@@ -45,8 +37,26 @@ QString Channel::signup(QJsonObject data) //data = new user data
 
         return "Username already taken";
     }
+    return "accepted";
+}
 
+//returns "Username already taken" or "accepted"
+QString Channel::signup(QJsonObject data) //data = new user data
+{
+    qDebug()<<data["id"]<<" want to Lock the file";
+    //----LOCK ----
+    ch_mutex->lock();
+    qDebug()<<data["id"]<<" Locked the file";
 
+    QJsonArray json_arr, profiles_arr;
+    QJsonObject json_obj;
+
+    json_obj = read_from_file(path);
+
+    json_arr = json_obj["users"].toArray();
+    profiles_arr = json_obj["profiles"].toArray();
+
+    QJsonObject user;   
     user["id"] = data["id"];
     user["password"] = data["password"];
     json_arr.append(user);

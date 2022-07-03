@@ -32,7 +32,6 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     MyThread* thread = new MyThread(user_data["id"].toString());
     QObject::connect(thread, &MyThread::message_recieved, this, &MainWindow::on_messagerecievd);
     QObject::connect(thread, &MyThread::group_created, this, &MainWindow::on_groupcreated);
-    QObject::connect(thread, &MyThread::group_created, this, &MainWindow::on_channelcreated);
     thread->start();
 
     client = new MyClient();
@@ -285,7 +284,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 
 void MainWindow::on_messagerecievd(QString senderId, QString message, QString chatId)
 {
-    if(chatId == contact_info["id"].toString()){
+    if(chatId == contact_info["id"].toString() && !chatId.isEmpty()){
         ui->ted_chat->append(senderId + ":" + message);
     }
     else if(senderId == contact_info["id"].toString() && chatId.isEmpty()){
@@ -355,11 +354,6 @@ void MainWindow::on_pbn_search_clicked()
 
 void MainWindow::on_groupcreated(QString id)
 {
-    QFile file(user_data["id"].toString() + "%contacts.txt");
-    file.open(QIODevice::Append);
-    QTextStream stream(&file);
-    stream << "g%" << id << ',';
-    file.close();
     add_item_to_listwidget(id);
 }
 
@@ -367,16 +361,6 @@ void MainWindow::on_newchannel_clicked()
 {
     adding_member* add_member = new adding_member(user_data["id"].toString(), client, "channel", this);
     add_member->show();
-}
-
-void MainWindow::on_channelcreated(QString id)
-{
-    QFile file(user_data["id"].toString() + "%contacts.txt");
-    file.open(QIODevice::Append);
-    QTextStream stream(&file);
-    stream << "c%" << id << ',';
-    file.close();
-    add_item_to_listwidget(id);
 }
 
 void MainWindow::on_profileclicked()

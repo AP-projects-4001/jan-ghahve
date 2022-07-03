@@ -19,7 +19,7 @@ public:
 
 private slots:
     void on_pbn_submit_clicked();
-
+    void on_userauthenticated();
     void on_pbn_cancel_clicked();
 
 private:

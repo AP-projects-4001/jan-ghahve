@@ -1,9 +1,10 @@
 #include <QDebug>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QRandomGenerator>
 #include "mythread.h"
 #include "channel.h"
-#include "smtpthread.h"
+#include "smtp.h"
 
 MyThread::MyThread(QMutex *inp_mutex,qintptr ID, QObject *parent) :
     QThread(parent)
@@ -110,18 +111,62 @@ void MyThread::readyRead()
     //Checking request of client (register, login, message, userInfo, chatInfo, allUsersInfo, userContacts)
     if(status == "register")
     {
-        msg = channel.signup(data_obj);
+        msg = channel.signup_check(data_obj);
         response = msg.toUtf8();
-//        socket->disconnect();
-//        SmtpThread* smtpthread = new SmtpThread();
-//        smtpthread->start();
-//        Smtp* smtp = new Smtp("janghahve@gmail.com", "mxakpmwpmrjbqgzo", "smtp.gmail.com", 456);
-//        connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
-//        smtp->sendMail("janghahve@gmail.com", "alirezasamimi1381@gmail.com" , "salam","salam");
+        if(msg == "accepted"){
+            std::uniform_int_distribution<int> distribution(99999,999999);
+            int number = distribution(*QRandomGenerator::global());
+            authentication_code = number;
+
+            QString const uname = "janghahve@gmail.com";
+            QString const rcpt = data_obj["email"].toString();
+            QString const subject = "Authentication code";
+            QString const msg = QString::number(number);
+            QString const paswd = "mxakpmwpmrjbqgzo";
+            QString const server = "smtp.gmail.com";
+            int const port = 465;
+            Smtp* smtp = new Smtp(uname, paswd, server, port);
+            smtp->sendMail(uname, rcpt , subject,msg);
+        }
     }
     else if(status == "login")
     {
         msg = channel.signin(data_obj);
+        response = msg.toUtf8();
+        if(msg == "accepted"){
+            std::uniform_int_distribution<int> distribution(99999,999999);
+            int number = distribution(*QRandomGenerator::global());
+            authentication_code = number;
+
+            QString const uname = "janghahve@gmail.com";
+            QString const rcpt = data_obj["email"].toString();
+            QString const subject = "Authentication code";
+            QString const msg = QString::number(number);
+            QString const paswd = "mxakpmwpmrjbqgzo";
+            QString const server = "smtp.gmail.com";
+            int const port = 465;
+            Smtp* smtp = new Smtp(uname, paswd, server, port);
+            smtp->sendMail(uname, rcpt , subject,msg);
+        }
+    }
+    else if(status == "authenticationCode"){
+//        if(data_obj["number"].toInt() == authentication_code){
+//            if(data_obj["state"].toString() == "signup"){
+//                data_obj.remove("state");
+//                data_obj.remove("number");
+//                msg = channel.signup(data_obj);
+//            }
+//            msg = "accepted";
+//        }else{
+//            msg = "The code is wrong!";
+//        }
+        if(data_obj["state"].toString() == "signup"){
+
+            data_obj.remove("state");
+            data_obj.remove("number");
+            msg = channel.signup(data_obj);
+        }
+        msg = "accepted";
         response = msg.toUtf8();
     }
     else if(status == "userInfo"){

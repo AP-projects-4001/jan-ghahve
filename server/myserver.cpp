@@ -1,10 +1,24 @@
 #include "myserver.h"
+#include "smtp.h"
 
 MyServer::MyServer(QObject *parent)
     : QTcpServer{parent}
 {
 
     server_mutex = new QMutex;
+
+//    QString const uname = "janghahve@gmail.com";
+//    QString const rcpt = "alirezasamimi1381@gmail.com";
+//    QString const subject = "salam";
+//    QString const msg = "salam";
+//    QString const paswd = "mxakpmwpmrjbqgzo";
+//    QString const server = "smtp.gmail.com";
+//    int const port = 465;
+//    Smtp* smtp = new Smtp(uname, paswd, server, port);
+//    //connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
+
+
+//    smtp->sendMail(uname, rcpt , subject,msg);
 }
 
 void MyServer::startServer()
@@ -94,4 +108,6 @@ void MyServer::incomingConnection(qintptr socketDescriptor)
     connect(thread, &MyThread::message_group_recieved, this, &MyServer::on_message_group_recieved);
     connect(thread, &MyThread::group_or_channel_created, this, &MyServer::on_group_or_channel_created);
     thread->start();
+
+
 }

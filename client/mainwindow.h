@@ -38,13 +38,10 @@ private slots:
     void on_pbn_send_clicked();
     void on_newgroup_clicked();
     void on_graph_clicked();
-
     void on_pbn_search_clicked();
     void on_groupcreated(QString id);
     void on_newchannel_clicked();
-    void on_channelcreated(QString id);
     void on_profileclicked();
-
     void on_pbn_profile_clicked();
 
 

@@ -1,23 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #include "mythread.h"
 #include <QDebug>
 #include <QJsonDocument>

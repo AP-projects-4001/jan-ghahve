@@ -10,6 +10,7 @@ class Channel : public QObject
     Q_OBJECT
 public:
     explicit Channel(QMutex *inp_mutex ,QObject *parent = nullptr);
+    QString signup_check(QJsonObject data);
     QString signup(QJsonObject data);
     QString signin(QJsonObject data);
     QByteArray get_info(QString id);

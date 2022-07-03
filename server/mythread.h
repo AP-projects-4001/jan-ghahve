@@ -38,7 +38,7 @@ private:
     QString userId;
     QString state="";
     QMutex *tr_mutex;
-
+    int authentication_code;
 };
 
 #endif // MYTHREAD_H
