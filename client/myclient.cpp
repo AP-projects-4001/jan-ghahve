@@ -3,7 +3,7 @@
 #include "siginup.h"
 #include "signin.h"
 #include <QDebug>
-
+#include "Encrypton/myencryption.h"
 
 MyClient::MyClient(QObject *parent)
     : QObject{parent}
@@ -34,14 +34,18 @@ bool MyClient::connect_to_server()
 QByteArray MyClient::request_to_server(QByteArray *data)
 {
     //Encoding
+    MyEncryption encryption;
+    QByteArray encoded_data = encryption.myEncode(*data);
     //Sending data to the server and waiting for getting a response
-    clientSocket->write(*data);
+    clientSocket->write(encoded_data);
     while(clientSocket->waitForBytesWritten(-1));
     if(clientSocket->waitForReadyRead(-1)){
         //Getting the responce and returning it
         QByteArray response = clientSocket->readAll();
         //Decoding
-        return response;
+        QByteArray decoded_response = encryption.myDecode(response);
+        return decoded_response;
+        //return response;
     }
     return 0;
 }
@@ -61,7 +65,10 @@ bool MyClient::is_client_connectd()
 QByteArray MyClient::message_recieved()
 {
     if(clientSocket->waitForReadyRead(-1)){
-        return clientSocket->readAll();
+        QByteArray resp_b = clientSocket->readAll();
+        MyEncryption encryption;
+        QByteArray decoded_response = encryption.myDecode(resp_b);
+        return decoded_response;
     }
     return 0;
 }
