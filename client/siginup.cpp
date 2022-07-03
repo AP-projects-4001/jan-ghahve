@@ -59,8 +59,8 @@ void siginup::on_pbn_submit_clicked()
 {
     QString id, name, pass, email,conf_pass, number;
     QDate birthdate;
-    name = ui->lineEdit->text();
-    id = ui->led_name->text();
+    name = ui->led_name->text();
+    id = ui->led_id->text();
     pass = ui->led_pass->text();
     email = ui->led_email->text();
     birthdate =  ui->dateEdit->date();

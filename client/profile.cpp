@@ -36,14 +36,18 @@ void Profile::get_user_data(QString id)
 void Profile::show_informations()
 {
     ui->led_username->setText(user_data["id"].toString());
+    ui->led_name->setText(user_data["name"].toString());
     ui->led_email->setText(user_data["email"].toString());
     ui->led_phonenum->setText(user_data["number"].toString());
     QDate date = QDate::fromString(user_data["birthdate"].toString(),"dd/MM/yyyy");
     ui->dateEdit->setDate(date);
+
+    ui->led_username->setReadOnly(true);
+    ui->led_name->setReadOnly(true);
     ui->dateEdit->setReadOnly(true);
     ui->led_email->setReadOnly(true);
     ui->led_phonenum->setReadOnly(true);
-    ui->led_username->setReadOnly(true);
+
 }
 
 void Profile::on_pbn_close_clicked()

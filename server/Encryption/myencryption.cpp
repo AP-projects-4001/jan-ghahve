@@ -25,7 +25,6 @@ QByteArray MyEncryption::myDecode(QByteArray encodedText)
 {
     QAESEncryption encryption(QAESEncryption::AES_128, QAESEncryption::ECB);
     QByteArray decodedText = encryption.decode(encodedText, KEY);
-    qDebug()<<" &IN ENCRYPTION MYDECODE& : decode shod! ghabl az halghe hastim!";
     //remove padding at end of QByteArray
     if(decodedText.size()>0)
     {

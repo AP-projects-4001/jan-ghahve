@@ -22,6 +22,9 @@ setting::setting(QJsonObject user_data ,QWidget *parent) :
     ui->led_username->setText(user_data["id"].toString());
     ui->led_username->setReadOnly(true);
 
+    ui->led_name->setText(user_data["name"].toString());
+    ui->led_name->setReadOnly(true);
+
     QDate date = QDate::fromString(user_data["birthdate"].toString(),"dd/MM/yyyy");
     ui->dateEdit->setDate(date);
     ui->dateEdit->setReadOnly(true);
@@ -43,9 +46,11 @@ void setting::on_pbn_edit_clicked()
     ui->pbn_cancel->show();
     ui->pbn_save->show();
     ui->led_username->setReadOnly(true);
+    ui->led_name->setReadOnly(false);
     ui->led_email->setReadOnly(false);
     ui->led_password->setReadOnly(false);
     ui->led_phonenum->setReadOnly(false);
+    ui->led_name->setReadOnly(false);
     ui->dateEdit->setReadOnly(false);
 }
 
@@ -64,6 +69,10 @@ void setting::on_pbn_cancel_clicked()
     ui->led_username->setText(this->user_data["id"].toString());
     ui->led_username->setReadOnly(true);
 
+    ui->led_name->setText(this->user_data["name"].toString());
+    ui->led_name->setReadOnly(true);
+
+
     QDate date = QDate::fromString(user_data["birthdate"].toString(),"dd/MM/yyyy");
     ui->dateEdit->setDate(date);
     ui->dateEdit->setReadOnly(true);
@@ -76,9 +85,10 @@ void setting::on_pbn_cancel_clicked()
 
 void setting::on_pbn_save_clicked()
 {
-    QString id,password,phonenum,email;
+    QString id,name,password,phonenum,email;
     QDate birthdate;
     id = ui->led_username->text();
+    name = ui->led_name->text();
     password = ui->led_password->text();
     phonenum = ui->led_phonenum->text();
     email = ui->led_email->text();
@@ -88,6 +98,7 @@ void setting::on_pbn_save_clicked()
     QJsonObject user;
     user["status"] = "edit_profile";
     user["id"] = id;
+    user["name"] = name;
     user["password"] = password;
     user["email"]=email;
     user["birthdate"] = birthdate.toString("dd/MM/yyyy");

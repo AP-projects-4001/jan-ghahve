@@ -432,9 +432,6 @@ QString Channel::edit_profile(QJsonObject data)
     for(QJsonValueRef user_ref:qAsConst(profiles_arr))
     {
         user = user_ref.toObject();
-        qDebug()<<user["number"]<<"  -  "<<data["number"];
-        qDebug()<<user["email"]<<"  -  "<<data["email"];
-        qDebug()<<"---------------------------------";
         if( (user["number"] == data["number"]) && (user["id"]!=data["id"]) ){
             number_uique = false;
             break;
@@ -481,6 +478,7 @@ QString Channel::edit_profile(QJsonObject data)
     temp["password"] = data["password"];
     json_arr.append(temp);
     temp.remove("password");
+    temp["name"] = data["name"];
     temp["birthdate"] = data["birthdate"];
     temp["number"] = data["number"];
     temp["email"] = data["email"];
