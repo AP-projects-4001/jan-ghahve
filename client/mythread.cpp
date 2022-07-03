@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include "Encrypton/myencryption.cpp"
+#include "Encryption/myencryption.h"
 
 MyThread::MyThread(QString id) : id(id)
 {
