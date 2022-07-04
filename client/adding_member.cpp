@@ -107,6 +107,14 @@ void adding_member::on_pbn_ok_clicked()
     this->close();
 }
 
+void adding_member::on_listWidget_itemClicked(QListWidgetItem *item)
+{
+    if(item->checkState())
+        item->setCheckState(Qt::Unchecked);
+    else
+        item->setCheckState(Qt::Checked);
+}
+
 
 void adding_member::on_pushButton_2_clicked()
 {

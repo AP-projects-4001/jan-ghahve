@@ -13,6 +13,8 @@ Channel::Channel(QMutex *inp_mutex ,QObject *parent)
 
 QString Channel::signup_check(QJsonObject data)
 {
+    //----LOCK ----
+    ch_mutex->lock();
     QJsonArray json_arr;
     QJsonObject json_obj;
 
@@ -38,6 +40,8 @@ QString Channel::signup_check(QJsonObject data)
 
         return "Username already taken";
     }
+    //---- UnLock -----
+    ch_mutex->unlock();
     return "accepted";
 }
 
@@ -121,6 +125,8 @@ QString Channel::signin(QJsonObject data)
 //Getting profile data from database
 QByteArray Channel::get_info(QString id)
 {
+    //----LOCK ----
+    ch_mutex->lock();
     QJsonObject json_obj;
     //if id belongs to a user
     QJsonArray profiles_arr;
@@ -135,6 +141,8 @@ QByteArray Channel::get_info(QString id)
         if(user["id"] == id)
         {
             QJsonDocument temp_doc(user);
+            //---- UnLock -----
+            ch_mutex->unlock();
             return temp_doc.toJson();
         }
     }
@@ -147,6 +155,8 @@ QByteArray Channel::get_info(QString id)
         user["status"] = "group";
         user.remove("max");
         QJsonDocument user_doc(user);
+        //---- UnLock -----
+        ch_mutex->unlock();
         return user_doc.toJson();
     }
 
@@ -159,9 +169,12 @@ QByteArray Channel::get_info(QString id)
         user["status"] = "channel";
         user.remove("max");
         QJsonDocument user_doc(user);
+        //---- UnLock -----
+        ch_mutex->unlock();
         return user_doc.toJson();
     }
-
+    //---- UnLock -----
+    ch_mutex->unlock();
     return 0;
 }
 
@@ -360,6 +373,8 @@ QStringList Channel::create_group_or_channel(QJsonObject data, QString chat)
 
 void Channel::add_contact(QString id1, QString id2, QString status)
 {
+    //----LOCK ----
+    ch_mutex->lock();
     QJsonObject contact;
     contact["id"] = id2;
     contact["status"] = status;
@@ -381,6 +396,8 @@ void Channel::add_contact(QString id1, QString id2, QString status)
     }
     contacts_obj[id1] = userContacts;
     write_to_file("contacts.json", contacts_obj);
+    //---- UnLock -----
+    ch_mutex->unlock();
 }
 
 QStringList Channel::send_message_to_group_or_channel(QJsonObject data, QString chat)
@@ -434,11 +451,16 @@ QByteArray Channel::channelInfo(QString id)
 
 void Channel::modify_channel_admins(QString id, QString admins)
 {
+    //----LOCK ----
+    ch_mutex->lock();
     QJsonObject data_obj = read_from_file("channels.json");
     QJsonObject channel_obj = data_obj[id].toObject();
     channel_obj["admins"] = admins;
     data_obj[id] = channel_obj;
     write_to_file("channels.json", data_obj);
+    //---- UnLock -----
+    ch_mutex->unlock();
+}
 QString Channel::edit_profile(QJsonObject data)
 {
     qDebug()<<data["id"]<<" want to Lock the file";

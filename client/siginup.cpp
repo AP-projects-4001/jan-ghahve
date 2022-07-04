@@ -79,6 +79,7 @@ void siginup::on_pbn_submit_clicked()
     user["password"] = pass;
     user["email"]=email;
     user["birthdate"] = birthdate.toString("dd/MM/yyyy");
+
     qDebug()<<"---------sign up input---------";
     qDebug()<<birthdate;
     user["number"] = number;

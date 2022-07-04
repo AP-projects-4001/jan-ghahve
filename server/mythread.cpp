@@ -156,10 +156,10 @@ void MyThread::readyRead()
         }
     }
     else if(status == "authenticationCode"){
-//        if(data_obj["number"].toInt() == authentication_code){
+//        if(data_obj["auth"].toInt() == authentication_code){
 //            if(data_obj["state"].toString() == "signup"){
 //                data_obj.remove("state");
-//                data_obj.remove("number");
+//                data_obj.remove("auth");
 //                msg = channel.signup(data_obj);
 //            }
 //            msg = "accepted";
@@ -169,7 +169,7 @@ void MyThread::readyRead()
         if(data_obj["state"].toString() == "signup"){
 
             data_obj.remove("state");
-            data_obj.remove("number");
+            data_obj.remove("auth");
             msg = channel.signup(data_obj);
         }
         msg = "accepted";
@@ -245,6 +245,7 @@ void MyThread::readyRead()
     else if(status == "modifyAdmins"){
         channel.modify_channel_admins(data_obj["id"].toString(), data_obj["admins"].toString());
         msg = "ok";
+    }
     else if(status == "edit_profile"){
         msg = channel.edit_profile(data_obj);
         response = msg.toUtf8();

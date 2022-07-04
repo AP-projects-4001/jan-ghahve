@@ -5,10 +5,11 @@
 #include <QPushButton>
 #include <QJsonObject>
 #include <QJsonArray>
-#include "myclient.h"
 #include <QVBoxLayout>
 #include <QListWidget>
 #include <QThread>
+#include <QSystemTrayIcon>
+#include "myclient.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -41,10 +42,7 @@ private slots:
     void on_pbn_search_clicked();
     void on_groupcreated(QString id);
     void on_newchannel_clicked();
-    void on_profileclicked();
     void on_pbn_profile_clicked();
-
-    void on_channelcreated(QString id);
     void on_setting_clicked();
 
 private:
@@ -57,5 +55,6 @@ private:
     QJsonObject all_users_contacts;
     bool chat_switched;
     QArrayData user_contacts;
+    QSystemTrayIcon* tray;
 };
 #endif // MAINWINDOW_H

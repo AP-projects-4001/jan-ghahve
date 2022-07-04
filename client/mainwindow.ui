@@ -166,6 +166,9 @@ background-color:rgb(191, 215, 234);</string>
      <string/>
     </property>
     <widget class="QPushButton" name="pbn_profile">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>60</x>

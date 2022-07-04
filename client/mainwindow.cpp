@@ -3,6 +3,8 @@
 #include <QJsonArray>
 #include <QTcpSocket>
 #include <QtCore>
+#include <QIcon>
+#include <QMenu>
 #include "mainwindow.h"
 #include "mythread.h"
 #include "ui_mainwindow.h"
@@ -30,14 +32,18 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     get_user_info(id);
     ui->user_name->setText(user_data["id"].toString());
     get_user_contacts();
-    client->disconnect_from_server();
+    //client->disconnect_from_server();
     MyThread* thread = new MyThread(user_data["id"].toString());
     QObject::connect(thread, &MyThread::message_recieved, this, &MainWindow::on_messagerecievd);
     QObject::connect(thread, &MyThread::group_created, this, &MainWindow::on_groupcreated);
     thread->start();
 
-    client = new MyClient();
-    client->connect_to_server();
+    //client = new MyClient();
+    //client->connect_to_server();
+
+    tray = new QSystemTrayIcon(this);
+    tray->setIcon(QIcon(":/images/resourses/chat.png"));
+    tray->setVisible(true);
 
 }
 
@@ -266,6 +272,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     }
 
     QString status = contact_info["status"].toString();
+    ui->pbn_profile->setEnabled(true);
     if(status == "channel"){
         QStringList admins_list = contact_info["admins"].toString().split('%');
         QString user_id = user_data["id"].toString();
@@ -300,6 +307,7 @@ void MainWindow::on_messagerecievd(QString senderId, QString message, QString ch
             stream << senderId << ',';
         }
         file.close();
+        tray->showMessage("Message from "+ senderId + " :", message ,QIcon(":/images/resourses/chat1.png"));
     }
 }
 
@@ -365,17 +373,16 @@ void MainWindow::on_newchannel_clicked()
     add_member->show();
 }
 
-void MainWindow::on_profileclicked()
-{
-    GroupProfile* groupProfile = new GroupProfile(contact_info["id"].toString());
-    groupProfile->show();
-}
-
 
 void MainWindow::on_pbn_profile_clicked()
 {
-    GroupProfile* groupProfile = new GroupProfile(contact_info["id"].toString(), this);
-    groupProfile->show();
+    if(contact_info["status"].isNull()){
+        Profile *profile= new Profile(contact_info["id"].toString(), this);
+        profile->show();
+    }else{
+        GroupProfile* groupProfile = new GroupProfile(contact_info["id"].toString(), this);
+        groupProfile->show();
+    }
 }
 
 void MainWindow::on_setting_clicked()
