@@ -8,6 +8,7 @@
 #include "mainwindow.h"
 #include "loading.h"
 #include <QLineEdit>
+#include "authenticationcode.h"
 
 signin::signin(QWidget *parent) :
     QDialog(parent),
@@ -63,23 +64,19 @@ void signin::on_pbn_ok_clicked()
         QString msg = QString(response);
         //Check response(Successful or not)
         if(msg == "accepted"){
-            //disconnect the client and close signin page
-            client->disconnect_from_server();
-            this->close();
-            this->destroy(true, true);
-            this->deleteLater();
-            //Go to the main window(chat window)
-            MainWindow* main_window = new MainWindow(id);
-            main_window->show();
-        }
-        else
-        {
-            QMessageBox::warning(this, "signin error", msg);
+            AuthenticationCode *auth = new AuthenticationCode(user, client);
+            connect(auth, &AuthenticationCode::user_authenticated, this, &signin::on_userauthenticated);
+            auth->show();
+        }else{
+            QMessageBox::warning(this, "signup error", msg);
         }
     }
 }
 
-
+void signin::on_userauthenticated()
+{
+    this->close();
+}
 
 
 void signin::on_pbn_cancel_clicked()

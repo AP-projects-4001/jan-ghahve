@@ -2,12 +2,92 @@
 #include <QJsonArray>
 #include <QFile>
 #include "channel.h"
+#include "Encryption/myencryption.h"
 
 Channel::Channel(QMutex *inp_mutex ,QObject *parent)
     : QObject{parent}
 {
     path = "users.json";
     this->ch_mutex = inp_mutex;
+}
+
+QString Channel::signup_check(QJsonObject data)
+{
+    //----LOCK ----
+    ch_mutex->lock();
+    QJsonArray json_arr;
+    QJsonObject json_obj;
+
+    json_obj = read_from_file(path);
+    json_arr = json_obj["profiles"].toArray();
+
+    bool username_uique = true, number_uique = true, email_uique = true;
+    QJsonObject user;
+    for(QJsonValueRef user_ref:qAsConst(json_arr))
+    {
+        user = user_ref.toObject();
+        if(user["id"] == data["id"]){
+            username_uique = false;
+            break;
+        }
+        if(user["number"] == data["number"]){
+            number_uique = false;
+            break;
+        }
+        else if(user["email"]==data["email"])
+        {
+            email_uique = false;
+            break;
+        }
+    }
+    if(!username_uique)
+    {
+        qDebug()<<data["id"]<<" want to unLock the file";
+        //---- UnLock -----
+        ch_mutex->unlock();
+        qDebug()<<data["id"]<<" unLocked the file";
+
+        return "Username already taken";
+    }
+    if(!number_uique)
+    {
+        qDebug()<<data["id"]<<" want to unLock the file";
+        //---- UnLock -----
+        ch_mutex->unlock();
+        qDebug()<<data["id"]<<" unLocked the file";
+
+        return "PhoneNumber already taken";
+    }
+    if(!email_uique)
+    {
+        qDebug()<<data["id"]<<" want to unLock the file";
+        //---- UnLock -----
+        ch_mutex->unlock();
+        qDebug()<<data["id"]<<" unLocked the file";
+
+        return "Email already taken";
+    }
+
+    //checking in groups
+    json_obj = read_from_file("groups.json");
+    QString name = json_obj["id"].toString();
+    if(!json_obj[name].isNull()){
+        //---- UnLock -----
+        ch_mutex->unlock();
+        return "Username already taken";
+    }
+
+    //checking in channels
+    json_obj = read_from_file("channels.json");
+    if(!json_obj[name].isNull()){
+        //---- UnLock -----
+        ch_mutex->unlock();
+        return "Username already taken";
+    }
+
+    //---- UnLock -----
+    ch_mutex->unlock();
+    return "accepted";
 }
 
 //returns "Username already taken" or "accepted"
@@ -26,27 +106,7 @@ QString Channel::signup(QJsonObject data) //data = new user data
     json_arr = json_obj["users"].toArray();
     profiles_arr = json_obj["profiles"].toArray();
 
-    bool username_uique = true;
-    QJsonObject user;
-    for(QJsonValueRef user_ref:qAsConst(json_arr))
-    {
-        user = user_ref.toObject();
-        if(user["id"] == data["id"]){
-            username_uique = false;
-            break;
-        }
-    }
-    if(!username_uique)
-    {
-        qDebug()<<data["id"]<<" want to unLock the file";
-        //---- UnLock -----
-        ch_mutex->unlock();
-        qDebug()<<data["id"]<<" unLocked the file";
-
-        return "Username already taken";
-    }
-
-
+    QJsonObject user;   
     user["id"] = data["id"];
     user["password"] = data["password"];
     json_arr.append(user);
@@ -109,6 +169,8 @@ QString Channel::signin(QJsonObject data)
 //Getting profile data from database
 QByteArray Channel::get_info(QString id)
 {
+    //----LOCK ----
+    ch_mutex->lock();
     QJsonObject json_obj;
     //if id belongs to a user
     QJsonArray profiles_arr;
@@ -123,10 +185,11 @@ QByteArray Channel::get_info(QString id)
         if(user["id"] == id)
         {
             QJsonDocument temp_doc(user);
+            //---- UnLock -----
+            ch_mutex->unlock();
             return temp_doc.toJson();
         }
     }
-
     //if id belongs to a group
     json_obj = read_from_file("groups.json");
     user = json_obj[id].toObject();
@@ -136,6 +199,8 @@ QByteArray Channel::get_info(QString id)
         user["status"] = "group";
         user.remove("max");
         QJsonDocument user_doc(user);
+        //---- UnLock -----
+        ch_mutex->unlock();
         return user_doc.toJson();
     }
 
@@ -148,9 +213,48 @@ QByteArray Channel::get_info(QString id)
         user["status"] = "channel";
         user.remove("max");
         QJsonDocument user_doc(user);
+        //---- UnLock -----
+        ch_mutex->unlock();
         return user_doc.toJson();
     }
+    //---- UnLock -----
+    ch_mutex->unlock();
+    return 0;
+}
 
+QByteArray Channel::get_info_forEdit(QString id)
+{
+    QJsonObject json_obj;
+    //if id belongs to a user
+    QJsonArray profiles_arr;
+    QJsonArray users_arr;
+    json_obj = read_from_file(path);
+    profiles_arr = json_obj["profiles"].toArray();
+    users_arr = json_obj["users"].toArray();
+    QJsonObject user;
+    for(QJsonValueRef user_ref:qAsConst(profiles_arr))
+    {
+        user = user_ref.toObject();
+        //Find id in the whole database, then return it
+        if(user["id"] == id)
+        {
+            QJsonObject user2;
+            for(QJsonValueRef user_ref:qAsConst(users_arr))
+            {
+                user2 = user_ref.toObject();
+                //Find id in the whole database, then return it
+                if(user2["id"] == id)
+                {
+//                    QJsonObject pass;
+//                    pass["password"] = user2["password"].toString();
+                    user["password"] = user2["password"];
+                    break;
+                }
+            }
+            QJsonDocument temp_doc(user);
+            return temp_doc.toJson();
+        }
+    }
     return 0;
 }
 
@@ -247,7 +351,6 @@ QByteArray Channel::get_chat_info(QString id1, QString id2, QString chat)
     return chat_doc.toJson();
 }
 
-
 QByteArray Channel::get_all_info()
 {
     QJsonObject data_obj;
@@ -269,6 +372,7 @@ QByteArray Channel::get_user_contacts(QString id)
     ch_mutex->unlock();
     return userContacts_doc.toJson();
 }
+
 QByteArray Channel::get_all_contacts()
 {
     //----LOCK ----
@@ -280,21 +384,58 @@ QByteArray Channel::get_all_contacts()
     return contacts_doc.toJson();
 }
 
-QString Channel::create_group_or_channel(QJsonObject data, QString chat)
+QStringList Channel::create_group_or_channel(QJsonObject data, QString chat)
 {
     //----LOCK ----
     ch_mutex->lock();
     //modify group file
-    QJsonObject all_data = read_from_file(chat + "s.json");
+    QJsonObject all_data;
     QString name = data["name"].toString();
+    QStringList all_ids;
+
+    //check in users
+    QJsonArray json_arr;
+    all_data = read_from_file(path);
+    json_arr = all_data["users"].toArray();
+    bool username_uique = true;
+    QJsonObject user;
+    for(QJsonValueRef user_ref:qAsConst(json_arr))
+    {
+        user = user_ref.toObject();
+        if(user["id"] == data["id"]){
+            username_uique = false;
+            break;
+        }
+
+    }
+    if(!username_uique){
+        //---- UnLock -----
+        ch_mutex->unlock();
+        return all_ids;
+    }
+
+    //check in groups and channels
+    if(chat == "group")
+        all_data = read_from_file("channels.json");
+    else
+        all_data = read_from_file("groups.json");
+
+    if(!all_data[name].isNull()){
+        //---- UnLock -----
+        ch_mutex->unlock();
+        return all_ids;
+    }
+
+    all_data = read_from_file(chat + "s.json");
     int max = data["max"].toInt();
     if(!all_data[name].isNull()){
         //---- UnLock -----
         ch_mutex->unlock();
-        return "not accepted";
+        return all_ids;
     }
     data.remove("name");
     all_data[name] = data;
+    all_data["admins"] = "";
     write_to_file(chat + "s.json", all_data);
 
     //modify contacts file
@@ -302,14 +443,17 @@ QString Channel::create_group_or_channel(QJsonObject data, QString chat)
     for(int i=1;i<=max;i++){
         id1 = data[QString::number(i)].toString();
         add_contact(id1, name, chat);
+        all_ids.append(id1);
     }
     //---- UnLock -----
     ch_mutex->unlock();
-    return "accepted";
+    return all_ids;
 }
 
 void Channel::add_contact(QString id1, QString id2, QString status)
 {
+    //----LOCK ----
+    ch_mutex->lock();
     QJsonObject contact;
     contact["id"] = id2;
     contact["status"] = status;
@@ -331,6 +475,8 @@ void Channel::add_contact(QString id1, QString id2, QString status)
     }
     contacts_obj[id1] = userContacts;
     write_to_file("contacts.json", contacts_obj);
+    //---- UnLock -----
+    ch_mutex->unlock();
 }
 
 QStringList Channel::send_message_to_group_or_channel(QJsonObject data, QString chat)
@@ -374,14 +520,123 @@ QStringList Channel::send_message_to_group_or_channel(QJsonObject data, QString 
     return all_ids;
 }
 
+QByteArray Channel::channelInfo(QString id)
+{
+    QJsonObject channels = read_from_file("channels.json");
+    QJsonObject data_obj = channels[id].toObject();
+    QJsonDocument data_doc(data_obj);
+    return data_doc.toJson();
+}
+
+void Channel::modify_channel_admins(QString id, QString admins)
+{
+    //----LOCK ----
+    ch_mutex->lock();
+    QJsonObject data_obj = read_from_file("channels.json");
+    QJsonObject channel_obj = data_obj[id].toObject();
+    channel_obj["admins"] = admins;
+    data_obj[id] = channel_obj;
+    write_to_file("channels.json", data_obj);
+    //---- UnLock -----
+    ch_mutex->unlock();
+}
+
+QString Channel::edit_profile(QJsonObject data)
+{
+    qDebug()<<data["id"]<<" want to Lock the file";
+    //----LOCK ----
+    ch_mutex->lock();
+    qDebug()<<data["id"]<<" Locked the file";
+
+    QJsonArray json_arr, profiles_arr;
+    QJsonObject json_obj;
+
+    json_obj = read_from_file(path);
+
+    json_arr = json_obj["users"].toArray();
+    profiles_arr = json_obj["profiles"].toArray();
+
+    bool number_uique = true;
+    bool email_uique = true;
+    QJsonObject user;
+    for(QJsonValueRef user_ref:qAsConst(profiles_arr))
+    {
+        user = user_ref.toObject();
+        if( (user["number"] == data["number"]) && (user["id"]!=data["id"]) ){
+            number_uique = false;
+            break;
+        }
+        else if( (user["email"]==data["email"]) && (user["id"]!=data["id"]) )
+        {
+            email_uique = false;
+            break;
+        }
+    }
+    if(!number_uique)
+    {
+        qDebug()<<data["id"]<<" want to unLock the file";
+        //---- UnLock -----
+        ch_mutex->unlock();
+        qDebug()<<data["id"]<<" unLocked the file";
+
+        return "PhoneNumber already taken";
+    }
+    if(!email_uique)
+    {
+        qDebug()<<data["id"]<<" want to unLock the file";
+        //---- UnLock -----
+        ch_mutex->unlock();
+        qDebug()<<data["id"]<<" unLocked the file";
+
+        return "Email already taken";
+    }
+    QJsonObject user3;
+    QJsonObject user4;
+    int location = 0;
+    for(QJsonValueRef user_ref:qAsConst(profiles_arr))
+    {
+        user3 = user_ref.toObject();
+        if(user3["id"] == data["id"])
+            break;
+        else
+            location = location+1;
+    }
+    json_arr.removeAt(location);
+    profiles_arr.removeAt(location);
+    QJsonObject temp;
+    temp["id"] = data["id"];
+    temp["password"] = data["password"];
+    json_arr.append(temp);
+    temp.remove("password");
+    temp["name"] = data["name"];
+    temp["birthdate"] = data["birthdate"];
+    temp["number"] = data["number"];
+    temp["email"] = data["email"];
+    profiles_arr.append(temp);
+
+    QJsonObject result;
+    result["users"] = json_arr;
+    result["profiles"] = profiles_arr;
+    write_to_file(path, result);
+    qDebug()<<data["id"]<<" want to unLock the file";
+    //---- UnLock -----
+    ch_mutex->unlock();
+    qDebug()<<data["id"]<<" unLocked the file";
+    return "accepted";
+}
+
 //------------------ Working with Files ------------------
 void Channel::write_to_file(QString file_path, QJsonObject result)
 {
-    //Encoding
     QJsonDocument result_doc(result);
     QFile file(file_path);
     file.open(QIODevice::WriteOnly);
-    file.write(result_doc.toJson());
+    QByteArray data_b = result_doc.toJson();
+    //Encoding
+    MyEncryption *encryption = new MyEncryption();;
+    QByteArray encoded_Data = encryption->myEncode(data_b);
+    file.write(encoded_Data);
+    delete encryption;
     file.close();
 }
 
@@ -390,10 +645,13 @@ QJsonObject Channel::read_from_file(QString file_path)
     QFile file(file_path);
     QJsonObject json_obj;
     if(file.open(QIODevice::ReadOnly)){
-        QByteArray b = file.readAll();
-        //Decoding
+        QByteArray encoded_data = file.readAll();
         file.close();
-        QJsonDocument json_doc = QJsonDocument::fromJson(b);
+        MyEncryption *encryption = new MyEncryption();;
+        QByteArray decoded_Data = encryption->myDecode(encoded_data);
+        delete encryption;
+        //Decoding
+        QJsonDocument json_doc = QJsonDocument::fromJson(decoded_Data);
         json_obj = json_doc.object();
     }
     return json_obj;

@@ -52,13 +52,52 @@ void search::on_pbn_ok_clicked()
         QMessageBox::warning(this, "","No user has founded!");
         return;
     }
-    emit users_found(foundedIds);
-    this->close();
+
+    QListWidget* list = ui->listWidget;
+    list->clear();
+    numbOfUsers = 0;
+    for(QString id:foundedIds){
+        QListWidgetItem* item = new QListWidgetItem(id);
+        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+        item->setCheckState(Qt::Unchecked);
+        list->addItem(item);
+        numbOfUsers++;
+    }
+
+}
+
+void search::on_listWidget_itemClicked(QListWidgetItem *item)
+{
+    if(item->checkState())
+        item->setCheckState(Qt::Unchecked);
+    else
+        item->setCheckState(Qt::Checked);
 }
 
 
 void search::on_pbn_cancel_clicked()
 {
+    this->close();
+}
+
+
+void search::on_pbn_submit_clicked()
+{
+    QStringList foundedIds;
+    QListWidget* list = ui->listWidget;
+    int counter = 0;
+    for(int i=0; i< numbOfUsers; i++){
+        QListWidgetItem* item = list->item(i);
+        if(item->checkState()){
+            foundedIds.append(item->text());
+            counter++;
+        }
+    }
+    if(counter == 0){
+        QMessageBox::warning(this, "Invalid input", "You must choose at least one user!");
+        return;
+    }
+    emit users_found(foundedIds);
     this->close();
 }
 

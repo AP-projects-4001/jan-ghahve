@@ -3,12 +3,17 @@
 #include <QJsonArray>
 #include <QTcpSocket>
 #include <QtCore>
+#include <QIcon>
+#include <QMenu>
 #include "mainwindow.h"
 #include "mythread.h"
 #include "ui_mainwindow.h"
 #include "search.h"
 #include "adding_member.h"
 #include "geraph.h"
+#include "groupprofile.h"
+#include "profile.h"
+#include "setting.h"
 
 MainWindow::MainWindow(QString id, QWidget *parent)
     : QMainWindow(parent)
@@ -16,23 +21,29 @@ MainWindow::MainWindow(QString id, QWidget *parent)
 {
     ui->setupUi(this);
     setFixedSize(size());
-      pain();
+    pain();
 //    QObject::connect(ui->test,&QPushButton::clicked,this,&MainWindow::add_safebar);
-      QObject::connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
-      QObject::connect(ui->actionlvl_3_graph,&QAction::triggered,this,&MainWindow::on_graph_clicked);
+    QObject::connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
+    QObject::connect(ui->actionlvl_3_graph,&QAction::triggered,this,&MainWindow::on_graph_clicked);
     connect(ui->actionNew_Channel,&QAction::triggered,this,&MainWindow::on_newchannel_clicked);
+    QObject::connect(ui->actionprofile,&QAction::triggered,this,&MainWindow::on_setting_clicked);
 
     client = new MyClient();
     get_user_info(id);
-    ui->user_name->setText(user_data["name"].toString());
+    ui->user_name->setText(user_data["id"].toString());
     get_user_contacts();
-    client->disconnect_from_server();
+    //client->disconnect_from_server();
     MyThread* thread = new MyThread(user_data["id"].toString());
-    QObject::connect(thread, &MyThread::message_recieved1, this, &MainWindow::on_messagerecievd1);
+    QObject::connect(thread, &MyThread::message_recieved, this, &MainWindow::on_messagerecievd);
+    QObject::connect(thread, &MyThread::group_created, this, &MainWindow::on_groupcreated);
     thread->start();
 
-    client = new MyClient();
-    client->connect_to_server();
+    //client = new MyClient();
+    //client->connect_to_server();
+
+    tray = new QSystemTrayIcon(this);
+    tray->setIcon(QIcon(":/images/resourses/chat.png"));
+    tray->setVisible(true);
 
 }
 
@@ -148,6 +159,15 @@ void MainWindow::get_allUsers_contacts()
     }
 }
 
+bool MainWindow::is_admin(QString id, QStringList admins_list)
+{
+    for(QString user:admins_list){
+        if(id == user)
+            return true;
+    }
+    return false;
+}
+
 void MainWindow::on_usersFound(QStringList users)
 {
     QFile file(user_data["id"].toString() + "%contacts.txt");
@@ -212,7 +232,7 @@ void MainWindow::pain()
 }
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
-    ui->ted_message->setReadOnly(false);
+
     QString id = item->text();
     QJsonObject request;
     request["status"] = "userInfo";
@@ -249,17 +269,34 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
                     ":" + chat[QString::number(i)].toObject()["message"].toString();
             ui->ted_chat->append(message);
         }
-//        QFile file(user_data["id"].toString() + "%" + contact_info["id"].toString());
-//        file.open(QIODevice::WriteOnly);
-//        file.write(response);
-//        file.close();
     }
+
+    QString status = contact_info["status"].toString();
+    ui->pbn_profile->setEnabled(true);
+    if(status == "channel"){
+        QStringList admins_list = contact_info["admins"].toString().split('%');
+        QString user_id = user_data["id"].toString();
+        if(is_admin(user_id, admins_list) || user_id == contact_info["1"].toString()){
+            ui->pbn_send->setEnabled(true);
+            ui->ted_message->setReadOnly(false);
+        }else{
+            ui->pbn_send->setEnabled(false);
+            ui->ted_message->setReadOnly(true);
+        }
+    }else{
+        ui->pbn_send->setEnabled(true);
+        ui->ted_message->setReadOnly(false);
+    }
+
 }
 
 
-void MainWindow::on_messagerecievd1(QString senderId, QString message, QString chatId)
+void MainWindow::on_messagerecievd(QString senderId, QString message, QString chatId)
 {
-    if(senderId == contact_info["id"].toString() || chatId == contact_info["id"].toString()){
+    if(chatId == contact_info["id"].toString() && !chatId.isEmpty()){
+        ui->ted_chat->append(senderId + ":" + message);
+    }
+    else if(senderId == contact_info["id"].toString() && chatId.isEmpty()){
         ui->ted_chat->append(senderId + ":" + message);
     }else{
         QFile file(user_data["id"].toString() + "%contacts.txt");
@@ -270,6 +307,7 @@ void MainWindow::on_messagerecievd1(QString senderId, QString message, QString c
             stream << senderId << ',';
         }
         file.close();
+        tray->showMessage("Message from "+ senderId + " :", message ,QIcon(":/images/resourses/chat1.png"));
     }
 }
 
@@ -304,7 +342,6 @@ void MainWindow::on_pbn_send_clicked()
 void MainWindow::on_newgroup_clicked()
 {
     adding_member* add_member = new adding_member(user_data["id"].toString(), client, "group", this);
-    connect(add_member, &adding_member::group_created, this, &MainWindow::on_groupcreated);
     add_member->show();
 }
 
@@ -327,28 +364,46 @@ void MainWindow::on_pbn_search_clicked()
 
 void MainWindow::on_groupcreated(QString id)
 {
-    QFile file(user_data["id"].toString() + "%contacts.txt");
-    file.open(QIODevice::Append);
-    QTextStream stream(&file);
-    stream << "g%" << id << ',';
-    file.close();
     add_item_to_listwidget(id);
 }
 
 void MainWindow::on_newchannel_clicked()
 {
     adding_member* add_member = new adding_member(user_data["id"].toString(), client, "channel", this);
-    connect(add_member, &adding_member::group_created, this, &MainWindow::on_groupcreated);
     add_member->show();
 }
 
-void MainWindow::on_channelcreated(QString id)
+
+void MainWindow::on_pbn_profile_clicked()
 {
-    QFile file(user_data["id"].toString() + "%contacts.txt");
-    file.open(QIODevice::Append);
-    QTextStream stream(&file);
-    stream << "c%" << id << ',';
-    file.close();
-    add_item_to_listwidget(id);
+    if(contact_info["status"].isNull()){
+        Profile *profile= new Profile(contact_info["id"].toString(), this);
+        profile->show();
+    }else{
+        GroupProfile* groupProfile = new GroupProfile(contact_info["id"].toString(), this);
+        groupProfile->show();
+    }
 }
 
+void MainWindow::on_setting_clicked()
+{
+
+//    Profile *profile_window = new Profile(user_data["id"].toString());
+//    profile_window->show();
+    QJsonObject user_alldata;
+    QJsonObject request;
+    request["status"] = "userInfo_forEdit";
+    request["id"] = user_data["id"];
+    QJsonDocument request_d(request);
+    QByteArray request_b = request_d.toJson();
+
+    if(client->connect_to_server()){
+        QByteArray response = client->request_to_server(&request_b);
+        QJsonDocument response_d = QJsonDocument::fromJson(response);
+        user_alldata = response_d.object();
+    }
+    setting *setting_window = new setting(user_alldata);
+    //this->close();
+    setting_window->show();
+    get_user_info(user_data["id"].toString());
+}

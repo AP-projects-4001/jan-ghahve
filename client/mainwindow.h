@@ -5,10 +5,11 @@
 #include <QPushButton>
 #include <QJsonObject>
 #include <QJsonArray>
-#include "myclient.h"
 #include <QVBoxLayout>
 #include <QListWidget>
 #include <QThread>
+#include <QSystemTrayIcon>
+#include "myclient.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,19 +30,20 @@ public:
     QStringList get_user_contacts_from_file();
     void add_item_to_listwidget(QString name);
     void get_allUsers_contacts();
+    bool is_admin(QString id, QStringList admins_list);
 
 private slots:
     void on_usersFound(QStringList users);
     void on_listWidget_itemClicked(QListWidgetItem *item);
-    void on_messagerecievd1(QString senderId, QString message, QString chatId);
+    void on_messagerecievd(QString senderId, QString message, QString chatId);
     void on_pbn_send_clicked();
     void on_newgroup_clicked();
     void on_graph_clicked();
-
     void on_pbn_search_clicked();
     void on_groupcreated(QString id);
     void on_newchannel_clicked();
-    void on_channelcreated(QString id);
+    void on_pbn_profile_clicked();
+    void on_setting_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -53,5 +55,6 @@ private:
     QJsonObject all_users_contacts;
     bool chat_switched;
     QArrayData user_contacts;
+    QSystemTrayIcon* tray;
 };
 #endif // MAINWINDOW_H

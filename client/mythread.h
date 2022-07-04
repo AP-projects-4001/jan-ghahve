@@ -19,7 +19,8 @@ public slots:
     void disconnected();
 
 signals:
-    void message_recieved1(QString,QString,QString);
+    void message_recieved(QString,QString,QString);
+    void group_created(QString);
 
 private:
     QString id;

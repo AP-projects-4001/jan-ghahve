@@ -19,6 +19,7 @@ private slots:
     void on_message_recieved(QString senderId, QString recieverId, QString message);
     void on_message_group_recieved(QString senderId, QString chatId, QStringList recieverIds, QString message);
     void on_user_authenticated(qintptr socketdiscriptor, QString id);
+    void on_group_or_channel_created(QString id, QStringList ids);
 
 protected:
     void incomingConnection(qintptr socketDescriptor);

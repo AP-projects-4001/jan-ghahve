@@ -1,8 +1,11 @@
 #include <QDebug>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QRandomGenerator>
 #include "mythread.h"
 #include "channel.h"
+#include "smtp.h"
+#include "Encryption/myencryption.h"
 
 MyThread::MyThread(QMutex *inp_mutex,qintptr ID, QObject *parent) :
     QThread(parent)
@@ -60,10 +63,29 @@ void MyThread::run()
 void MyThread::on_new_message_recieved(QString senderId, QString recieverId, QString message, QString chatId)
 {
     QJsonObject message_obj;
+    message_obj["status"] = "message";
     message_obj["sender"] = senderId;
     message_obj["reciever"] = recieverId;
     message_obj["message"] = message;
     message_obj["chat"] = chatId;
+    QJsonDocument message_doc(message_obj);
+    QByteArray message_b = message_doc.toJson();  
+    if(socket->ConnectedState){
+        MyEncryption *encryption = new MyEncryption();
+        QByteArray encoded_message = encryption->myEncode(message_b);
+        socket->write(encoded_message);
+        //socket->write(message_b);
+        socket->waitForBytesWritten(-1);
+        delete encryption;
+        //qDebug() << this->socketDescriptor << " Data out" << message_b;
+    }
+}
+
+void MyThread::on_new_group_created(QString id)
+{
+    QJsonObject message_obj;
+    message_obj["status"] = "groupCreated";
+    message_obj["id"] = id;
     QJsonDocument message_doc(message_obj);
     QByteArray message_b = message_doc.toJson();
     if(socket->ConnectedState){
@@ -76,11 +98,12 @@ void MyThread::on_new_message_recieved(QString senderId, QString recieverId, QSt
 void MyThread::readyRead()
 {
     // get the information
-
-    QByteArray Data = socket->readAll();
+    QByteArray encoded_Data = socket->readAll();
+    //QByteArray Data = socket->readAll();
     //Decoding
-
     // will write on server side window
+    MyEncryption *encryption = new MyEncryption();
+    QByteArray Data = encryption->myDecode(encoded_Data);
     qDebug() << socketDescriptor << " Data in: " << Data;
 
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
@@ -94,16 +117,72 @@ void MyThread::readyRead()
     //Checking request of client (register, login, message, userInfo, chatInfo, allUsersInfo, userContacts)
     if(status == "register")
     {
-        msg = channel.signup(data_obj);
+        msg = channel.signup_check(data_obj);
         response = msg.toUtf8();
+        if(msg == "accepted"){
+            std::uniform_int_distribution<int> distribution(99999,999999);
+            int number = distribution(*QRandomGenerator::global());
+            authentication_code = number;
+
+            QString const uname = "janghahve@gmail.com";
+            QString const rcpt = data_obj["email"].toString();
+            QString const subject = "Authentication code";
+            QString const msg = QString::number(number);
+            QString const paswd = "mxakpmwpmrjbqgzo";
+            QString const server = "smtp.gmail.com";
+            int const port = 465;
+            Smtp* smtp = new Smtp(uname, paswd, server, port);
+            smtp->sendMail(uname, rcpt , subject,msg);
+        }
     }
     else if(status == "login")
     {
         msg = channel.signin(data_obj);
         response = msg.toUtf8();
+        if(msg == "accepted"){
+            std::uniform_int_distribution<int> distribution(99999,999999);
+            int number = distribution(*QRandomGenerator::global());
+            authentication_code = number;
+
+            QString const uname = "janghahve@gmail.com";
+            QString const rcpt = data_obj["email"].toString();
+            QString const subject = "Authentication code";
+            QString const msg = QString::number(number);
+            QString const paswd = "mxakpmwpmrjbqgzo";
+            QString const server = "smtp.gmail.com";
+            int const port = 465;
+            Smtp* smtp = new Smtp(uname, paswd, server, port);
+            smtp->sendMail(uname, rcpt , subject,msg);
+        }
+    }
+    else if(status == "authenticationCode"){
+//        if(data_obj["auth"].toInt() == authentication_code){
+//            if(data_obj["state"].toString() == "signup"){
+//                data_obj.remove("state");
+//                data_obj.remove("auth");
+//                msg = channel.signup(data_obj);
+//            }
+//            msg = "accepted";
+//        }else{
+//            msg = "The code is wrong!";
+//        }
+        if(data_obj["state"].toString() == "signup"){
+
+            data_obj.remove("state");
+            data_obj.remove("auth");
+            msg = channel.signup(data_obj);
+        }
+        msg = "accepted";
+        response = msg.toUtf8();
     }
     else if(status == "userInfo"){
         response = channel.get_info(data_obj["id"].toString());
+        set_userId(data_obj["id"].toString());
+        state = data_obj["state"].toString();
+        emit user_authenticated(this->socketDescriptor, this->userId);
+    }
+    else if(status == "userInfo_forEdit"){
+        response = channel.get_info_forEdit(data_obj["id"].toString());
         set_userId(data_obj["id"].toString());
         state = data_obj["state"].toString();
         emit user_authenticated(this->socketDescriptor, this->userId);
@@ -129,7 +208,13 @@ void MyThread::readyRead()
         response = channel.get_all_contacts();
     }
     else if(status == "createGroup"){
-        msg = channel.create_group_or_channel(data_obj, "group");
+        QStringList allIds = channel.create_group_or_channel(data_obj, "group");
+        if(allIds.empty()){
+            msg = "not accepted";
+        }else{
+            emit group_or_channel_created(data_obj["name"].toString(), allIds);
+            msg = "ok";
+        }
         response = msg.toUtf8();
     }
     else if(status == "messageToGroup"){
@@ -139,7 +224,13 @@ void MyThread::readyRead()
         emit message_group_recieved(data_obj["id1"].toString(), data_obj["id2"].toString(), allIds, data_obj["message"].toString());
     }
     else if(status == "createChannel"){
-        msg = channel.create_group_or_channel(data_obj, "channel");
+        QStringList allIds = channel.create_group_or_channel(data_obj, "channel");
+        if(allIds.empty()){
+            msg = "not accepted";
+        }else{
+            emit group_or_channel_created(data_obj["name"].toString(), allIds);
+            msg = "ok";
+        }
         response = msg.toUtf8();
     }
     else if(status == "messageToChannel"){
@@ -148,12 +239,27 @@ void MyThread::readyRead()
         response = msg.toUtf8();
         emit message_group_recieved(data_obj["id1"].toString(), data_obj["id2"].toString(), allIds, data_obj["message"].toString());
     }
+    else if(status == "channelInfo"){
+        response = channel.channelInfo(data_obj["id"].toString());
+    }
+    else if(status == "modifyAdmins"){
+        channel.modify_channel_admins(data_obj["id"].toString(), data_obj["admins"].toString());
+        msg = "ok";
+    }
+    else if(status == "edit_profile"){
+        msg = channel.edit_profile(data_obj);
+        response = msg.toUtf8();
+    }
 
     //Get a responce from "channel", then Send it to the Client
     //Encoding
-    socket->write(response);
+    QByteArray encoded_response = encryption->myEncode(response);
+    socket->write(encoded_response);
+    //socket->write(response);
     socket->waitForBytesWritten(-1);
+    delete encryption;
 }
+
 
 void MyThread::disconnected()
 {

@@ -5,8 +5,8 @@
 #include "siginup.h"
 #include "ui_siginup.h"
 #include "myclient.h"
-#include "mainwindow.h"
 #include "loading.h"
+#include "authenticationcode.h"
 
 siginup::siginup(QWidget *parent) :
     QWidget(parent),
@@ -26,7 +26,7 @@ siginup::~siginup()
 
 
 //Checking validation of inputs
-bool siginup::validate_signup_data(QString name, QString id, QString email, QString birthdate, QString pass, QString conf_pass, QString number)
+bool siginup::validate_signup_data(QString name, QString id, QString email, QString pass, QString conf_pass, QString number)
 {
     if(id.length() == 0){
         QMessageBox::warning(this, "Invalid input", "User name field cannot be empty!");
@@ -48,10 +48,6 @@ bool siginup::validate_signup_data(QString name, QString id, QString email, QStr
         QMessageBox::warning(this, "Invalid input", "Phone number field cannot be empty!");
         return false;
     }
-    else if(birthdate.length() == 0){
-        QMessageBox::warning(this, "Invalid input", "Birh date field cannot be empty!");
-        return false;
-    }
     else if(pass != conf_pass){
         QMessageBox::warning(this, "Invalid input", "Password and confirm password are different!");
         return false;
@@ -61,19 +57,18 @@ bool siginup::validate_signup_data(QString name, QString id, QString email, QStr
 
 void siginup::on_pbn_submit_clicked()
 {
-    QString id, name, pass, email, birthdate, conf_pass, number;
-    name = ui->lineEdit->text();
-    id = ui->led_name->text();
+    QString id, name, pass, email,conf_pass, number;
+    QDate birthdate;
+    name = ui->led_name->text();
+    id = ui->led_id->text();
     pass = ui->led_pass->text();
     email = ui->led_email->text();
-    birthdate =  ui->dateEdit->text();
+    birthdate =  ui->dateEdit->date();
     conf_pass = ui->conf_pass->text();
     number = ui->led_phonenumb->text();
 
-
     //Checking validation of inputs
-
-    if(!validate_signup_data(name, id, email, birthdate, pass, conf_pass, number))
+    if(!validate_signup_data(name, id, email, pass, conf_pass, number))
         return;
 
     //Creating an instance to set data on it, then sending it to the server
@@ -83,9 +78,12 @@ void siginup::on_pbn_submit_clicked()
     user["name"] = name;
     user["password"] = pass;
     user["email"]=email;
-    user["birthdate"] = birthdate;
-    user["number"] = number;
+    user["birthdate"] = birthdate.toString("dd/MM/yyyy");
 
+    qDebug()<<"---------sign up input---------";
+    qDebug()<<birthdate;
+    user["number"] = number;
+    user["state"] = "signup";
     QJsonDocument user_d(user);
     QByteArray user_b = user_d.toJson();
 
@@ -93,22 +91,21 @@ void siginup::on_pbn_submit_clicked()
         //Sending data to the server and waiting for getting a response from it
         QByteArray response = client->request_to_server(&user_b);
         QString msg = QString(response);
+        qDebug()<<msg;
         //Check response(Successful or not)
         if(msg == "accepted"){
-            client->disconnect_from_server();
-            this->close();
-            this->destroy(true, true);
-            this->deleteLater();
-            //Go to the main window(chat window)
-            qDebug()<<"sign up finished, continue to mainWindow";
-            MainWindow* main_window = new MainWindow(id);
-            main_window->show();
-        }
-        else
-        {
+            AuthenticationCode *auth = new AuthenticationCode(user, client);
+            connect(auth, &AuthenticationCode::user_authenticated, this, &siginup::on_userauthenticated);
+            auth->show();
+        }else{
             QMessageBox::warning(this, "signup error", msg);
         }
     }
+}
+
+void siginup::on_userauthenticated()
+{
+    this->close();
 }
 
 

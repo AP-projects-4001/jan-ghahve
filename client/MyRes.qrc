@@ -3,5 +3,7 @@
         <file>resourses/BGchat.jpg</file>
         <file>resourses/search1.png</file>
         <file>resourses/send.png</file>
+        <file>resourses/chat.png</file>
+        <file>resourses/chat1.png</file>
     </qresource>
 </RCC>
