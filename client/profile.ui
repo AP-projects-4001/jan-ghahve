@@ -134,20 +134,6 @@ border-radius: 10%;</string>
     </item>
    </layout>
   </widget>
-  <widget class="QGraphicsView" name="image_graphicsView">
-   <property name="geometry">
-    <rect>
-     <x>140</x>
-     <y>10</y>
-     <width>131</width>
-     <height>131</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-radius: 60%;
-background-color: palette(base);</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pbn_close">
    <property name="geometry">
     <rect>
@@ -167,6 +153,29 @@ color:rgb(245, 223, 187);</string>
    </property>
    <property name="text">
     <string>close</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbn_profile">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>10</y>
+     <width>131</width>
+     <height>131</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:white;
+border-radius: 50%;</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>
