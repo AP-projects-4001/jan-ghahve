@@ -32,14 +32,63 @@
   <widget class="QPushButton" name="pbn_permission">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>170</y>
-     <width>99</width>
+     <x>58</x>
+     <y>180</y>
+     <width>141</width>
      <height>33</height>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>Change Permissions</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbn_profile">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>10</y>
+     <width>131</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:white;
+border-radius: 25px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbl_name">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>140</y>
+     <width>63</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbn_change_image">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>180</y>
+     <width>141</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Change Profile</string>
    </property>
   </widget>
  </widget>

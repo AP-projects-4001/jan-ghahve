@@ -17,20 +17,6 @@
    <string notr="true">background-color:rgb(191, 215, 234);
 </string>
   </property>
-  <widget class="QGraphicsView" name="image_graphicsView">
-   <property name="geometry">
-    <rect>
-     <x>140</x>
-     <y>20</y>
-     <width>131</width>
-     <height>131</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-radius: 60%;
-background-color: palette(base);</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pbn_chaneImage">
    <property name="geometry">
     <rect>
@@ -55,7 +41,7 @@ color:rgb(34, 119, 255)</string>
   <widget class="QPushButton" name="pbn_save">
    <property name="geometry">
     <rect>
-     <x>290</x>
+     <x>310</x>
      <y>400</y>
      <width>81</width>
      <height>31</height>
@@ -76,7 +62,7 @@ color:rgb(245, 223, 187);</string>
   <widget class="QPushButton" name="pbn_cancel">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>30</x>
      <y>400</y>
      <width>81</width>
      <height>31</height>
@@ -235,7 +221,7 @@ border-radius: 10%;</string>
   <widget class="QPushButton" name="pbn_edit">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>220</x>
      <y>400</y>
      <width>81</width>
      <height>31</height>
@@ -251,6 +237,29 @@ color:rgb(245, 223, 187);</string>
    </property>
    <property name="text">
     <string>edit</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbn_profile">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>20</y>
+     <width>131</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:white;
+border-radius: 25px;</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>
