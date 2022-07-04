@@ -10,6 +10,7 @@ ChannelPermissions::ChannelPermissions(QString id,QWidget *parent) :
     ui(new Ui::ChannelPermissions)
 {
     ui->setupUi(this);
+    setFixedSize(size());
     this->id = id;
 
     client = new MyClient();

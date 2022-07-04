@@ -7,6 +7,8 @@ GroupProfile::GroupProfile(QString id, QWidget *parent) :
     ui(new Ui::GroupProfile)
 {
     ui->setupUi(this);
+    setFixedSize(size());
+
     this->id = id;
 }
 

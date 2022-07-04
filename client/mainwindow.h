@@ -58,5 +58,6 @@ private:
     bool chat_switched;
     QArrayData user_contacts;
     QSystemTrayIcon* tray;
+    void the_Chat(int flag);
 };
 #endif // MAINWINDOW_H
