@@ -22,6 +22,16 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     ui->setupUi(this);
     setFixedSize(size());
     pain();
+    the_Chat(2);
+    the_Chat(1);
+    the_Chat(2);
+    the_Chat(1);
+    the_Chat(2);
+    the_Chat(1);
+    the_Chat(2);
+    the_Chat(1);
+    the_Chat(2);
+    the_Chat(2);
 
     QObject::connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
     QObject::connect(ui->actionlvl_3_graph,&QAction::triggered,this,&MainWindow::on_graph_clicked);
@@ -184,7 +194,7 @@ void MainWindow::on_usersFound(QStringList users)
 void MainWindow::pain()
 {
     ui->pbn_send->setStyleSheet("*{border-image: url(:/images/resourses/send.png);"
-                                "background-color:rgb(191, 215, 234);"
+                                "background-color:rgb(1, 125, 180);"
                                 "border-radius: 20%;"
                                 "background-position:center;}"
                                 "*:hover{background-color:rgb(30, 157, 230);}");
@@ -225,6 +235,51 @@ void MainWindow::pain()
                                   "}"
                                   );
 }
+
+void MainWindow::the_Chat(int flag)
+{
+    QWidget* container = new QWidget(ui->scrollAreaWidgetContents);
+    container->setStyleSheet("background: transparent;");
+    container->setAutoFillBackground(false);
+
+    QHBoxLayout* containerLayout = new QHBoxLayout();
+    QListWidget* massage = new QListWidget();
+    massage->setAutoFillBackground(false);
+
+
+    massage->addItem("this is a very very very very very very long test ");
+    massage->setMaximumWidth(270);
+    massage->setWordWrap(true);
+
+
+    if(flag == 2)
+    {
+        massage->setStyleSheet("background-color:rgb(255, 238, 221);");
+        containerLayout->addStretch(0);
+        containerLayout->addWidget(massage);
+        flag ++;
+    }else
+    {
+        massage->setStyleSheet("background-color:rgb(189, 244, 255);");
+        containerLayout->addWidget(massage);
+        containerLayout->addStretch(0);
+    }
+
+    container->setLayout(containerLayout);
+    ui->scrollAreaWidgetContents->layout()->addWidget(container);
+    ui->scrollAreaWidgetContents->setStyleSheet("QWidget#scrollAreaWidgetContents"
+                                                "{"
+                                                "background-color:rgb(0, 94, 140);"
+                                                "}"
+                                                "QListWidget"
+                                                "{"
+                                                "color:black;"
+                                                "}"
+                                                "*{border-radius:10px; "
+                                                "background-color: palette(base);"
+                                                "font-size:19px;}");
+}
+
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
 

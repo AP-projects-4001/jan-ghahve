@@ -13,6 +13,7 @@ AuthenticationCode::AuthenticationCode(QJsonObject user, MyClient* client, QWidg
     user(user)
 {
     ui->setupUi(this);
+    setFixedSize(size());
 }
 
 AuthenticationCode::~AuthenticationCode()
