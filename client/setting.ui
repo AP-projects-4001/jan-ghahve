@@ -55,7 +55,7 @@ color:rgb(34, 119, 255)</string>
   <widget class="QPushButton" name="pbn_save">
    <property name="geometry">
     <rect>
-     <x>310</x>
+     <x>290</x>
      <y>400</y>
      <width>81</width>
      <height>31</height>
@@ -235,7 +235,7 @@ border-radius: 10%;</string>
   <widget class="QPushButton" name="pbn_edit">
    <property name="geometry">
     <rect>
-     <x>220</x>
+     <x>200</x>
      <y>400</y>
      <width>81</width>
      <height>31</height>

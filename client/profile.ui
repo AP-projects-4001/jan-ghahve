@@ -172,7 +172,7 @@ color:rgb(245, 223, 187);</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:white;
-border-radius: 25px;</string>
+border-radius: 50%;</string>
    </property>
    <property name="text">
     <string/>
