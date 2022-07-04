@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PvPermissions</class>
+ <widget class="QDialog" name="PvPermissions">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>563</width>
+    <height>498</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>440</y>
+     <width>93</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(0, 48, 73);
+border-radius: 10px;
+color:rgb(245, 223, 187);</string>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="listWidget">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>100</y>
+     <width>256</width>
+     <height>371</height>
+    </rect>
+   </property>
+   <property name="cursor" stdset="0">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(253, 240, 213);
+border-radius: 10%;
+</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbn_ok">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>390</y>
+     <width>93</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(0, 48, 73);
+border-radius: 10px;
+color:rgb(245, 223, 187);</string>
+   </property>
+   <property name="text">
+    <string>Ok</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

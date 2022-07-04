@@ -95,7 +95,7 @@ background-color:rgb(240, 240, 240);
        <cursorShape>PointingHandCursor</cursorShape>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-image: url(:/images/send.png);
+       <string notr="true">border-image: url(:/images/resourses/send.png);
 background-color:rgb(240, 240, 240);
 border-radius: 20%;
 background-position:center;
@@ -206,7 +206,7 @@ font-size:22px;</string>
       <string>Name</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="lbl_status">
      <property name="geometry">
       <rect>
        <x>340</x>
@@ -222,7 +222,7 @@ font-size:22px;</string>
       <string>Online</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="pbn_status">
      <property name="geometry">
       <rect>
        <x>310</x>

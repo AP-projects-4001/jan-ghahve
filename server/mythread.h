@@ -19,10 +19,15 @@ public:
     void run();
     void on_new_message_recieved(QString senderId, QString recieverId, QString message, QString chatId);
     void on_new_group_created(QString id);
+    void on_any_user_authenticated(QString id);
+    void on_any_user_unauthenticated(QString id);
+    void add_online_users(QString id);
+    void reduce_online_users(QString id);
+    void get_online_usres(QStringList ids);
 
 signals:
     void error(QTcpSocket::SocketError sockererror);
-    void thread_finished(qintptr socketdiscriptor);
+    void thread_finished(qintptr,QString);
     void message_recieved(QString senderId, QString recieverId, QString message);
     void message_group_recieved(QString, QString, QStringList, QString);
     void user_authenticated(qintptr socketdiscriptor, QString id);
@@ -39,6 +44,7 @@ private:
     QString state="";
     QMutex *tr_mutex;
     int authentication_code;
+    QStringList online_users;
 };
 
 #endif // MYTHREAD_H

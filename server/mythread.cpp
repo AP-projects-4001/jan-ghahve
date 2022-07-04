@@ -88,11 +88,71 @@ void MyThread::on_new_group_created(QString id)
     message_obj["id"] = id;
     QJsonDocument message_doc(message_obj);
     QByteArray message_b = message_doc.toJson();
-    if(socket->ConnectedState){
-        socket->write(message_b);
+    if(socket->ConnectedState)
+    {
+        //Encodeing
+        MyEncryption *encryption = new MyEncryption();
+        QByteArray encoded_message = encryption->myEncode(message_b);
+        socket->write(encoded_message);
         socket->waitForBytesWritten(-1);
+        delete encryption;
         qDebug() << this->socketDescriptor << " Data out" << message_b;
     }
+}
+
+void MyThread::on_any_user_authenticated(QString id)
+{
+    QJsonObject message_obj;
+    message_obj["status"] = "userAuthenticated";
+    message_obj["id"] = id;
+    QJsonDocument message_doc(message_obj);
+    QByteArray message_b = message_doc.toJson();
+    if(socket->ConnectedState)
+    {
+        //Encodeing
+        MyEncryption *encryption = new MyEncryption();
+        QByteArray encoded_message = encryption->myEncode(message_b);
+        socket->write(encoded_message);
+        socket->waitForBytesWritten(-1);
+        delete encryption;
+        qDebug() << this->socketDescriptor << " Data out" << message_b;
+    }
+}
+
+void MyThread::on_any_user_unauthenticated(QString id)
+{
+    if(id.isEmpty())
+        return;
+    QJsonObject message_obj;
+    message_obj["status"] = "userUnAuthenticated";
+    message_obj["id"] = id;
+    QJsonDocument message_doc(message_obj);
+    QByteArray message_b = message_doc.toJson();
+    if(socket->ConnectedState)
+    {
+        //Encodeing
+        MyEncryption *encryption = new MyEncryption();
+        QByteArray encoded_message = encryption->myEncode(message_b);
+        socket->write(encoded_message);
+        socket->waitForBytesWritten(-1);
+        delete encryption;
+        qDebug() << this->socketDescriptor << " Data out" << message_b;
+    }
+}
+
+void MyThread::add_online_users(QString id)
+{
+    online_users.append(id);
+}
+
+void MyThread::reduce_online_users(QString id)
+{
+    online_users.removeAll(id);
+}
+
+void MyThread::get_online_usres(QStringList ids)
+{
+    online_users = ids;
 }
 
 void MyThread::readyRead()
@@ -176,19 +236,27 @@ void MyThread::readyRead()
         response = msg.toUtf8();
     }
     else if(status == "userInfo"){
-        response = channel.get_info(data_obj["id"].toString());
-        set_userId(data_obj["id"].toString());
+        QString id = data_obj["id"].toString();
+        QJsonObject user = channel.get_info(id);
+        set_userId(id);
+        if(online_users.contains(data_obj["id"].toString()))
+            user["online"] = true;
+        else
+            user["online"] = false;
+        QJsonDocument user_doc(user);
+        response = user_doc.toJson();
+    }
+    else if(status == "autherize"){
+        QString id = data_obj["id"].toString();
+        online_users.append(id);
+        set_userId(id);
         state = data_obj["state"].toString();
-        emit user_authenticated(this->socketDescriptor, this->userId);
+        emit user_authenticated(this->socketDescriptor, id);
     }
     else if(status == "userInfo_forEdit"){
         response = channel.get_info_forEdit(data_obj["id"].toString());
-        set_userId(data_obj["id"].toString());
-        state = data_obj["state"].toString();
-        emit user_authenticated(this->socketDescriptor, this->userId);
     }
     else if(status == "message"){
-
         channel.send_message(data_obj);
         msg = "ok";
         response = msg.toUtf8();
@@ -264,7 +332,7 @@ void MyThread::readyRead()
 void MyThread::disconnected()
 {
     qDebug() << socketDescriptor << " Disconnected";
-    emit thread_finished(this->socketDescriptor);
+    emit thread_finished(this->socketDescriptor, userId);
     socket->deleteLater();
     exit(0);
 }

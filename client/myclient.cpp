@@ -73,15 +73,3 @@ QByteArray MyClient::message_recieved()
     }
     return 0;
 }
-
-
-//void MyClient::send_message(QByteArray *message, QString id1, QString id2)
-//{
-
-//}
-
-
-
-
-
-

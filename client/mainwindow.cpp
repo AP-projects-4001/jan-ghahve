@@ -22,7 +22,7 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     ui->setupUi(this);
     setFixedSize(size());
     pain();
-//    QObject::connect(ui->test,&QPushButton::clicked,this,&MainWindow::add_safebar);
+
     QObject::connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
     QObject::connect(ui->actionlvl_3_graph,&QAction::triggered,this,&MainWindow::on_graph_clicked);
     connect(ui->actionNew_Channel,&QAction::triggered,this,&MainWindow::on_newchannel_clicked);
@@ -30,16 +30,17 @@ MainWindow::MainWindow(QString id, QWidget *parent)
 
     client = new MyClient();
     get_user_info(id);
-    ui->user_name->setText(user_data["id"].toString());
     get_user_contacts();
-    //client->disconnect_from_server();
+    ui->user_name->setText(user_data["id"].toString());
+
     MyThread* thread = new MyThread(user_data["id"].toString());
     QObject::connect(thread, &MyThread::message_recieved, this, &MainWindow::on_messagerecievd);
     QObject::connect(thread, &MyThread::group_created, this, &MainWindow::on_groupcreated);
+    QObject::connect(thread, &MyThread::user_authenticated, this, &MainWindow::on_userauthenticated);
+    QObject::connect(thread, &MyThread::user_unauthenticated, this, &MainWindow::on_userunauthenticated);
     thread->start();
 
-    //client = new MyClient();
-    //client->connect_to_server();
+
 
     tray = new QSystemTrayIcon(this);
     tray->setIcon(QIcon(":/images/resourses/chat.png"));
@@ -118,12 +119,6 @@ void MainWindow::get_user_contacts()
             add_item_to_listwidget(id);
             if(status == "user"){
                 stream << id << ',';
-            }
-            else if(status == "group"){
-                stream << "g%" << id << ',';
-            }
-            else if(status == "channel"){
-                stream << "c%" << id << ',';
             }
         }
         file.close();
@@ -273,6 +268,15 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 
     QString status = contact_info["status"].toString();
     ui->pbn_profile->setEnabled(true);
+    bool online = contact_info["online"].toBool();
+    if(online){
+        ui->lbl_status->setText("Online");
+        ui->pbn_status->setStyleSheet("background-color:rgb(0, 255, 127);");
+    }
+    else{
+        ui->lbl_status->setText("Offline");
+        ui->pbn_status->setStyleSheet("background-color:rgb(105,105,105);");
+    }
     if(status == "channel"){
         QStringList admins_list = contact_info["admins"].toString().split('%');
         QString user_id = user_data["id"].toString();
@@ -377,7 +381,7 @@ void MainWindow::on_newchannel_clicked()
 void MainWindow::on_pbn_profile_clicked()
 {
     if(contact_info["status"].isNull()){
-        Profile *profile= new Profile(contact_info["id"].toString(), this);
+        Profile *profile= new Profile(user_data["id"].toString(), contact_info, this);
         profile->show();
     }else{
         GroupProfile* groupProfile = new GroupProfile(contact_info["id"].toString(), this);
@@ -406,4 +410,20 @@ void MainWindow::on_setting_clicked()
     //this->close();
     setting_window->show();
     get_user_info(user_data["id"].toString());
+}
+
+void MainWindow::on_userauthenticated(QString id)
+{
+    if(id == contact_info["id"].toString()){
+        ui->lbl_status->setText("Online");
+        ui->pbn_status->setStyleSheet("background-color:rgb(0, 255, 127);");
+    }
+}
+
+void MainWindow::on_userunauthenticated(QString id)
+{
+    if(id == contact_info["id"].toString()){
+        ui->lbl_status->setText("Offline");
+        ui->pbn_status->setStyleSheet("background-color:rgb(105,105,105);");
+    }
 }

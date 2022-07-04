@@ -1,8 +1,9 @@
+#include <QMessageBox>
+#include <QDate>
 #include "setting.h"
 #include "ui_setting.h"
 #include "mainwindow.h"
-#include <QMessageBox>
-#include <QDate>
+#include "pvpermissions.h"
 
 setting::setting(QJsonObject user_data ,QWidget *parent) :
     QWidget(parent),
@@ -103,18 +104,20 @@ void setting::on_pbn_save_clicked()
     user["email"]=email;
     user["birthdate"] = birthdate.toString("dd/MM/yyyy");
     user["number"] = phonenum;
+    user["permissions"] = user_data["permissions"];
 
-    MyClient client;
+    MyClient* client = new MyClient();
     QJsonDocument user_d(user);
     QByteArray user_b = user_d.toJson();
 
-    if(client.connect_to_server()){
+    if(client->connect_to_server()){
         //Sending data to the server and waiting for getting a response from it
-        QByteArray response = client.request_to_server(&user_b);
+        QByteArray response = client->request_to_server(&user_b);
         QString msg = QString(response);
         //Check response(Successful or not)
         if(msg == "accepted"){
             qDebug()<<"profile editing finished, continue to mainWindow";
+            client->disconnect_from_server();
             this->close();
         }
         else
@@ -124,3 +127,16 @@ void setting::on_pbn_save_clicked()
     }
 }
 
+
+void setting::on_pbn_permissions_clicked()
+{
+    PvPermissions* permissions = new PvPermissions(user_data["id"].toString(), user_data["permissions"].toString(), this);
+    connect(permissions, &PvPermissions::permissions_modified, this, &setting::on_permissionsmodified);
+    permissions->show();
+    on_pbn_edit_clicked();
+}
+
+void setting::on_permissionsmodified(QString permissions)
+{
+    user_data["permissions"] = permissions;
+}

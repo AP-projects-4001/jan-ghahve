@@ -44,6 +44,8 @@ private slots:
     void on_newchannel_clicked();
     void on_pbn_profile_clicked();
     void on_setting_clicked();
+    void on_userauthenticated(QString id);
+    void on_userunauthenticated(QString id);
 
 private:
     Ui::MainWindow *ui;
