@@ -19,15 +19,24 @@ QString Channel::signup_check(QJsonObject data)
     QJsonObject json_obj;
 
     json_obj = read_from_file(path);
-    json_arr = json_obj["users"].toArray();
+    json_arr = json_obj["profiles"].toArray();
 
-    bool username_uique = true;
+    bool username_uique = true, number_uique = true, email_uique = true;
     QJsonObject user;
     for(QJsonValueRef user_ref:qAsConst(json_arr))
     {
         user = user_ref.toObject();
         if(user["id"] == data["id"]){
             username_uique = false;
+            break;
+        }
+        if(user["number"] == data["number"]){
+            number_uique = false;
+            break;
+        }
+        else if(user["email"]==data["email"])
+        {
+            email_uique = false;
             break;
         }
     }
@@ -40,6 +49,42 @@ QString Channel::signup_check(QJsonObject data)
 
         return "Username already taken";
     }
+    if(!number_uique)
+    {
+        qDebug()<<data["id"]<<" want to unLock the file";
+        //---- UnLock -----
+        ch_mutex->unlock();
+        qDebug()<<data["id"]<<" unLocked the file";
+
+        return "PhoneNumber already taken";
+    }
+    if(!email_uique)
+    {
+        qDebug()<<data["id"]<<" want to unLock the file";
+        //---- UnLock -----
+        ch_mutex->unlock();
+        qDebug()<<data["id"]<<" unLocked the file";
+
+        return "Email already taken";
+    }
+
+    //checking in groups
+    json_obj = read_from_file("groups.json");
+    QString name = json_obj["id"].toString();
+    if(!json_obj[name].isNull()){
+        //---- UnLock -----
+        ch_mutex->unlock();
+        return "Username already taken";
+    }
+
+    //checking in channels
+    json_obj = read_from_file("channels.json");
+    if(!json_obj[name].isNull()){
+        //---- UnLock -----
+        ch_mutex->unlock();
+        return "Username already taken";
+    }
+
     //---- UnLock -----
     ch_mutex->unlock();
     return "accepted";
@@ -120,7 +165,6 @@ QString Channel::signin(QJsonObject data)
     qDebug()<<data["id"]<<" unLocked the file";
     return "incorrect Username";
 }
-
 
 //Getting profile data from database
 QByteArray Channel::get_info(QString id)
@@ -307,7 +351,6 @@ QByteArray Channel::get_chat_info(QString id1, QString id2, QString chat)
     return chat_doc.toJson();
 }
 
-
 QByteArray Channel::get_all_info()
 {
     QJsonObject data_obj;
@@ -329,6 +372,7 @@ QByteArray Channel::get_user_contacts(QString id)
     ch_mutex->unlock();
     return userContacts_doc.toJson();
 }
+
 QByteArray Channel::get_all_contacts()
 {
     //----LOCK ----
@@ -345,10 +389,45 @@ QStringList Channel::create_group_or_channel(QJsonObject data, QString chat)
     //----LOCK ----
     ch_mutex->lock();
     //modify group file
-    QJsonObject all_data = read_from_file(chat + "s.json");
+    QJsonObject all_data;
     QString name = data["name"].toString();
-    int max = data["max"].toInt();
     QStringList all_ids;
+
+    //check in users
+    QJsonArray json_arr;
+    all_data = read_from_file(path);
+    json_arr = all_data["users"].toArray();
+    bool username_uique = true;
+    QJsonObject user;
+    for(QJsonValueRef user_ref:qAsConst(json_arr))
+    {
+        user = user_ref.toObject();
+        if(user["id"] == data["id"]){
+            username_uique = false;
+            break;
+        }
+
+    }
+    if(!username_uique){
+        //---- UnLock -----
+        ch_mutex->unlock();
+        return all_ids;
+    }
+
+    //check in groups and channels
+    if(chat == "group")
+        all_data = read_from_file("channels.json");
+    else
+        all_data = read_from_file("groups.json");
+
+    if(!all_data[name].isNull()){
+        //---- UnLock -----
+        ch_mutex->unlock();
+        return all_ids;
+    }
+
+    all_data = read_from_file(chat + "s.json");
+    int max = data["max"].toInt();
     if(!all_data[name].isNull()){
         //---- UnLock -----
         ch_mutex->unlock();
@@ -461,6 +540,7 @@ void Channel::modify_channel_admins(QString id, QString admins)
     //---- UnLock -----
     ch_mutex->unlock();
 }
+
 QString Channel::edit_profile(QJsonObject data)
 {
     qDebug()<<data["id"]<<" want to Lock the file";
