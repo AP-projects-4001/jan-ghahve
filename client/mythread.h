@@ -21,6 +21,8 @@ public slots:
 signals:
     void message_recieved(QString,QString,QString);
     void group_created(QString);
+    void user_authenticated(QString);
+    void user_unauthenticated(QString);
 
 private:
     QString id;
