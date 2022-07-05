@@ -189,15 +189,15 @@ void MainWindow::pain()
                                 "border-radius: 20%;"
                                 "background-position:center;}"
                                 "*:hover{background-color:rgb(30, 157, 230);}");
-    ui->menubar->resize(20,5);
+//    ui->menubar->resize(20,5);
     ui->menubar->setStyleSheet(
                                "font-size:15px;"
-
                                );
 
-    ui->menusetting->setStyleSheet("background-color:rgb(253, 240, 213);"
-                                   "border-radius: 20%;"
-                                   );
+    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    ui->menusetting->setStyleSheet("background-color:rgb(253, 240, 213);"
+//                                   "border-radius: 20%;"
+//                                   );
     ui->listWidget->setStyleSheet("QListWidget:item"
                                  "{"
                                     "height: 30px;"
@@ -396,7 +396,7 @@ void MainWindow::on_messagerecievd(QString senderId, QString message, QString ch
 void MainWindow::on_pbn_send_clicked()
 {
     //    send message
-    QString message_content = ui->ted_message->toPlainText();
+    QString message_content = ui->ted_message->text();
     ui->ted_message->clear();
     QJsonObject message;
     QString status = contact_info["status"].toString();

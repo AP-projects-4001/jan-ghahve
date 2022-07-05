@@ -37,29 +37,6 @@
     <property name="title">
      <string/>
     </property>
-    <widget class="QPlainTextEdit" name="ted_message">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>531</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: hide; 
-border-radius:10px; 
-background-color:rgb(240, 240, 240);
-font-size:19px;
-background-color:rgb(253, 240, 213);
-
-
-</string>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QGroupBox" name="groupBox_5">
      <property name="geometry">
       <rect>
@@ -73,8 +50,7 @@ background-color:rgb(253, 240, 213);
       <string notr="true">background-color:rgb(191, 215, 234);
 border-color: white; 
 border-radius:10px; 
-background-color:rgb(240, 240, 240);
-
+background-color:rgb(253, 240, 213);
 
 </string>
      </property>
@@ -113,6 +89,26 @@ hover{
        <string>Return</string>
       </property>
      </widget>
+    </widget>
+    <widget class="QLineEdit" name="ted_message">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>531</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: hide; 
+border-radius:10px; 
+background-color:rgb(240, 240, 240);
+font-size:19px;
+background-color:rgb(253, 240, 213);
+
+
+</string>
+     </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_4">
@@ -179,7 +175,7 @@ font-size:22px;</string>
      <property name="geometry">
       <rect>
        <x>340</x>
-       <y>19</y>
+       <y>20</y>
        <width>63</width>
        <height>16</height>
       </rect>
@@ -202,7 +198,7 @@ font-size:22px;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color:rgb(0, 255, 127);
-border-radius:100%;</string>
+border-radius:8px;</string>
      </property>
      <property name="text">
       <string/>
@@ -259,7 +255,7 @@ background-color:rgb(253, 240, 213);
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:rgb(245, 245, 245);
+      <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 20%;
 border-image: url(:/images/resourses/search1.png);</string>
      </property>
@@ -334,7 +330,7 @@ background-color: palette(base);</string>
      <x>0</x>
      <y>0</y>
      <width>839</width>
-     <height>28</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="cursor">
