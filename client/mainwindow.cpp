@@ -16,6 +16,7 @@
 #include "groupprofile.h"
 #include "profile.h"
 #include "setting.h"
+#include "image_convertation.h"
 
 MainWindow::MainWindow(QString id, QWidget *parent)
     : QMainWindow(parent)
@@ -42,7 +43,6 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     thread->start();
 
 
-
     tray = new QSystemTrayIcon(this);
     tray->setIcon(QIcon(":/images/resourses/logo.png"));
     tray->setVisible(true);
@@ -53,8 +53,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-
 
 void MainWindow::get_user_info(QString id)
 {
@@ -141,6 +139,7 @@ void MainWindow::add_item_to_listwidget(QString name)
     QListWidgetItem* item = new QListWidgetItem(name);
     list->addItem(item);
 }
+
 void MainWindow::get_allUsers_contacts()
 {
     QJsonObject req;
@@ -310,8 +309,69 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         i--;
     }
 
-    //ui->scrollAreaWidgetContents->layout()->addWidget()
+    //---------- SHOW PROFILE IMAGE ---------
+    // PV
+    if(contact_info["status"].isNull())
+    {
+        QStringList permissions = contact_info["permissions"].toString().split('%');
+        if(permissions.contains(user_data["id"].toString()))
+        {
+            QPixmap pix(":/images/resourses/default_profile.jpg");
+            QIcon ButtonIcon(pix);
+            QSize iconSize(QSize(51,51));
+            ui->pbn_profile->setIconSize(iconSize);
+            ui->pbn_profile->setIcon(ButtonIcon);
 
+        }
+        else
+        {
+            QJsonObject req;
+            req["status"] = "getProfileImage";
+            req["id"] = contact_info["id"].toString();
+            QJsonDocument req_doc(req);
+            QByteArray req_b = req_doc.toJson();
+            QJsonValue img_val;
+            if(client->connect_to_server())
+            {
+                QByteArray resp_b = client->request_to_server(&req_b);
+                QJsonDocument resp_d = QJsonDocument::fromJson(resp_b);
+                QJsonObject resp_obj = resp_d.object();
+                img_val = resp_obj[contact_info["id"].toString()];
+            }
+            ImageConvertation *imageConvertor = new ImageConvertation();
+            QPixmap pix = imageConvertor->pixmapFrom(img_val);
+            QIcon ButtonIcon(pix);
+            QSize iconSize(QSize(51,51));
+            ui->pbn_profile->setIconSize(iconSize);
+            ui->pbn_profile->setIcon(ButtonIcon);
+
+        }
+    }
+    // CHANNEL OR GROUP
+    else
+    {
+        QJsonObject req;
+        req["status"] = "getProfileImage";
+        req["id"] = contact_info["id"].toString();
+        QJsonDocument req_doc(req);
+        QByteArray req_b = req_doc.toJson();
+        QJsonValue img_val;
+        if(client->connect_to_server())
+        {
+            QByteArray resp_b = client->request_to_server(&req_b);
+            QJsonDocument resp_d = QJsonDocument::fromJson(resp_b);
+            QJsonObject resp_obj = resp_d.object();
+            img_val = resp_obj[contact_info["id"].toString()];
+        }
+        ImageConvertation *imageConvertor = new ImageConvertation();
+        QPixmap pix = imageConvertor->pixmapFrom(img_val);
+        QIcon ButtonIcon(pix);
+        QSize iconSize(QSize(51,51));
+        ui->pbn_profile->setIconSize(iconSize);
+        ui->pbn_profile->setIcon(ButtonIcon);
+    }
+
+    //ui->scrollAreaWidgetContents->layout()->addWidget()
 
     //get chat
     QJsonObject chat;
@@ -370,7 +430,6 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 
 }
 
-
 void MainWindow::on_messagerecievd(QString senderId, QString message, QString chatId)
 {
     if(chatId == contact_info["id"].toString() && !chatId.isEmpty()){
@@ -391,7 +450,6 @@ void MainWindow::on_messagerecievd(QString senderId, QString message, QString ch
         tray->showMessage("Message from "+ senderId + " :", message ,QIcon(":/images/resourses/chat.png"));
     }
 }
-
 
 void MainWindow::on_pbn_send_clicked()
 {
@@ -466,13 +524,15 @@ void MainWindow::on_newchannel_clicked()
     add_member->show();
 }
 
-
 void MainWindow::on_pbn_profile_clicked()
 {
-    if(contact_info["status"].isNull()){
+    if(contact_info["status"].isNull())
+    {
         Profile *profile= new Profile(user_data["id"].toString(), contact_info, this);
         profile->show();
-    }else{
+    }
+    else
+    {
         GroupProfile* groupProfile = new GroupProfile(contact_info["id"].toString(), this);
         groupProfile->show();
     }

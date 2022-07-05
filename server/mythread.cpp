@@ -320,6 +320,11 @@ void MyThread::readyRead()
     {
         response = channel.get_profile_image(data_obj);
     }
+    else if(status == "Channel_Group_Profile_Edited")
+    {
+        msg = channel.channel_group_profile_edited(data_obj);
+        response = msg.toUtf8();
+    }
 
     //Get a responce from "channel", then Send it to the Client
     //Encoding
