@@ -163,54 +163,54 @@ bool MainWindow::is_admin(QString id, QStringList admins_list)
     return false;
 }
 
-void MainWindow::add_message(bool flag, QString sender, QString message)
-{
-    //flag sarfan baraye test bode mitoni baresh dari va chiz dg bezari ya inke kol tabe yeja dg copypaste koni
-    QWidget* container = new QWidget(ui->scrollAreaWidgetContents);
-    container->setStyleSheet("background: transparent;");
-    container->setAutoFillBackground(false);
+//void MainWindow::add_message(bool flag, QString sender, QString message)
+//{
+//    //flag sarfan baraye test bode mitoni baresh dari va chiz dg bezari ya inke kol tabe yeja dg copypaste koni
+//    QWidget* container = new QWidget(ui->scrollAreaWidgetContents);
+//    container->setStyleSheet("background: transparent;");
+//    container->setAutoFillBackground(false);
 
-    QHBoxLayout* containerLayout = new QHBoxLayout();
-    QListWidget* massage = new QListWidget();
-    massage->setAutoFillBackground(false);
+//    QHBoxLayout* containerLayout = new QHBoxLayout();
+//    QListWidget* massage = new QListWidget();
+//    massage->setAutoFillBackground(false);
 
-    //payam ro to add item mitoni benevisi
+//    //payam ro to add item mitoni benevisi
 
-    //massage->addItem(sender);
-    massage->addItem("aklsdjf;ksdjfasdffffffffsdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffsdff");
-    massage->setMaximumWidth(270);
-    massage->setWordWrap(true);
+//    //massage->addItem(sender);
+//    massage->addItem("aklsdjf;ksdjfasdffffffffsdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffsdff");
+//    massage->setMaximumWidth(270);
+//    massage->setWordWrap(true);
 
 
-    if(flag)
-    {
-        //age khod karbar msg ro dad in if biad
-        massage->setStyleSheet("background-color:rgb(255, 238, 221);");
-        containerLayout->addStretch(0);
-        containerLayout->addWidget(massage);
-       // flag ++;
-    }else
-    {
-        //age kesi dg msg ro dad in if biad
-        massage->setStyleSheet("background-color:rgb(189, 244, 255);");
-        containerLayout->addWidget(massage);
-        containerLayout->addStretch(0);
-    }
+//    if(flag)
+//    {
+//        //age khod karbar msg ro dad in if biad
+//        massage->setStyleSheet("background-color:rgb(255, 238, 221);");
+//        containerLayout->addStretch(0);
+//        containerLayout->addWidget(massage);
+//       // flag ++;
+//    }else
+//    {
+//        //age kesi dg msg ro dad in if biad
+//        massage->setStyleSheet("background-color:rgb(189, 244, 255);");
+//        containerLayout->addWidget(massage);
+//        containerLayout->addStretch(0);
+//    }
 
-    container->setLayout(containerLayout);
-    ui->scrollAreaWidgetContents->layout()->addWidget(container);
-    ui->scrollAreaWidgetContents->setStyleSheet("QWidget#scrollAreaWidgetContents"
-                                                "{"
-                                                "background-color:rgb(0, 94, 140);"
-                                                "}"
-                                                "QListWidget"
-                                                "{"
-                                                "color:black;"
-                                                "}"
-                                                "*{border-radius:10px; "
-                                                "background-color: palette(base);"
-                                                "font-size:19px;}");
-}
+//    container->setLayout(containerLayout);
+//    ui->scrollAreaWidgetContents->layout()->addWidget(container);
+//    ui->scrollAreaWidgetContents->setStyleSheet("QWidget#scrollAreaWidgetContents"
+//                                                "{"
+//                                                "background-color:rgb(0, 94, 140);"
+//                                                "}"
+//                                                "QListWidget"
+//                                                "{"
+//                                                "color:black;"
+//                                                "}"
+//                                                "*{border-radius:10px; "
+//                                                "background-color: palette(base);"
+//                                                "font-size:19px;}");
+//}
 
 void MainWindow::on_usersFound(QStringList users)
 {
@@ -275,7 +275,7 @@ void MainWindow::pain()
                                   );
 }
 
-void MainWindow::the_Chat(int flag)
+void MainWindow::add_message(bool flag, QString sender, QString message)
 {
     //flag sarfan baraye test bode mitoni baresh dari va chiz dg bezari ya inke kol tabe yeja dg copypaste koni
     QWidget* container = new QWidget(ui->scrollAreaWidgetContents);
@@ -300,13 +300,13 @@ void MainWindow::the_Chat(int flag)
 //    massage.mar
 
 
-    if(flag == 2)
+    if(flag)
     {
         //age khod karbar msg ro dad in if biad
         massage->setStyleSheet("background-color:rgb(255, 238, 221);");
         containerLayout->addStretch(0);
         containerLayout->addWidget(massage);
-        flag ++;
+        //flag ++;
     }else
     {
         //age kesi dg msg ro dad in if biad
