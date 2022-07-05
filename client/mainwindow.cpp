@@ -297,7 +297,7 @@ void MainWindow::add_message(bool flag, QString sender, QString message)
     massage->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     massage->addItem("name\nthis is a very very very very very very long testxxxxxxxxxxxxxxxxxxxxxx\nxxzx");
     massage->setMaximumWidth(270);
-//    massage.mar
+
 
 
     if(flag)
