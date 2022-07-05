@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>852</width>
-    <height>547</height>
+    <width>839</width>
+    <height>549</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMainWindow{background-color:rgb(191, 215, 234);}
+   <string notr="true">QMainWindow{border-image: url(:/images/resourses/BGchat.jpg);}
 
 
 </string>
@@ -49,7 +49,7 @@
      <property name="styleSheet">
       <string notr="true">border: hide; 
 border-radius:10px; 
-background-color:rgb(240, 222, 197);
+background-color:rgb(240, 240, 240);
 font-size:19px;
 background-color:rgb(253, 240, 213);
 
@@ -128,7 +128,7 @@ hover{
      <string notr="true">border: 0px solid gray;
 border-radius : 10px;
 border-bottom:hide;
-background-color:rgb(240, 222, 197);
+background-color:rgb(1, 125, 180);
 </string>
     </property>
     <property name="title">
@@ -240,7 +240,7 @@ border-radius:7px;
      <property name="styleSheet">
       <string notr="true">border:hide;
 font-size:18px;
-background-color:rgb(240, 222, 197);
+background-color:rgb(245, 245, 245);
 border-radius:8px;
 background-color:rgb(253, 240, 213);
 </string>
@@ -333,7 +333,7 @@ background-color: palette(base);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>852</width>
+     <width>839</width>
      <height>28</height>
     </rect>
    </property>

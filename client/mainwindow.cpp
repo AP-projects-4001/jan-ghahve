@@ -6,6 +6,7 @@
 #include <QIcon>
 #include <QMenu>
 #include <QSpacerItem>
+#include <QScrollBar>
 #include "mainwindow.h"
 #include "mythread.h"
 #include "ui_mainwindow.h"
@@ -163,55 +164,6 @@ bool MainWindow::is_admin(QString id, QStringList admins_list)
     return false;
 }
 
-//void MainWindow::add_message(bool flag, QString sender, QString message)
-//{
-//    //flag sarfan baraye test bode mitoni baresh dari va chiz dg bezari ya inke kol tabe yeja dg copypaste koni
-//    QWidget* container = new QWidget(ui->scrollAreaWidgetContents);
-//    container->setStyleSheet("background: transparent;");
-//    container->setAutoFillBackground(false);
-
-//    QHBoxLayout* containerLayout = new QHBoxLayout();
-//    QListWidget* massage = new QListWidget();
-//    massage->setAutoFillBackground(false);
-
-//    //payam ro to add item mitoni benevisi
-
-//    //massage->addItem(sender);
-//    massage->addItem("aklsdjf;ksdjfasdffffffffsdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffsdff");
-//    massage->setMaximumWidth(270);
-//    massage->setWordWrap(true);
-
-
-//    if(flag)
-//    {
-//        //age khod karbar msg ro dad in if biad
-//        massage->setStyleSheet("background-color:rgb(255, 238, 221);");
-//        containerLayout->addStretch(0);
-//        containerLayout->addWidget(massage);
-//       // flag ++;
-//    }else
-//    {
-//        //age kesi dg msg ro dad in if biad
-//        massage->setStyleSheet("background-color:rgb(189, 244, 255);");
-//        containerLayout->addWidget(massage);
-//        containerLayout->addStretch(0);
-//    }
-
-//    container->setLayout(containerLayout);
-//    ui->scrollAreaWidgetContents->layout()->addWidget(container);
-//    ui->scrollAreaWidgetContents->setStyleSheet("QWidget#scrollAreaWidgetContents"
-//                                                "{"
-//                                                "background-color:rgb(0, 94, 140);"
-//                                                "}"
-//                                                "QListWidget"
-//                                                "{"
-//                                                "color:black;"
-//                                                "}"
-//                                                "*{border-radius:10px; "
-//                                                "background-color: palette(base);"
-//                                                "font-size:19px;}");
-//}
-
 void MainWindow::on_usersFound(QStringList users)
 {
     QFile file(user_data["id"].toString() + "%contacts.txt");
@@ -275,7 +227,7 @@ void MainWindow::pain()
                                   );
 }
 
-void MainWindow::add_message(bool flag, QString sender, QString message)
+QWidget* MainWindow::add_message(bool flag, QString sender, QString message)
 {
     //flag sarfan baraye test bode mitoni baresh dari va chiz dg bezari ya inke kol tabe yeja dg copypaste koni
     QWidget* container = new QWidget(ui->scrollAreaWidgetContents);
@@ -295,7 +247,7 @@ void MainWindow::add_message(bool flag, QString sender, QString message)
 //    QListWidgetItem *item = new QListWidgetItem;
     massage->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     massage->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    massage->addItem("name\nthis is a very very very very very very long testxxxxxxxxxxxxxxxxxxxxxx\nxxzx");
+    massage->addItem(sender+ "\n" + message);
     massage->setMaximumWidth(270);
 
 
@@ -328,6 +280,7 @@ void MainWindow::add_message(bool flag, QString sender, QString message)
                                                 "*{border-radius:10px; "
                                                 "background-color: palette(base);"
                                                 "font-size:16px;}");
+    return container;
 }
 
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
@@ -385,18 +338,20 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
                 flag = false;
             add_message(flag, sender, message);
         }
+        QWidget* item = add_message(flag, sender, message);
+        item->hide();
     }
 
     QString status = contact_info["status"].toString();
     ui->pbn_profile->setEnabled(true);
     bool online = contact_info["online"].toBool();
     if(online){
-        ui->lbl_status->setText("Online");
-        ui->pbn_status->setStyleSheet("background-color:rgb(0, 255, 127);");
+        ui->lbl_status->setVisible(true);
+        ui->pbn_status->setVisible(true);
     }
     else{
-        ui->lbl_status->setText("Offline");
-        ui->pbn_status->setStyleSheet("background-color:rgb(105,105,105);");
+        ui->lbl_status->setVisible(false);
+        ui->pbn_status->setVisible(false);
     }
     if(status == "channel"){
         QStringList admins_list = contact_info["admins"].toString().split('%');
@@ -420,6 +375,7 @@ void MainWindow::on_messagerecievd(QString senderId, QString message, QString ch
 {
     if(chatId == contact_info["id"].toString() && !chatId.isEmpty()){
         add_message(false, senderId, message);
+        ui->scrollAreaWidgetContents->scroll(ui->scrollAreaWidgetContents->x(),ui->scrollAreaWidgetContents->y());
     }
     else if(senderId == contact_info["id"].toString() && chatId.isEmpty()){
         add_message(false, senderId, message);
@@ -461,7 +417,19 @@ void MainWindow::on_pbn_send_clicked()
     {
         client->request_to_server(&message_b);
     }
-    add_message(true, user_data["id"].toString(), message_content);
+    QWidget* child = add_message(true, user_data["id"].toString(), message_content);
+    //ui->scrollAreaWidgetContents->scroll(-ui->scrollAreaWidgetContents->height(),-ui->scrollAreaWidgetContents->width());
+    //ui->scrollAreaWidgetContents->setFocusPolicy(Qt::ScrollEnd);
+    //ui->scrollArea->verticalScrollBar()->setValue(this->ui->scrollArea->verticalScrollBar()->maximum());
+    //int index = ui->scrollAreaWidgetContents->layout()->count() - 1;
+    //QWidget* widget = ui->scrollAreaWidgetContents->layout()->itemAt(1)->widget();
+    //ui->scrollArea->ensureWidgetVisible(widget);
+    //ui->scrollArea->verticalScrollBar()->setValue();
+    int a = ui->scrollArea->verticalScrollBar()->maximum() + 100;
+    ui->scrollArea->verticalScrollBar()->setMaximum(a);
+    //ui->scrollArea->verticalScrollBar()->setValue(a);
+    ui->scrollArea->verticalScrollBar()->setSliderPosition(a);
+    //ui->scrollArea->verticalScrollBar().
 }
 
 void MainWindow::on_newgroup_clicked()
@@ -536,15 +504,15 @@ void MainWindow::on_setting_clicked()
 void MainWindow::on_userauthenticated(QString id)
 {
     if(id == contact_info["id"].toString()){
-        ui->lbl_status->setText("Online");
-        ui->pbn_status->setStyleSheet("background-color:rgb(0, 255, 127);");
+        ui->lbl_status->setVisible(true);
+        ui->pbn_status->setVisible(true);
     }
 }
 
 void MainWindow::on_userunauthenticated(QString id)
 {
     if(id == contact_info["id"].toString()){
-        ui->lbl_status->setText("Offline");
-        ui->pbn_status->setStyleSheet("background-color:rgb(105,105,105);");
+        ui->lbl_status->setVisible(false);
+        ui->pbn_status->setVisible(false);
     }
 }

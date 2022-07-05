@@ -31,7 +31,7 @@ public:
     void add_item_to_listwidget(QString name);
     void get_allUsers_contacts();
     bool is_admin(QString id, QStringList admins_list);
-    void add_message(bool flag, QString sender, QString message);
+    QWidget* add_message(bool flag, QString sender, QString message);
 
 private slots:
     void on_usersFound(QStringList users);
