@@ -243,6 +243,7 @@ void MainWindow::pain()
 
 void MainWindow::the_Chat(int flag)
 {
+    //flag sarfan baraye test bode mitoni baresh dari va chiz dg bezari ya inke kol tabe yeja dg copypaste koni
     QWidget* container = new QWidget(ui->scrollAreaWidgetContents);
     container->setStyleSheet("background: transparent;");
     container->setAutoFillBackground(false);
@@ -251,7 +252,9 @@ void MainWindow::the_Chat(int flag)
     QListWidget* massage = new QListWidget();
     massage->setAutoFillBackground(false);
 
+    //payam ro to add item mitoni benevisi
 
+    massage->addItem("Name");
     massage->addItem("this is a very very very very very very long test ");
     massage->setMaximumWidth(270);
     massage->setWordWrap(true);
@@ -259,12 +262,14 @@ void MainWindow::the_Chat(int flag)
 
     if(flag == 2)
     {
+        //age khod karbar msg ro dad in if biad
         massage->setStyleSheet("background-color:rgb(255, 238, 221);");
         containerLayout->addStretch(0);
         containerLayout->addWidget(massage);
         flag ++;
     }else
     {
+        //age kesi dg msg ro dad in if biad
         massage->setStyleSheet("background-color:rgb(189, 244, 255);");
         containerLayout->addWidget(massage);
         containerLayout->addStretch(0);
