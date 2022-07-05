@@ -5,6 +5,7 @@
 #include <QtCore>
 #include <QIcon>
 #include <QMenu>
+#include <QSpacerItem>
 #include "mainwindow.h"
 #include "mythread.h"
 #include "ui_mainwindow.h"
@@ -22,16 +23,6 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     ui->setupUi(this);
     setFixedSize(size());
     pain();
-    the_Chat(2);
-    the_Chat(1);
-    the_Chat(2);
-    the_Chat(1);
-    the_Chat(2);
-    the_Chat(1);
-    the_Chat(2);
-    the_Chat(1);
-    the_Chat(2);
-    the_Chat(2);
     QObject::connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
     QObject::connect(ui->actionlvl_3_graph,&QAction::triggered,this,&MainWindow::on_graph_clicked);
     connect(ui->actionNew_Channel,&QAction::triggered,this,&MainWindow::on_newchannel_clicked);
@@ -52,7 +43,7 @@ MainWindow::MainWindow(QString id, QWidget *parent)
 
 
     tray = new QSystemTrayIcon(this);
-    tray->setIcon(QIcon(":/images/resourses/chat.png"));
+    tray->setIcon(QIcon(":/images/resourses/logo.png"));
     tray->setVisible(true);
 
 }
@@ -172,6 +163,55 @@ bool MainWindow::is_admin(QString id, QStringList admins_list)
     return false;
 }
 
+void MainWindow::add_message(bool flag, QString sender, QString message)
+{
+    //flag sarfan baraye test bode mitoni baresh dari va chiz dg bezari ya inke kol tabe yeja dg copypaste koni
+    QWidget* container = new QWidget(ui->scrollAreaWidgetContents);
+    container->setStyleSheet("background: transparent;");
+    container->setAutoFillBackground(false);
+
+    QHBoxLayout* containerLayout = new QHBoxLayout();
+    QListWidget* massage = new QListWidget();
+    massage->setAutoFillBackground(false);
+
+    //payam ro to add item mitoni benevisi
+
+    //massage->addItem(sender);
+    massage->addItem("aklsdjf;ksdjfasdffffffffsdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffsdff");
+    massage->setMaximumWidth(270);
+    massage->setWordWrap(true);
+
+
+    if(flag)
+    {
+        //age khod karbar msg ro dad in if biad
+        massage->setStyleSheet("background-color:rgb(255, 238, 221);");
+        containerLayout->addStretch(0);
+        containerLayout->addWidget(massage);
+       // flag ++;
+    }else
+    {
+        //age kesi dg msg ro dad in if biad
+        massage->setStyleSheet("background-color:rgb(189, 244, 255);");
+        containerLayout->addWidget(massage);
+        containerLayout->addStretch(0);
+    }
+
+    container->setLayout(containerLayout);
+    ui->scrollAreaWidgetContents->layout()->addWidget(container);
+    ui->scrollAreaWidgetContents->setStyleSheet("QWidget#scrollAreaWidgetContents"
+                                                "{"
+                                                "background-color:rgb(0, 94, 140);"
+                                                "}"
+                                                "QListWidget"
+                                                "{"
+                                                "color:black;"
+                                                "}"
+                                                "*{border-radius:10px; "
+                                                "background-color: palette(base);"
+                                                "font-size:19px;}");
+}
+
 void MainWindow::on_usersFound(QStringList users)
 {
     QFile file(user_data["id"].toString() + "%contacts.txt");
@@ -235,55 +275,6 @@ void MainWindow::pain()
                                   );
 }
 
-void MainWindow::the_Chat(int flag)
-{
-    //flag sarfan baraye test bode mitoni baresh dari va chiz dg bezari ya inke kol tabe yeja dg copypaste koni
-    QWidget* container = new QWidget(ui->scrollAreaWidgetContents);
-    container->setStyleSheet("background: transparent;");
-    container->setAutoFillBackground(false);
-
-    QHBoxLayout* containerLayout = new QHBoxLayout();
-    QListWidget* massage = new QListWidget();
-    massage->setAutoFillBackground(false);
-
-    //payam ro to add item mitoni benevisi
-
-    massage->addItem("Name");
-    massage->addItem("this is a very very very very very very long test ");
-    massage->setMaximumWidth(270);
-    massage->setWordWrap(true);
-
-
-    if(flag == 2)
-    {
-        //age khod karbar msg ro dad in if biad
-        massage->setStyleSheet("background-color:rgb(255, 238, 221);");
-        containerLayout->addStretch(0);
-        containerLayout->addWidget(massage);
-        flag ++;
-    }else
-    {
-        //age kesi dg msg ro dad in if biad
-        massage->setStyleSheet("background-color:rgb(189, 244, 255);");
-        containerLayout->addWidget(massage);
-        containerLayout->addStretch(0);
-    }
-
-    container->setLayout(containerLayout);
-    ui->scrollAreaWidgetContents->layout()->addWidget(container);
-    ui->scrollAreaWidgetContents->setStyleSheet("QWidget#scrollAreaWidgetContents"
-                                                "{"
-                                                "background-color:rgb(0, 94, 140);"
-                                                "}"
-                                                "QListWidget"
-                                                "{"
-                                                "color:black;"
-                                                "}"
-                                                "*{border-radius:10px; "
-                                                "background-color: palette(base);"
-                                                "font-size:19px;}");
-}
-
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
 
@@ -301,7 +292,18 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         contact_info = response_d.object();
         ui->contact_name->setText(contact_info["name"].toString());
     }
-    //ui->ted_chat->clear();
+    QLayoutItem *child;
+    int i = ui->scrollAreaWidgetContents->layout()->count();
+    while (i>1) {
+        child = ui->scrollAreaWidgetContents->layout()->itemAt(1);
+        ui->scrollAreaWidgetContents->layout()->removeItem(child);
+        delete child->widget();
+        delete child;
+        i--;
+    }
+
+    //ui->scrollAreaWidgetContents->layout()->addWidget()
+
 
     //get chat
     QJsonObject chat;
@@ -316,12 +318,17 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         QByteArray response = client->request_to_server(&chatReq_b);
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         chat = response_d.object();
-        QString message;
+        QString message, sender;
         int max = chat["max"].toInt();
+        bool flag;
         for(int i=1; i<=max; i++){
-            message = chat[QString::number(i)].toObject()["sender"].toString() + \
-                    ":" + chat[QString::number(i)].toObject()["message"].toString();
-            //ui->ted_chat->append(message);
+            sender = chat[QString::number(i)].toObject()["sender"].toString();
+            message = chat[QString::number(i)].toObject()["message"].toString();
+            if(sender == user_data["id"].toString())
+                flag = true;
+            else
+                flag = false;
+            add_message(flag, sender, message);
         }
     }
 
@@ -357,10 +364,10 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 void MainWindow::on_messagerecievd(QString senderId, QString message, QString chatId)
 {
     if(chatId == contact_info["id"].toString() && !chatId.isEmpty()){
-        //ui->ted_chat->append(senderId + ":" + message);
+        add_message(false, senderId, message);
     }
     else if(senderId == contact_info["id"].toString() && chatId.isEmpty()){
-        //ui->ted_chat->append(senderId + ":" + message);
+        add_message(false, senderId, message);
     }else{
         QFile file(user_data["id"].toString() + "%contacts.txt");
         file.open(QIODevice::Append);
@@ -370,7 +377,7 @@ void MainWindow::on_messagerecievd(QString senderId, QString message, QString ch
             stream << senderId << ',';
         }
         file.close();
-        tray->showMessage("Message from "+ senderId + " :", message ,QIcon(":/images/resourses/chat1.png"));
+        tray->showMessage("Message from "+ senderId + " :", message ,QIcon(":/images/resourses/chat.png"));
     }
 }
 
@@ -399,7 +406,7 @@ void MainWindow::on_pbn_send_clicked()
     {
         client->request_to_server(&message_b);
     }
-    //ui->ted_chat->append(user_data["id"].toString()+":" + message_content);
+    add_message(true, user_data["id"].toString(), message_content);
 }
 
 void MainWindow::on_newgroup_clicked()
