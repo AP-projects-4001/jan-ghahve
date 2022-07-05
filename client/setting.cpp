@@ -3,11 +3,17 @@
 #include "mainwindow.h"
 #include <QMessageBox>
 #include <QDate>
+#include "image_convertation.h"
+#include "myclient.h"
 
-setting::setting(QJsonObject user_data ,QWidget *parent) :
+setting::setting(QJsonValue img_val ,QJsonObject user_data ,QWidget *parent) :
     QWidget(parent),
     ui(new Ui::setting)
 {
+    ImageConvertation *imageConvertor = new ImageConvertation();
+    QPixmap pix = imageConvertor->pixmapFrom(img_val);
+    this->profile_pix = pix;
+    qDebug()<<pix;
     ui->setupUi(this);
     setFixedSize(size());
     ui->led_email->setText(user_data["email"].toString());
@@ -29,6 +35,18 @@ setting::setting(QJsonObject user_data ,QWidget *parent) :
     ui->dateEdit->setDate(date);
     ui->dateEdit->setReadOnly(true);
 
+    this->new_profile_pix = profile_pix;
+
+    ui->lbl_img->setPixmap(this->profile_pix);
+    ui->lbl_img->setScaledContents( true );
+    ui->lbl_img->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
+
+//    QIcon ButtonIcon(pix);
+//    QSize iconSize(QSize(151,151));
+//    ui->pbn_profile->setIconSize(iconSize);
+//    ui->pbn_profile->setIcon(ButtonIcon);
+
+    ui->pbn_changeImage->hide();
     ui->pbn_cancel->hide();
     ui->pbn_save->hide();
     this->user_data = user_data;
@@ -45,6 +63,7 @@ void setting::on_pbn_edit_clicked()
     ui->pbn_edit->hide();
     ui->pbn_cancel->show();
     ui->pbn_save->show();
+    ui->pbn_changeImage->show();
     ui->led_username->setReadOnly(true);
     ui->led_name->setReadOnly(false);
     ui->led_email->setReadOnly(false);
@@ -77,9 +96,13 @@ void setting::on_pbn_cancel_clicked()
     ui->dateEdit->setDate(date);
     ui->dateEdit->setReadOnly(true);
 
+    ui->lbl_img->setPixmap(this->profile_pix);
+
     ui->pbn_cancel->hide();
     ui->pbn_save->hide();
+    ui->pbn_changeImage->hide();
     ui->pbn_edit->show();
+
 }
 
 
@@ -104,6 +127,9 @@ void setting::on_pbn_save_clicked()
     user["birthdate"] = birthdate.toString("dd/MM/yyyy");
     user["number"] = phonenum;
 
+    ImageConvertation *imageConvertor = new ImageConvertation;
+    QJsonValue val = imageConvertor->jsonValFromPixmap(this->new_profile_pix);
+    user["img"] = val;
     MyClient client;
     QJsonDocument user_d(user);
     QByteArray user_b = user_d.toJson();
@@ -119,8 +145,52 @@ void setting::on_pbn_save_clicked()
         }
         else
         {
-            QMessageBox::warning(this, "signup error", msg);
+            QMessageBox::warning(this, "editing error", msg);
         }
     }
+}
+
+void setting::on_pbn_changeImage_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,tr("open image"), QDir::homePath(),tr("JPG (*.jpg)"));
+    if(fileName.size())
+    {
+        QImage image(fileName);
+
+
+        auto pix = QPixmap::fromImage(image);
+        ImageConvertation *image_convertor = new ImageConvertation();
+        ui->lbl_img->setPixmap(pix);
+        ui->lbl_img->setScaledContents( true );
+        ui->lbl_img->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
+        this->new_profile_pix = pix;
+        //    QIcon ButtonIcon(pix);
+    //    QSize iconSize(QSize(151,151));
+    //    ui->pbn_profile->setIconSize(iconSize);
+    //    ui->pbn_profile->setIcon(ButtonIcon);
+        delete image_convertor;
+    }
+    else
+    {
+        this->new_profile_pix = this->profile_pix;
+    }
+
+    //auto val = image_convertor->jsonValFromPixmap(pix);
+
+
+//    QFile file("image_file.json");
+//    if(file.open(QIODevice::WriteOnly))
+//    {
+//       auto pix = QPixmap::fromImage(image);
+//       auto val = jsonValFromPixmap(pix);
+//       QJsonObject image;
+//       image["img"] = val;
+//       QJsonDocument img_d(image);
+//       QByteArray img_b = img_d.toJson();
+//       file.write(img_b);
+////       auto pix2 = pixmapFrom(val);
+////       auto img2 = pix2.toImage();
+//    }
+
 }
 

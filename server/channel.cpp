@@ -101,7 +101,7 @@ QString Channel::signup(QJsonObject data) //data = new user data
     QJsonArray json_arr, profiles_arr;
     QJsonObject json_obj;
 
-    json_obj = read_from_file(path);
+
 
     json_arr = json_obj["users"].toArray();
     profiles_arr = json_obj["profiles"].toArray();
@@ -111,6 +111,8 @@ QString Channel::signup(QJsonObject data) //data = new user data
     user["password"] = data["password"];
     json_arr.append(user);
     data.remove("password");
+    QJsonValue img = data["img"];
+    data.remove("img");
     profiles_arr.append(data);
 
     QJsonObject result;
@@ -118,6 +120,13 @@ QString Channel::signup(QJsonObject data) //data = new user data
     result["profiles"] = profiles_arr;
 
     write_to_file(path, result);
+
+    QJsonObject images_json_obj = read_from_file("images.json");
+    //qDebug()<<"-------BEFORE WRITE IN FILE ---------";
+    //qDebug()<<"image : "<<img;
+    images_json_obj[user["id"].toString()] = img;
+    write_to_file("images.json",images_json_obj);
+
     qDebug()<<data["id"]<<" want to unLock the file";
     //---- UnLock -----
     ch_mutex->unlock();
@@ -541,6 +550,19 @@ void Channel::modify_channel_admins(QString id, QString admins)
     ch_mutex->unlock();
 }
 
+QByteArray Channel::get_profile_image(QJsonObject data)
+{
+    QJsonObject json_obj = read_from_file("images.json");
+    QJsonValue img_val = json_obj[data["id"].toString()];
+    QJsonObject out_data;
+    out_data[data["id"].toString()] = img_val;
+    qDebug()<<img_val;
+    QJsonDocument out_doc(out_data);
+    QByteArray out_b = out_doc.toJson();
+    return out_b;
+
+}
+
 QString Channel::edit_profile(QJsonObject data)
 {
     qDebug()<<data["id"]<<" want to Lock the file";
@@ -555,7 +577,7 @@ QString Channel::edit_profile(QJsonObject data)
 
     json_arr = json_obj["users"].toArray();
     profiles_arr = json_obj["profiles"].toArray();
-
+    //-------------permissions shoud add----------
     bool number_uique = true;
     bool email_uique = true;
     QJsonObject user;
@@ -618,6 +640,11 @@ QString Channel::edit_profile(QJsonObject data)
     result["users"] = json_arr;
     result["profiles"] = profiles_arr;
     write_to_file(path, result);
+
+    QJsonObject images_json_obj = read_from_file("images.json");
+    images_json_obj[user["id"].toString()] = data["img"];
+    write_to_file("images.json",images_json_obj);
+
     qDebug()<<data["id"]<<" want to unLock the file";
     //---- UnLock -----
     ch_mutex->unlock();
@@ -652,6 +679,7 @@ QJsonObject Channel::read_from_file(QString file_path)
         delete encryption;
         //Decoding
         QJsonDocument json_doc = QJsonDocument::fromJson(decoded_Data);
+
         json_obj = json_doc.object();
     }
     return json_obj;

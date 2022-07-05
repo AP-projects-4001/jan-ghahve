@@ -387,9 +387,6 @@ void MainWindow::on_pbn_profile_clicked()
 
 void MainWindow::on_setting_clicked()
 {
-
-//    Profile *profile_window = new Profile(user_data["id"].toString());
-//    profile_window->show();
     QJsonObject user_alldata;
     QJsonObject request;
     request["status"] = "userInfo_forEdit";
@@ -402,7 +399,22 @@ void MainWindow::on_setting_clicked()
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         user_alldata = response_d.object();
     }
-    setting *setting_window = new setting(user_alldata);
+
+    QJsonObject req;
+    req["status"] = "getProfileImage";
+    req["id"] = user_data["id"];
+    QJsonDocument req_doc(req);
+    QByteArray req_b = req_doc.toJson();
+    QJsonValue img_val;
+
+    if(client->connect_to_server())
+    {
+        QByteArray resp_b = client->request_to_server(&req_b);
+        QJsonDocument resp_d = QJsonDocument::fromJson(resp_b);
+        QJsonObject resp_obj = resp_d.object();
+        img_val = resp_obj[user_data["id"].toString()];
+    }
+    setting *setting_window = new setting(img_val ,user_alldata);
     //this->close();
     setting_window->show();
     get_user_info(user_data["id"].toString());

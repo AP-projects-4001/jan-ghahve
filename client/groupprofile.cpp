@@ -21,3 +21,6 @@ void GroupProfile::on_pbn_permission_clicked()
     chanelPermissions->show();
 }
 
+
+
+
