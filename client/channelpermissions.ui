@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>697</width>
+    <width>620</width>
     <height>410</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
   <widget class="QPushButton" name="pbn_ok">
    <property name="geometry">
     <rect>
-     <x>580</x>
+     <x>500</x>
      <y>300</y>
      <width>93</width>
      <height>29</height>
@@ -40,47 +40,20 @@ color:rgb(245, 223, 187);</string>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>60</x>
+     <x>30</x>
      <y>190</y>
      <width>181</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>add member from here -&gt;</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>50</y>
-     <width>71</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>:/new/prefix1/Lato-Italic.ttf</family>
-     <pointsize>8</pointsize>
-     <italic>false</italic>
-     <bold>false</bold>
-     <underline>false</underline>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font-size:28px;
-font: 8pt &quot;:/new/prefix1/Lato-Italic.ttf&quot;;
-</string>
-   </property>
-   <property name="text">
-    <string>Name :</string>
+    <string>add admin from here -&gt;</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>580</x>
+     <x>500</x>
      <y>350</y>
      <width>93</width>
      <height>29</height>
@@ -98,24 +71,10 @@ color:rgb(245, 223, 187);</string>
     <string>Cancel</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="led_name">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>80</y>
-     <width>113</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:rgb(253, 240, 213);
-border-radius: 10%;</string>
-   </property>
-  </widget>
   <widget class="QListWidget" name="listWidget">
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>210</x>
      <y>20</y>
      <width>256</width>
      <height>371</height>

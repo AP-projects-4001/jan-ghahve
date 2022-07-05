@@ -6,18 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>563</width>
-    <height>498</height>
+    <width>421</width>
+    <height>435</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:rgb(191, 215, 234);</string>
+  </property>
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>390</x>
-     <y>440</y>
+     <x>300</x>
+     <y>380</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -37,10 +40,10 @@ color:rgb(245, 223, 187);</string>
   <widget class="QListWidget" name="listWidget">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>100</y>
-     <width>256</width>
-     <height>371</height>
+     <x>30</x>
+     <y>30</y>
+     <width>241</width>
+     <height>381</height>
     </rect>
    </property>
    <property name="cursor" stdset="0">
@@ -55,8 +58,8 @@ border-radius: 10%;
   <widget class="QPushButton" name="pbn_ok">
    <property name="geometry">
     <rect>
-     <x>390</x>
-     <y>390</y>
+     <x>300</x>
+     <y>330</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -71,6 +74,19 @@ color:rgb(245, 223, 187);</string>
    </property>
    <property name="text">
     <string>Ok</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>50</y>
+     <width>81</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Hide them!</string>
    </property>
   </widget>
  </widget>

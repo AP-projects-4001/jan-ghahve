@@ -250,20 +250,28 @@ border-radius: 10px;
 color:rgb(245, 223, 187);</string>
    </property>
    <property name="text">
-    <string>edit</string>
+    <string>Edit</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pbn_permissions">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>400</y>
-     <width>71</width>
-     <height>21</height>
+     <x>310</x>
+     <y>20</y>
+     <width>91</width>
+     <height>31</height>
     </rect>
    </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(0, 48, 73);
+border-radius: 10px;
+color:rgb(34, 119, 255)</string>
+   </property>
    <property name="text">
-    <string>permissions</string>
+    <string>Permissions</string>
    </property>
   </widget>
  </widget>
