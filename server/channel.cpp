@@ -679,11 +679,10 @@ void Channel::write_to_file(QString file_path, QJsonObject result)
     file.open(QIODevice::WriteOnly);
     QByteArray data_b = result_doc.toJson();
     //Encoding
-    //MyEncryption *encryption = new MyEncryption();;
-    //QByteArray encoded_Data = encryption->myEncode(data_b);
-    //file.write(encoded_Data);
-    file.write(data_b);
-    //delete encryption;
+    MyEncryption *encryption = new MyEncryption();;
+    QByteArray encoded_Data = encryption->myEncode(data_b);
+    file.write(encoded_Data);
+    delete encryption;
     file.close();
 }
 
@@ -694,13 +693,11 @@ QJsonObject Channel::read_from_file(QString file_path)
     if(file.open(QIODevice::ReadOnly)){
         QByteArray encoded_data = file.readAll();
         file.close();
-        //MyEncryption *encryption = new MyEncryption();;
-        //QByteArray decoded_Data = encryption->myDecode(encoded_data);
-        //delete encryption;
+        MyEncryption *encryption = new MyEncryption();;
+        QByteArray decoded_Data = encryption->myDecode(encoded_data);
+        delete encryption;
         //Decoding
-        //QJsonDocument json_doc = QJsonDocument::fromJson(decoded_Data);
-        QJsonDocument json_doc = QJsonDocument::fromJson(encoded_data);
-
+        QJsonDocument json_doc = QJsonDocument::fromJson(decoded_Data);
         json_obj = json_doc.object();
     }
     return json_obj;
