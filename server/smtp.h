@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #include <QThread>
 
-class Smtp : public QThread
+class Smtp : public QObject
 {
     Q_OBJECT
 
@@ -33,7 +33,6 @@ public:
 
     void sendMail( const QString &from, const QString &to,
                    const QString &subject, const QString &body );
-    void run();
 signals:
     void status( const QString &);
 

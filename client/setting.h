@@ -25,12 +25,13 @@ public:
 
 private slots:
     void on_pbn_edit_clicked();
-
+    void on_permissionsmodified(QString permissions);
     void on_pbn_cancel_clicked();
 
     void on_pbn_save_clicked();
 
     void on_pbn_changeImage_clicked();
+    void on_pbn_permissions_clicked();
 
 private:
     Ui::setting *ui;

@@ -6,15 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>820</width>
-    <height>548</height>
+    <width>839</width>
+    <height>549</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgb(191, 215, 234);
+   <string notr="true">QMainWindow{border-image: url(:/images/resourses/BGchat.jpg);}
+
 
 </string>
   </property>
@@ -30,8 +31,7 @@
     </property>
     <property name="styleSheet">
      <string notr="true">border:hide;
-background-color:rgb(30, 157, 230);
-background-color:rgb(191, 215, 234);
+
 </string>
     </property>
     <property name="title">
@@ -51,6 +51,8 @@ background-color:rgb(191, 215, 234);
 border-radius:10px; 
 background-color:rgb(240, 240, 240);
 font-size:19px;
+background-color:rgb(253, 240, 213);
+
 
 </string>
      </property>
@@ -95,7 +97,7 @@ background-color:rgb(240, 240, 240);
        <cursorShape>PointingHandCursor</cursorShape>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-image: url(:/images/send.png);
+       <string notr="true">border-image: url(:/images/resourses/send.png);
 background-color:rgb(240, 240, 240);
 border-radius: 20%;
 background-position:center;
@@ -107,44 +109,10 @@ hover{
       <property name="text">
        <string/>
       </property>
+      <property name="shortcut">
+       <string>Return</string>
+      </property>
      </widget>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>70</y>
-      <width>601</width>
-      <height>351</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border:hide;
-background-color:rgb(30, 157, 230);
-background-color:rgb(191, 215, 234);</string>
-    </property>
-    <property name="title">
-     <string/>
-    </property>
-    <widget class="QTextEdit" name="ted_chat">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>581</width>
-       <height>341</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border-image: url(:/images/resourses/BGchat.jpg);
-border-radius:10px;
-background-color: palette(base);
-font-size:19px;</string>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_4">
@@ -157,10 +125,11 @@ font-size:19px;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 1px solid gray;
+     <string notr="true">border: 0px solid gray;
 border-radius : 10px;
-background-color:rgb(30, 157, 230);
-background-color:rgb(191, 215, 234);</string>
+border-bottom:hide;
+background-color:rgb(1, 125, 180);
+</string>
     </property>
     <property name="title">
      <string/>
@@ -206,7 +175,7 @@ font-size:22px;</string>
       <string>Name</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="lbl_status">
      <property name="geometry">
       <rect>
        <x>340</x>
@@ -222,7 +191,7 @@ font-size:22px;</string>
       <string>Online</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="pbn_status">
      <property name="geometry">
       <rect>
        <x>310</x>
@@ -251,7 +220,7 @@ border-radius:100%;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">
-background-color:rgb(191, 215, 234);
+
 border-radius:7px; 
 
 </string>
@@ -273,6 +242,7 @@ border-radius:7px;
 font-size:18px;
 background-color:rgb(245, 245, 245);
 border-radius:8px;
+background-color:rgb(253, 240, 213);
 </string>
      </property>
     </widget>
@@ -297,34 +267,64 @@ border-image: url(:/images/resourses/search1.png);</string>
       <string/>
      </property>
     </widget>
-    <widget class="QLabel" name="label_2">
+   </widget>
+   <widget class="QScrollArea" name="scrollArea">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>70</y>
+      <width>581</width>
+      <height>351</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border:hide;
+border-radius:10px; 
+background-color: palette(base);</string>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>0</x>
        <y>0</y>
-       <width>63</width>
-       <height>20</height>
+       <width>581</width>
+       <height>351</height>
       </rect>
      </property>
-     <property name="text">
-      <string/>
+     <property name="styleSheet">
+      <string notr="true"/>
      </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>326</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
     </widget>
    </widget>
    <widget class="QLabel" name="user_name">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>70</x>
       <y>20</y>
-      <width>151</width>
+      <width>63</width>
       <height>20</height>
      </rect>
     </property>
-    <property name="styleSheet">
-     <string notr="true">font-weight:bold;</string>
-    </property>
     <property name="text">
-     <string>JAN-GHAHVE</string>
+     <string/>
     </property>
    </widget>
   </widget>
@@ -333,7 +333,7 @@ border-image: url(:/images/resourses/search1.png);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>820</width>
+     <width>839</width>
      <height>28</height>
     </rect>
    </property>

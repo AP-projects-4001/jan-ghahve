@@ -23,7 +23,7 @@ void MyThread::run()
     if(socket->waitForConnected(-1)){
         qDebug() << "connected Successfully!\n";
         QJsonObject req;
-        req["status"] = "userInfo";
+        req["status"] = "autherize";
         req["id"] = id;
         req["state"] = "reciever";
         QJsonDocument req_doc(req);
@@ -64,6 +64,12 @@ void MyThread::readyRead()
     }
     else if(status == "groupCreated"){
         emit group_created(data_obj["id"].toString());
+    }
+    else if(status == "userAuthenticated"){
+        emit user_authenticated(data_obj["id"].toString());
+    }
+    else if(status == "userUnAuthenticated"){
+        emit user_unauthenticated(data_obj["id"].toString());
     }
 }
 

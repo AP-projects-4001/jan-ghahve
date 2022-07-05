@@ -13,7 +13,7 @@ public:
     QString signup_check(QJsonObject data);
     QString signup(QJsonObject data);
     QString signin(QJsonObject data);
-    QByteArray get_info(QString id);
+    QJsonObject get_info(QString id);
     QByteArray get_info_forEdit(QString id);
     void send_message(QJsonObject data);
     QByteArray get_chat_info(QString id1, QString id2, QString chat);

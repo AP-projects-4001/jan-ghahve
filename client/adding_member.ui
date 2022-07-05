@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>653</width>
+    <width>633</width>
     <height>427</height>
    </rect>
   </property>
@@ -80,9 +80,9 @@ color:rgb(245, 223, 187);</string>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>70</x>
+     <x>50</x>
      <y>50</y>
-     <width>71</width>
+     <width>91</width>
      <height>21</height>
     </rect>
    </property>
@@ -101,7 +101,7 @@ font: 8pt &quot;:/new/prefix1/Lato-Italic.ttf&quot;;
 </string>
    </property>
    <property name="text">
-    <string>Name :</string>
+    <string>Enter Name :</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">

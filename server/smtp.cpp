@@ -55,11 +55,6 @@ void Smtp::sendMail(const QString &from, const QString &to, const QString &subje
 
 }
 
-void Smtp::run()
-{
-
-}
-
 Smtp::~Smtp()
 {
     delete t;

@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/images">
         <file>resourses/BGchat.jpg</file>
+        <file>resourses/chat.png</file>
+        <file>resourses/logo.png</file>
         <file>resourses/search1.png</file>
         <file>resourses/send.png</file>
         <file>resourses/chat.png</file>

@@ -137,7 +137,7 @@ border-radius: 10%;</string>
   <widget class="QPushButton" name="pbn_close">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>170</x>
      <y>350</y>
      <width>81</width>
      <height>31</height>
@@ -172,7 +172,7 @@ color:rgb(245, 223, 187);</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:white;
-border-radius: 25px;</string>
+border-radius: 50%;</string>
    </property>
    <property name="text">
     <string/>

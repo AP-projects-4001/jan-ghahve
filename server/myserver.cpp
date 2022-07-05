@@ -23,14 +23,20 @@ void MyServer::startServer()
 }
 
 
-void MyServer::on_thread_finished(qintptr socketdiscriptor)
+void MyServer::on_thread_finished(qintptr socketdiscriptor, QString id)
 {
-
+    online_users.removeAll(id);
     for(int i=0; i<threads.length(); i++){
         if(threads.at(i)->get_socketdiscriptor() == socketdiscriptor){
             data.remove(socketdiscriptor);
             threads.removeAt(i);
         }
+    }
+    for(int i=0; i<threads.length(); i++){
+        if(threads.at(i)->get_state() == "reciever"){
+            threads.at(i)->on_any_user_unauthenticated(id);
+        }
+        threads.at(i)->reduce_online_users(id);
     }
 }
 
@@ -60,7 +66,17 @@ void MyServer::on_message_group_recieved(QString senderId, QString chatId ,QStri
 
 void MyServer::on_user_authenticated(qintptr socketdiscriptor, QString id)
 {
+    online_users.append(id);
     data.insert(socketdiscriptor, id);
+    for(int i=0; i< threads.length(); i++){
+        if(threads.at(i)->get_state() == "reciever")
+            threads.at(i)->on_any_user_authenticated(id);
+
+        threads.at(i)->add_online_users(id);
+        if(threads.at(i)->get_userId() == id){
+            threads.at(i)->get_online_usres(online_users);
+        }
+    }
 }
 
 void MyServer::on_group_or_channel_created(QString id,QStringList ids)
@@ -73,7 +89,6 @@ void MyServer::on_group_or_channel_created(QString id,QStringList ids)
         }
     }
 }
-
 
 
 // This function is called by QTcpServer when a new connection is available.
@@ -89,7 +104,7 @@ void MyServer::incomingConnection(qintptr socketDescriptor)
     // connect signal/slot
     // once a thread is not needed, it will be beleted later
     connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-    connect(thread, SIGNAL(thread_finished(qintptr)), this, SLOT(on_thread_finished(qintptr)));
+    connect(thread, &MyThread::thread_finished, this, &MyServer::on_thread_finished);
     QObject::connect(thread, &MyThread::message_recieved, this, &MyServer::on_message_recieved);
     QObject::connect(thread, &MyThread::user_authenticated, this, &MyServer::on_user_authenticated);
     connect(thread, &MyThread::message_group_recieved, this, &MyServer::on_message_group_recieved);

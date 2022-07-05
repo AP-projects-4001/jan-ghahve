@@ -31,6 +31,7 @@ public:
     void add_item_to_listwidget(QString name);
     void get_allUsers_contacts();
     bool is_admin(QString id, QStringList admins_list);
+    QWidget* add_message(bool flag, QString sender, QString message);
 
 private slots:
     void on_usersFound(QStringList users);
@@ -44,6 +45,8 @@ private slots:
     void on_newchannel_clicked();
     void on_pbn_profile_clicked();
     void on_setting_clicked();
+    void on_userauthenticated(QString id);
+    void on_userunauthenticated(QString id);
 
 private:
     Ui::MainWindow *ui;
@@ -56,5 +59,6 @@ private:
     bool chat_switched;
     QArrayData user_contacts;
     QSystemTrayIcon* tray;
+
 };
 #endif // MAINWINDOW_H
