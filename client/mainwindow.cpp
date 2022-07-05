@@ -227,7 +227,7 @@ void MainWindow::pain()
                                   );
 }
 
-QWidget* MainWindow::add_message(bool flag, QString sender, QString message)
+void MainWindow::add_message(bool flag, QString sender, QString message)
 {
     //flag sarfan baraye test bode mitoni baresh dari va chiz dg bezari ya inke kol tabe yeja dg copypaste koni
     QWidget* container = new QWidget(ui->scrollAreaWidgetContents);
@@ -280,7 +280,6 @@ QWidget* MainWindow::add_message(bool flag, QString sender, QString message)
                                                 "*{border-radius:10px; "
                                                 "background-color: palette(base);"
                                                 "font-size:16px;}");
-    return container;
 }
 
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
@@ -310,7 +309,6 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         i--;
     }
 
-    //ui->scrollAreaWidgetContents->layout()->addWidget()
 
 
     //get chat
@@ -338,8 +336,8 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
                 flag = false;
             add_message(flag, sender, message);
         }
-        QWidget* item = add_message(flag, sender, message);
-        item->hide();
+        int a = ui->scrollArea->verticalScrollBar()->maximum() + 100;
+        ui->scrollArea->verticalScrollBar()->setSliderPosition(a);
     }
 
     QString status = contact_info["status"].toString();
@@ -375,10 +373,13 @@ void MainWindow::on_messagerecievd(QString senderId, QString message, QString ch
 {
     if(chatId == contact_info["id"].toString() && !chatId.isEmpty()){
         add_message(false, senderId, message);
-        ui->scrollAreaWidgetContents->scroll(ui->scrollAreaWidgetContents->x(),ui->scrollAreaWidgetContents->y());
+        int a = ui->scrollArea->verticalScrollBar()->maximum() + 100;
+        ui->scrollArea->verticalScrollBar()->setSliderPosition(a);
     }
     else if(senderId == contact_info["id"].toString() && chatId.isEmpty()){
         add_message(false, senderId, message);
+        int a = ui->scrollArea->verticalScrollBar()->maximum() + 100;
+        ui->scrollArea->verticalScrollBar()->setSliderPosition(a);
     }else{
         QFile file(user_data["id"].toString() + "%contacts.txt");
         file.open(QIODevice::Append);
@@ -396,7 +397,7 @@ void MainWindow::on_messagerecievd(QString senderId, QString message, QString ch
 void MainWindow::on_pbn_send_clicked()
 {
     //    send message
-    QString message_content = ui->ted_message->toPlainText();
+    QString message_content = ui->ted_message->text();
     ui->ted_message->clear();
     QJsonObject message;
     QString status = contact_info["status"].toString();
@@ -417,19 +418,10 @@ void MainWindow::on_pbn_send_clicked()
     {
         client->request_to_server(&message_b);
     }
-    QWidget* child = add_message(true, user_data["id"].toString(), message_content);
-    //ui->scrollAreaWidgetContents->scroll(-ui->scrollAreaWidgetContents->height(),-ui->scrollAreaWidgetContents->width());
-    //ui->scrollAreaWidgetContents->setFocusPolicy(Qt::ScrollEnd);
-    //ui->scrollArea->verticalScrollBar()->setValue(this->ui->scrollArea->verticalScrollBar()->maximum());
-    //int index = ui->scrollAreaWidgetContents->layout()->count() - 1;
-    //QWidget* widget = ui->scrollAreaWidgetContents->layout()->itemAt(1)->widget();
-    //ui->scrollArea->ensureWidgetVisible(widget);
-    //ui->scrollArea->verticalScrollBar()->setValue();
+    add_message(true, user_data["id"].toString(), message_content);
     int a = ui->scrollArea->verticalScrollBar()->maximum() + 100;
-    ui->scrollArea->verticalScrollBar()->setMaximum(a);
-    //ui->scrollArea->verticalScrollBar()->setValue(a);
     ui->scrollArea->verticalScrollBar()->setSliderPosition(a);
-    //ui->scrollArea->verticalScrollBar().
+
 }
 
 void MainWindow::on_newgroup_clicked()
@@ -516,3 +508,9 @@ void MainWindow::on_userunauthenticated(QString id)
         ui->pbn_status->setVisible(false);
     }
 }
+
+void MainWindow::on_pbn_search_2_clicked()
+{
+
+}
+

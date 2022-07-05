@@ -5,5 +5,6 @@
         <file>resourses/logo.png</file>
         <file>resourses/search1.png</file>
         <file>resourses/send.png</file>
+        <file>resourses/search.jpg</file>
     </qresource>
 </RCC>
