@@ -70,7 +70,7 @@
     <rect>
      <x>209</x>
      <y>283</y>
-     <width>121</width>
+     <width>131</width>
      <height>20</height>
     </rect>
    </property>
@@ -87,7 +87,7 @@ border-radius: 10%;</string>
     <rect>
      <x>209</x>
      <y>249</y>
-     <width>121</width>
+     <width>131</width>
      <height>20</height>
     </rect>
    </property>
@@ -104,7 +104,7 @@ border-radius: 10%;</string>
     <rect>
      <x>209</x>
      <y>215</y>
-     <width>121</width>
+     <width>131</width>
      <height>20</height>
     </rect>
    </property>
@@ -151,7 +151,7 @@ background-color: palette(base);</string>
     <rect>
      <x>209</x>
      <y>181</y>
-     <width>121</width>
+     <width>131</width>
      <height>20</height>
     </rect>
    </property>

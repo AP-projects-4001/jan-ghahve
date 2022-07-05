@@ -9,6 +9,7 @@ PvPermissions::PvPermissions(QString id, QString permissions, QWidget *parent) :
     id(id)
 {
     ui->setupUi(this);
+    setFixedSize(size());
 
     QFile file(id + "%contacts.txt");
     if(file.open(QIODevice::ReadOnly)){
