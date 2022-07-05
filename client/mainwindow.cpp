@@ -230,7 +230,7 @@ void MainWindow::pain()
                                  "*{"
                                   "border:hide;"
                                   "font-size:18px;"
-                                  "background-color:rgb(240, 240, 240);;"
+                                  "background-color:rgb(253, 240, 213);"
                                   "border-radius:8px;"
                                   "font:url(:/new/prefix1/Lato-Italic.ttf)"
                                   "}"
@@ -241,8 +241,10 @@ void MainWindow::the_Chat(int flag)
 {
     //flag sarfan baraye test bode mitoni baresh dari va chiz dg bezari ya inke kol tabe yeja dg copypaste koni
     QWidget* container = new QWidget(ui->scrollAreaWidgetContents);
+//    ui->scrollAreaWidgetContents->layout()->spacerItem().
     container->setStyleSheet("background: transparent;");
     container->setAutoFillBackground(false);
+    ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     QHBoxLayout* containerLayout = new QHBoxLayout();
     QListWidget* massage = new QListWidget();
@@ -250,10 +252,14 @@ void MainWindow::the_Chat(int flag)
 
     //payam ro to add item mitoni benevisi
 
-    massage->addItem("Name");
-    massage->addItem("this is a very very very very very very long test ");
-    massage->setMaximumWidth(270);
+//    massage->addItem("Name");
     massage->setWordWrap(true);
+//    QListWidgetItem *item = new QListWidgetItem;
+    massage->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    massage->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    massage->addItem("name\nthis is a very very very very very very long testxxxxxxxxxxxxxxxxxxxxxx\nxxzx");
+    massage->setMaximumWidth(270);
+//    massage.mar
 
 
     if(flag == 2)
@@ -283,7 +289,7 @@ void MainWindow::the_Chat(int flag)
                                                 "}"
                                                 "*{border-radius:10px; "
                                                 "background-color: palette(base);"
-                                                "font-size:19px;}");
+                                                "font-size:16px;}");
 }
 
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)

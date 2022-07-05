@@ -51,6 +51,8 @@
 border-radius:10px; 
 background-color:rgb(240, 240, 240);
 font-size:19px;
+background-color:rgb(253, 240, 213);
+
 
 </string>
      </property>
@@ -106,6 +108,9 @@ hover{
       </property>
       <property name="text">
        <string/>
+      </property>
+      <property name="shortcut">
+       <string>Return</string>
       </property>
      </widget>
     </widget>
@@ -274,6 +279,7 @@ border-radius:7px;
 font-size:18px;
 background-color:rgb(245, 245, 245);
 border-radius:8px;
+background-color:rgb(253, 240, 213);
 </string>
      </property>
     </widget>
