@@ -38,9 +38,12 @@ geraph::geraph(QString myUsername ,QJsonObject inp_allUsers_contacts ,QWidget *p
     //insert datas in first-listWidget
     for(QJsonValueRef user_ref:data_arr){
         contact = user_ref.toObject();
-        contact_name = contact["id"].toString();
-        QListWidgetItem* item = new QListWidgetItem(contact_name);
-        list_1->addItem(item);
+        if(contact["status"].toString()=="user")
+        {
+            contact_name = contact["id"].toString();
+            QListWidgetItem* item = new QListWidgetItem(contact_name);
+            list_1->addItem(item);
+        }
     }
 }
 
@@ -68,9 +71,13 @@ void geraph::on_listWidget_itemClicked(QListWidgetItem *item)
     for(QJsonValueRef user_ref:data_arr)
     {
         contact2 = user_ref.toObject();
-        contact2_id = contact2["id"].toString();
-        QListWidgetItem* item = new QListWidgetItem(contact2_id);
-        list_2->addItem(item);
+        if(contact2["status"].toString() == "user")
+        {
+            contact2_id = contact2["id"].toString();
+            QListWidgetItem* item = new QListWidgetItem(contact2_id);
+            list_2->addItem(item);
+        }
+
     }
 }
 
@@ -87,9 +94,12 @@ void geraph::on_listWidget_2_itemClicked(QListWidgetItem *item)
     for(QJsonValueRef user_ref:data_arr)
     {
         contact3 = user_ref.toObject();
-        contact3_id = contact3["id"].toString();
-        QListWidgetItem* item = new QListWidgetItem(contact3_id);
-        list_3->addItem(item);
+        if(contact3["status"].toString()=="user")
+        {
+            contact3_id = contact3["id"].toString();
+            QListWidgetItem* item = new QListWidgetItem(contact3_id);
+            list_3->addItem(item);
+        }
     }
 }
 

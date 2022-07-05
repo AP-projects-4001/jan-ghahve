@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include "adding_member.h"
 #include "ui_adding_member.h"
+#include "image_convertation.h"
 
 adding_member::adding_member(QString id, MyClient* client, QString chat, QWidget *parent) :
     QDialog(parent),
@@ -91,6 +92,23 @@ void adding_member::on_pbn_ok_clicked()
         return;
     }
     req_obj["max"] = counter + 1;
+    if(chat == "group")
+    {
+        QImage image(":/images/resourses/group_default_profile.jpg");
+        auto pix = QPixmap::fromImage(image);
+        ImageConvertation *imageConvertor = new ImageConvertation();
+        QJsonValue val = imageConvertor->jsonValFromPixmap(pix);
+        req_obj["img"] = val;
+    }
+    else
+    {
+        QImage image(":/images/resourses/channel_default_profile.jpg");
+        auto pix = QPixmap::fromImage(image);
+        ImageConvertation *imageConvertor = new ImageConvertation();
+        QJsonValue val = imageConvertor->jsonValFromPixmap(pix);
+        req_obj["img"] = val;
+    }
+
     QJsonDocument req_doc(req_obj);
     QByteArray req_b = req_doc.toJson();
     QByteArray response = client->request_to_server(&req_b);

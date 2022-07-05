@@ -38,10 +38,12 @@ QByteArray MyClient::request_to_server(QByteArray *data)
     QByteArray encoded_data = encryption->myEncode(*data);
     //Sending data to the server and waiting for getting a response
     clientSocket->write(encoded_data);
+    //qDebug()<<"msg write shod be server!";
     while(clientSocket->waitForBytesWritten(-1));
     if(clientSocket->waitForReadyRead(-1)){
         //Getting the responce and returning it
         QByteArray response = clientSocket->readAll();
+        //qDebug()<<"msg az server ooooomad!";
         //Decoding
         QByteArray decoded_response = encryption->myDecode(response);
         delete encryption;

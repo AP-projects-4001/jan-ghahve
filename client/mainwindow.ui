@@ -150,7 +150,7 @@ background-color:rgb(1, 125, 180);
 border-radius: 25px;</string>
      </property>
      <property name="text">
-      <string>aks</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLabel" name="contact_name">

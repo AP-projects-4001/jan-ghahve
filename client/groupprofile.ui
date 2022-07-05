@@ -37,34 +37,11 @@ color:rgb(34, 119, 255)</string>
     <string>Change Permissions</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pbn_profile">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>10</y>
-     <width>121</width>
-     <height>121</height>
-    </rect>
-   </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:white;
-border-radius: 50%;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <widget class="QLabel" name="lbl_name">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>150</y>
+     <x>60</x>
+     <y>180</y>
      <width>63</width>
      <height>20</height>
     </rect>
@@ -94,7 +71,7 @@ color:rgb(34, 119, 255)</string>
     <string>Change Profile</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="pbn_save">
    <property name="geometry">
     <rect>
      <x>200</x>
@@ -112,10 +89,10 @@ border-radius: 10%;
 color:rgb(245, 223, 187);</string>
    </property>
    <property name="text">
-    <string>Ok</string>
+    <string>Save</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="pbn_cancel">
    <property name="geometry">
     <rect>
      <x>90</x>
@@ -134,6 +111,22 @@ color:rgb(245, 223, 187);</string>
    </property>
    <property name="text">
     <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbl_img">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>30</y>
+     <width>131</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>

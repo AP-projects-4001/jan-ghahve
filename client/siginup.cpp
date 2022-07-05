@@ -7,6 +7,7 @@
 #include "myclient.h"
 #include "loading.h"
 #include "authenticationcode.h"
+#include "image_convertation.h"
 
 siginup::siginup(QWidget *parent) :
     QWidget(parent),
@@ -17,6 +18,13 @@ siginup::siginup(QWidget *parent) :
     client = new MyClient();
     ui->pbn_submit->setDefault(true);
     ui->pbn_submit->setFocus();
+    ui->led_name->setFocus();
+    setTabOrder(ui->led_name,ui->led_id);
+    setTabOrder(ui->led_id,ui->led_phonenumb);
+    setTabOrder(ui->led_phonenumb,ui->dateEdit);
+    setTabOrder(ui->dateEdit,ui->led_email);
+    setTabOrder(ui->led_email,ui->led_pass);
+    setTabOrder(ui->led_pass,ui->conf_pass);
 }
 
 siginup::~siginup()
@@ -79,9 +87,11 @@ void siginup::on_pbn_submit_clicked()
     user["password"] = pass;
     user["email"]=email;
     user["birthdate"] = birthdate.toString("dd/MM/yyyy");
-
-    qDebug()<<"---------sign up input---------";
-    qDebug()<<birthdate;
+    QImage image(":/images/resourses/default_profile.jpg");
+    auto pix = QPixmap::fromImage(image);
+    ImageConvertation *imageConvertor = new ImageConvertation();
+    QJsonValue val = imageConvertor->jsonValFromPixmap(pix);
+    user["img"] = val;
     user["number"] = number;
     user["state"] = "signup";
     QJsonDocument user_d(user);
@@ -91,9 +101,9 @@ void siginup::on_pbn_submit_clicked()
         //Sending data to the server and waiting for getting a response from it
         QByteArray response = client->request_to_server(&user_b);
         QString msg = QString(response);
-        qDebug()<<msg;
         //Check response(Successful or not)
         if(msg == "accepted"){
+            //qDebug()<<"msg accept oomad!";
             AuthenticationCode *auth = new AuthenticationCode(user, client);
             connect(auth, &AuthenticationCode::user_authenticated, this, &siginup::on_userauthenticated);
             auth->show();

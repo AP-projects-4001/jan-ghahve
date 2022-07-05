@@ -50,7 +50,7 @@ void MyThread::readyRead()
 {
     // get the information
     QByteArray encrypted_Data = socket->readAll();
-    //---------
+    //Decoding
     MyEncryption* encryption = new MyEncryption();
     QByteArray Data = encryption->myDecode(encrypted_Data);
     delete encryption;
