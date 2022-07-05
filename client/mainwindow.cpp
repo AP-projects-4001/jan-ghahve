@@ -5,6 +5,8 @@
 #include <QtCore>
 #include <QIcon>
 #include <QMenu>
+#include <QSpacerItem>
+#include <QScrollBar>
 #include "mainwindow.h"
 #include "mythread.h"
 #include "ui_mainwindow.h"
@@ -22,18 +24,6 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     ui->setupUi(this);
     setFixedSize(size());
     pain();
-
-    the_Chat(2);
-    the_Chat(1);
-    the_Chat(2);
-    the_Chat(1);
-    the_Chat(2);
-    the_Chat(1);
-    the_Chat(2);
-    the_Chat(1);
-    the_Chat(2);
-    the_Chat(2);
-
     QObject::connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
     QObject::connect(ui->actionlvl_3_graph,&QAction::triggered,this,&MainWindow::on_graph_clicked);
     connect(ui->actionNew_Channel,&QAction::triggered,this,&MainWindow::on_newchannel_clicked);
@@ -54,7 +44,7 @@ MainWindow::MainWindow(QString id, QWidget *parent)
 
 
     tray = new QSystemTrayIcon(this);
-    tray->setIcon(QIcon(":/images/resourses/chat.png"));
+    tray->setIcon(QIcon(":/images/resourses/logo.png"));
     tray->setVisible(true);
 
 }
@@ -237,7 +227,7 @@ void MainWindow::pain()
                                   );
 }
 
-void MainWindow::the_Chat(int flag)
+QWidget* MainWindow::add_message(bool flag, QString sender, QString message)
 {
     //flag sarfan baraye test bode mitoni baresh dari va chiz dg bezari ya inke kol tabe yeja dg copypaste koni
     QWidget* container = new QWidget(ui->scrollAreaWidgetContents);
@@ -257,18 +247,18 @@ void MainWindow::the_Chat(int flag)
 //    QListWidgetItem *item = new QListWidgetItem;
     massage->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     massage->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    massage->addItem("name\nthis is a very very very very very very long testxxxxxxxxxxxxxxxxxxxxxx\nxxzx");
+    massage->addItem(sender+ "\n" + message);
     massage->setMaximumWidth(270);
 
 
 
-    if(flag == 2)
+    if(flag)
     {
         //age khod karbar msg ro dad in if biad
         massage->setStyleSheet("background-color:rgb(255, 238, 221);");
         containerLayout->addStretch(0);
         containerLayout->addWidget(massage);
-        flag ++;
+        //flag ++;
     }else
     {
         //age kesi dg msg ro dad in if biad
@@ -290,6 +280,7 @@ void MainWindow::the_Chat(int flag)
                                                 "*{border-radius:10px; "
                                                 "background-color: palette(base);"
                                                 "font-size:16px;}");
+    return container;
 }
 
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
@@ -309,7 +300,18 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         contact_info = response_d.object();
         ui->contact_name->setText(contact_info["name"].toString());
     }
-    ui->ted_chat->clear();
+    QLayoutItem *child;
+    int i = ui->scrollAreaWidgetContents->layout()->count();
+    while (i>1) {
+        child = ui->scrollAreaWidgetContents->layout()->itemAt(1);
+        ui->scrollAreaWidgetContents->layout()->removeItem(child);
+        delete child->widget();
+        delete child;
+        i--;
+    }
+
+    //ui->scrollAreaWidgetContents->layout()->addWidget()
+
 
     //get chat
     QJsonObject chat;
@@ -324,25 +326,32 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         QByteArray response = client->request_to_server(&chatReq_b);
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         chat = response_d.object();
-        QString message;
+        QString message, sender;
         int max = chat["max"].toInt();
+        bool flag;
         for(int i=1; i<=max; i++){
-            message = chat[QString::number(i)].toObject()["sender"].toString() + \
-                    ":" + chat[QString::number(i)].toObject()["message"].toString();
-            ui->ted_chat->append(message);
+            sender = chat[QString::number(i)].toObject()["sender"].toString();
+            message = chat[QString::number(i)].toObject()["message"].toString();
+            if(sender == user_data["id"].toString())
+                flag = true;
+            else
+                flag = false;
+            add_message(flag, sender, message);
         }
+        QWidget* item = add_message(flag, sender, message);
+        item->hide();
     }
 
     QString status = contact_info["status"].toString();
     ui->pbn_profile->setEnabled(true);
     bool online = contact_info["online"].toBool();
     if(online){
-        ui->lbl_status->setText("Online");
-        ui->pbn_status->setStyleSheet("background-color:rgb(0, 255, 127);");
+        ui->lbl_status->setVisible(true);
+        ui->pbn_status->setVisible(true);
     }
     else{
-        ui->lbl_status->setText("Offline");
-        ui->pbn_status->setStyleSheet("background-color:rgb(105,105,105);");
+        ui->lbl_status->setVisible(false);
+        ui->pbn_status->setVisible(false);
     }
     if(status == "channel"){
         QStringList admins_list = contact_info["admins"].toString().split('%');
@@ -365,10 +374,11 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 void MainWindow::on_messagerecievd(QString senderId, QString message, QString chatId)
 {
     if(chatId == contact_info["id"].toString() && !chatId.isEmpty()){
-        ui->ted_chat->append(senderId + ":" + message);
+        add_message(false, senderId, message);
+        ui->scrollAreaWidgetContents->scroll(ui->scrollAreaWidgetContents->x(),ui->scrollAreaWidgetContents->y());
     }
     else if(senderId == contact_info["id"].toString() && chatId.isEmpty()){
-        ui->ted_chat->append(senderId + ":" + message);
+        add_message(false, senderId, message);
     }else{
         QFile file(user_data["id"].toString() + "%contacts.txt");
         file.open(QIODevice::Append);
@@ -378,7 +388,7 @@ void MainWindow::on_messagerecievd(QString senderId, QString message, QString ch
             stream << senderId << ',';
         }
         file.close();
-        tray->showMessage("Message from "+ senderId + " :", message ,QIcon(":/images/resourses/chat1.png"));
+        tray->showMessage("Message from "+ senderId + " :", message ,QIcon(":/images/resourses/chat.png"));
     }
 }
 
@@ -407,7 +417,19 @@ void MainWindow::on_pbn_send_clicked()
     {
         client->request_to_server(&message_b);
     }
-    ui->ted_chat->append(user_data["id"].toString()+":" + message_content);
+    QWidget* child = add_message(true, user_data["id"].toString(), message_content);
+    //ui->scrollAreaWidgetContents->scroll(-ui->scrollAreaWidgetContents->height(),-ui->scrollAreaWidgetContents->width());
+    //ui->scrollAreaWidgetContents->setFocusPolicy(Qt::ScrollEnd);
+    //ui->scrollArea->verticalScrollBar()->setValue(this->ui->scrollArea->verticalScrollBar()->maximum());
+    //int index = ui->scrollAreaWidgetContents->layout()->count() - 1;
+    //QWidget* widget = ui->scrollAreaWidgetContents->layout()->itemAt(1)->widget();
+    //ui->scrollArea->ensureWidgetVisible(widget);
+    //ui->scrollArea->verticalScrollBar()->setValue();
+    int a = ui->scrollArea->verticalScrollBar()->maximum() + 100;
+    ui->scrollArea->verticalScrollBar()->setMaximum(a);
+    //ui->scrollArea->verticalScrollBar()->setValue(a);
+    ui->scrollArea->verticalScrollBar()->setSliderPosition(a);
+    //ui->scrollArea->verticalScrollBar().
 }
 
 void MainWindow::on_newgroup_clicked()
@@ -482,15 +504,15 @@ void MainWindow::on_setting_clicked()
 void MainWindow::on_userauthenticated(QString id)
 {
     if(id == contact_info["id"].toString()){
-        ui->lbl_status->setText("Online");
-        ui->pbn_status->setStyleSheet("background-color:rgb(0, 255, 127);");
+        ui->lbl_status->setVisible(true);
+        ui->pbn_status->setVisible(true);
     }
 }
 
 void MainWindow::on_userunauthenticated(QString id)
 {
     if(id == contact_info["id"].toString()){
-        ui->lbl_status->setText("Offline");
-        ui->pbn_status->setStyleSheet("background-color:rgb(105,105,105);");
+        ui->lbl_status->setVisible(false);
+        ui->pbn_status->setVisible(false);
     }
 }
