@@ -11,11 +11,18 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Encryption/myencryption.cpp \
+    Encryption/qaesencryption.cpp \
     adding_member.cpp \
+    authenticationcode.cpp \
+    channelpermissions.cpp \
+    groupprofile.cpp \
     loading.cpp \
     main.cpp \
     mainwindow.cpp \
+    pvpermissions.cpp \
     setting.cpp \
+    showingprof.cpp \
     siginup.cpp \
     signin.cpp \
     myclient.cpp \
@@ -26,10 +33,20 @@ SOURCES += \
 
 
 HEADERS += \
+    Encryption/aesni_enc_cbc.h \
+    Encryption/aesni_enc_ecb.h \
+    Encryption/aesni_key_exp.h \
+    Encryption/myencryption.h \
+    Encryption/qaesencryption.h \
     adding_member.h \
+    authenticationcode.h \
+    channelpermissions.h \
+    groupprofile.h \
     loading.h \
     mainwindow.h \
+    pvpermissions.h \
     setting.h \
+    showingprof.h \
     siginup.h \
     signin.h \
     myclient.h \
@@ -40,9 +57,14 @@ HEADERS += \
 
 FORMS += \
     adding_member.ui \
+    authenticationcode.ui \
+    channelpermissions.ui \
+    groupprofile.ui \
     loading.ui \
     mainwindow.ui \
+    pvpermissions.ui \
     setting.ui \
+    showingprof.ui \
     siginup.ui \
     signin.ui \
     profile.ui \
@@ -55,4 +77,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    MyRes.qrc
+    MyRes.qrc \
+
+

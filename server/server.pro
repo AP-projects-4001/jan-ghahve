@@ -8,10 +8,13 @@ CONFIG -= app_bundle
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        Encryption/myencryption.cpp \
+        Encryption/qaesencryption.cpp \
         channel.cpp \
         main.cpp \
         myserver.cpp \
-        mythread.cpp
+        mythread.cpp \
+        smtp.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -19,6 +22,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    Encryption/aesni_enc_cbc.h \
+    Encryption/aesni_enc_ecb.h \
+    Encryption/aesni_key_exp.h \
+    Encryption/myencryption.h \
+    Encryption/qaesencryption.h \
     channel.h \
     myserver.h \
-    mythread.h
+    mythread.h \
+    smtp.h

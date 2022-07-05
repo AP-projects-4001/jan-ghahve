@@ -17,9 +17,8 @@ class Profile : public QDialog
     Q_OBJECT
 
 public:
-    explicit Profile(QString id ,QWidget *parent = nullptr);
+    explicit Profile(QString contact_id, QJsonObject user_data, QWidget *parent = nullptr);
     ~Profile();
-    void get_user_data(QString id);
     void show_informations();
 
 private slots:
@@ -28,6 +27,7 @@ private slots:
 private:
     Ui::Profile *ui;
     QJsonObject user_data;
+    QString contact_id;
 };
 
 #endif // PROFILE_H

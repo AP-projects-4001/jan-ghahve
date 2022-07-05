@@ -111,6 +111,7 @@ QString Channel::signup(QJsonObject data) //data = new user data
     user["password"] = data["password"];
     json_arr.append(user);
     data.remove("password");
+    data["permissions"] = "";
     profiles_arr.append(data);
 
     QJsonObject result;
@@ -167,7 +168,7 @@ QString Channel::signin(QJsonObject data)
 }
 
 //Getting profile data from database
-QByteArray Channel::get_info(QString id)
+QJsonObject Channel::get_info(QString id)
 {
     //----LOCK ----
     ch_mutex->lock();
@@ -184,10 +185,9 @@ QByteArray Channel::get_info(QString id)
         //Find id in the whole database, then return it
         if(user["id"] == id)
         {
-            QJsonDocument temp_doc(user);
             //---- UnLock -----
             ch_mutex->unlock();
-            return temp_doc.toJson();
+            return user;
         }
     }
     //if id belongs to a group
@@ -198,10 +198,9 @@ QByteArray Channel::get_info(QString id)
         user["name"] = id;
         user["status"] = "group";
         user.remove("max");
-        QJsonDocument user_doc(user);
         //---- UnLock -----
         ch_mutex->unlock();
-        return user_doc.toJson();
+        return user;
     }
 
     //if id belong to a channel
@@ -212,14 +211,13 @@ QByteArray Channel::get_info(QString id)
         user["name"] = id;
         user["status"] = "channel";
         user.remove("max");
-        QJsonDocument user_doc(user);
         //---- UnLock -----
         ch_mutex->unlock();
-        return user_doc.toJson();
+        return user;
     }
     //---- UnLock -----
     ch_mutex->unlock();
-    return 0;
+    return user;
 }
 
 QByteArray Channel::get_info_forEdit(QString id)
@@ -452,8 +450,6 @@ QStringList Channel::create_group_or_channel(QJsonObject data, QString chat)
 
 void Channel::add_contact(QString id1, QString id2, QString status)
 {
-    //----LOCK ----
-    ch_mutex->lock();
     QJsonObject contact;
     contact["id"] = id2;
     contact["status"] = status;
@@ -475,8 +471,6 @@ void Channel::add_contact(QString id1, QString id2, QString status)
     }
     contacts_obj[id1] = userContacts;
     write_to_file("contacts.json", contacts_obj);
-    //---- UnLock -----
-    ch_mutex->unlock();
 }
 
 QStringList Channel::send_message_to_group_or_channel(QJsonObject data, QString chat)
@@ -590,16 +584,16 @@ QString Channel::edit_profile(QJsonObject data)
 
         return "Email already taken";
     }
-    QJsonObject user3;
-    QJsonObject user4;
+
+
     int location = 0;
     for(QJsonValueRef user_ref:qAsConst(profiles_arr))
     {
-        user3 = user_ref.toObject();
-        if(user3["id"] == data["id"])
+        user = user_ref.toObject();
+        if(user["id"] == data["id"])
             break;
         else
-            location = location+1;
+            location++;
     }
     json_arr.removeAt(location);
     profiles_arr.removeAt(location);
@@ -607,12 +601,8 @@ QString Channel::edit_profile(QJsonObject data)
     temp["id"] = data["id"];
     temp["password"] = data["password"];
     json_arr.append(temp);
-    temp.remove("password");
-    temp["name"] = data["name"];
-    temp["birthdate"] = data["birthdate"];
-    temp["number"] = data["number"];
-    temp["email"] = data["email"];
-    profiles_arr.append(temp);
+    data.remove("password");
+    profiles_arr.append(data);
 
     QJsonObject result;
     result["users"] = json_arr;
