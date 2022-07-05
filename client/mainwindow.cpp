@@ -296,7 +296,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         contact_info = response_d.object();
         ui->contact_name->setText(contact_info["name"].toString());
     }
-    ui->ted_chat->clear();
+    //ui->ted_chat->clear();
 
     //get chat
     QJsonObject chat;
@@ -316,7 +316,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         for(int i=1; i<=max; i++){
             message = chat[QString::number(i)].toObject()["sender"].toString() + \
                     ":" + chat[QString::number(i)].toObject()["message"].toString();
-            ui->ted_chat->append(message);
+            //ui->ted_chat->append(message);
         }
     }
 
@@ -352,10 +352,10 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 void MainWindow::on_messagerecievd(QString senderId, QString message, QString chatId)
 {
     if(chatId == contact_info["id"].toString() && !chatId.isEmpty()){
-        ui->ted_chat->append(senderId + ":" + message);
+        //ui->ted_chat->append(senderId + ":" + message);
     }
     else if(senderId == contact_info["id"].toString() && chatId.isEmpty()){
-        ui->ted_chat->append(senderId + ":" + message);
+        //ui->ted_chat->append(senderId + ":" + message);
     }else{
         QFile file(user_data["id"].toString() + "%contacts.txt");
         file.open(QIODevice::Append);
@@ -394,7 +394,7 @@ void MainWindow::on_pbn_send_clicked()
     {
         client->request_to_server(&message_b);
     }
-    ui->ted_chat->append(user_data["id"].toString()+":" + message_content);
+    //ui->ted_chat->append(user_data["id"].toString()+":" + message_content);
 }
 
 void MainWindow::on_newgroup_clicked()
