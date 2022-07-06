@@ -32,8 +32,10 @@ public:
     void get_allUsers_contacts();
     bool is_admin(QString id, QStringList admins_list);
     void add_message(bool flag, QString sender, QString message);
+    void append_message_in_database(QString message, QString senderId);
 
 private slots:
+    void set_msesage_widget_to_default(int i);
     void on_usersFound(QStringList users);
     void on_listWidget_itemClicked(QListWidgetItem *item);
     void on_messagerecievd(QString senderId, QString message, QString chatId);
