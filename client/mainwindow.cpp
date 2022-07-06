@@ -17,6 +17,7 @@
 #include "profile.h"
 #include "setting.h"
 #include "image_convertation.h"
+#include "msg_options.h"
 
 MainWindow::MainWindow(QString id, QWidget *parent)
     : QMainWindow(parent)
@@ -24,6 +25,7 @@ MainWindow::MainWindow(QString id, QWidget *parent)
 {
     ui->setupUi(this);
     ui->led_search->hide();
+    ui->pbn_search_2->setEnabled(false);
     setFixedSize(size());
     pain();
     QObject::connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
@@ -237,33 +239,34 @@ void MainWindow::add_message(bool flag, QString sender, QString message)
     ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     QHBoxLayout* containerLayout = new QHBoxLayout();
-    QListWidget* massage = new QListWidget();
-    massage->setAutoFillBackground(false);
+    QListWidget* massage_widget = new QListWidget();
+    massage_widget->setAutoFillBackground(false);
 
     //payam ro to add item mitoni benevisi
 
 //    massage->addItem("Name");
-    massage->setWordWrap(true);
+    massage_widget->setWordWrap(true);
 //    QListWidgetItem *item = new QListWidgetItem;
-    massage->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    massage->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    massage->addItem(sender+ "\n" + message);
-    massage->setMaximumWidth(270);
+    massage_widget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    massage_widget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    massage_widget->addItem(sender+ "\n" + message);
+    massage_widget->setMaximumWidth(270);
 
-
+    if(sender == user_data["id"].toString())
+        connect(massage_widget, &QListWidget::itemClicked , this, &MainWindow::on_chat_message_clicked);
 
     if(flag)
     {
         //age khod karbar msg ro dad in if biad
-        massage->setStyleSheet("background-color:rgb(255, 238, 221);");
+        massage_widget->setStyleSheet("background-color:rgb(255, 238, 221);");
         containerLayout->addStretch(0);
-        containerLayout->addWidget(massage);
+        containerLayout->addWidget(massage_widget);
         //flag ++;
     }else
     {
         //age kesi dg msg ro dad in if biad
-        massage->setStyleSheet("background-color:rgb(189, 244, 255);");
-        containerLayout->addWidget(massage);
+        massage_widget->setStyleSheet("background-color:rgb(189, 244, 255);");
+        containerLayout->addWidget(massage_widget);
         containerLayout->addStretch(0);
     }
 
@@ -303,6 +306,57 @@ void MainWindow::append_message_in_database(QString message, QString senderId)
     file2.close();
 }
 
+void MainWindow::get_chat()
+{
+    //clearing chat page
+    QLayoutItem *child;
+    int i = ui->scrollAreaWidgetContents->layout()->count();
+    while (i>1) {
+        child = ui->scrollAreaWidgetContents->layout()->itemAt(1);
+        ui->scrollAreaWidgetContents->layout()->removeItem(child);
+        delete child->widget();
+        delete child;
+        i--;
+    }
+
+    QJsonObject chat;
+    QJsonObject chatReq;
+    chatReq["status"] = "chatInfo";
+    chatReq["id1"] = user_data["id"];
+    chatReq["id2"] = contact_info["id"];
+    chatReq["chat"] = contact_info["status"];
+    QJsonDocument chatReq_d(chatReq);
+    QByteArray chatReq_b = chatReq_d.toJson();
+    if(client->is_client_connectd()){
+        QByteArray response = client->request_to_server(&chatReq_b);
+        QFile file(user_data["id"].toString() + "%" + contact_info["id"].toString() + ".json");
+        file.open(QIODevice::WriteOnly);
+        file.write(response);
+        file.close();
+        QJsonDocument response_d = QJsonDocument::fromJson(response);
+        chat = response_d.object();
+        QString message, sender;
+        int max = chat["max"].toInt();
+        bool flag;
+        QJsonObject msg;
+        for(int i=1; i<=max; i++){
+            msg = chat[QString::number(i)].toObject();
+            if(msg.isEmpty())
+                continue;
+            sender = msg["sender"].toString();
+            message = msg["message"].toString();
+            if(sender == user_data["id"].toString())
+                flag = true;
+            else
+                flag = false;
+            add_message(flag, sender, message);
+        }
+        int a = ui->scrollArea->verticalScrollBar()->maximum() + 100;
+        ui->scrollArea->verticalScrollBar()->setMaximum(a);
+        ui->scrollArea->verticalScrollBar()->setSliderPosition(a);
+    }
+}
+
 void MainWindow::set_msesage_widget_to_default(int i)
 {
     ui->scrollAreaWidgetContents->layout()->itemAt(i)->widget()->setStyleSheet("background-color:rgb(0, 94, 140);");
@@ -310,7 +364,8 @@ void MainWindow::set_msesage_widget_to_default(int i)
 
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
-
+    //get contact info
+    ui->pbn_search_2->setEnabled(true);
     QString id = item->text();
     QJsonObject request;
     request["status"] = "userInfo";
@@ -324,15 +379,6 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         contact_info = response_d.object();
         ui->contact_name->setText(contact_info["name"].toString());
-    }
-    QLayoutItem *child;
-    int i = ui->scrollAreaWidgetContents->layout()->count();
-    while (i>1) {
-        child = ui->scrollAreaWidgetContents->layout()->itemAt(1);
-        ui->scrollAreaWidgetContents->layout()->removeItem(child);
-        delete child->widget();
-        delete child;
-        i--;
     }
 
     //---------- SHOW PROFILE IMAGE ---------
@@ -400,38 +446,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     //ui->scrollAreaWidgetContents->layout()->addWidget()
 
     //get chat
-    QJsonObject chat;
-    QJsonObject chatReq;
-    chatReq["status"] = "chatInfo";
-    chatReq["id1"] = user_data["id"];
-    chatReq["id2"] = contact_info["id"];
-    chatReq["chat"] = contact_info["status"];
-    QJsonDocument chatReq_d(chatReq);
-    QByteArray chatReq_b = chatReq_d.toJson();
-    if(client->is_client_connectd()){
-        QByteArray response = client->request_to_server(&chatReq_b);
-        QFile file(user_data["id"].toString() + "%" + contact_info["id"].toString() + ".json");
-        file.open(QIODevice::WriteOnly);
-        file.write(response);
-        file.close();
-        QJsonDocument response_d = QJsonDocument::fromJson(response);
-        chat = response_d.object();
-        QString message, sender;
-        int max = chat["max"].toInt();
-        bool flag;
-        for(int i=1; i<=max; i++){
-            sender = chat[QString::number(i)].toObject()["sender"].toString();
-            message = chat[QString::number(i)].toObject()["message"].toString();
-            if(sender == user_data["id"].toString())
-                flag = true;
-            else
-                flag = false;
-            add_message(flag, sender, message);
-        }
-        int a = ui->scrollArea->verticalScrollBar()->maximum() + 100;
-        ui->scrollArea->verticalScrollBar()->setMaximum(a);
-        ui->scrollArea->verticalScrollBar()->setSliderPosition(a);
-    }
+    get_chat();
 
     QString status = contact_info["status"].toString();
     ui->pbn_profile->setEnabled(true);
@@ -444,6 +459,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         ui->lbl_status->setVisible(false);
         ui->pbn_status->setVisible(false);
     }
+
     if(status == "channel"){
         QStringList admins_list = contact_info["admins"].toString().split('%');
         QString user_id = user_data["id"].toString();
@@ -493,6 +509,8 @@ void MainWindow::on_pbn_send_clicked()
 {
     //    send message
     QString message_content = ui->ted_message->text();
+    if(message_content.isEmpty())
+        return;
     ui->ted_message->clear();
     QJsonObject message;
     QString status = contact_info["status"].toString();
@@ -619,6 +637,42 @@ void MainWindow::on_userunauthenticated(QString id)
     }
 }
 
+void MainWindow::on_chat_message_clicked(QListWidgetItem *item)
+{
+    QFile file(user_data["id"].toString() + "%" + contact_info["id"].toString() + ".json");
+    file.open(QIODevice::ReadOnly);
+    QByteArray data_b = file.readAll();
+    file.close();
+    QJsonDocument data_doc = QJsonDocument::fromJson(data_b);
+    QJsonObject data_obj = data_doc.object();
+    int deleted=0;
+    QJsonObject message;
+    int index = ui->scrollAreaWidgetContents->layout()->indexOf(item->listWidget()->parentWidget());
+    int counter = 0, i =1;
+    while (counter != index) {
+        message = data_obj[QString::number(i)].toObject();
+        if(message.isEmpty())
+            deleted++;
+        else
+            counter++;
+        i++;
+    }
+
+    QJsonObject data;
+    data["message"] = item->text();
+    if(contact_info["status"].isNull())
+        data["chat"] = "pv";
+    else
+        data["chat"] = contact_info["status"];
+
+    data["sender"] = user_data["id"];
+    data["id2"] = contact_info["id"];
+    data["index"] = index + deleted;
+    Msg_Options* options = new Msg_Options(client, data, this);
+    connect(options, &Msg_Options::message_edited, this, &MainWindow::on_message_edited);
+    options->show();
+}
+
 void MainWindow::on_pbn_search_2_clicked()
 {
     if(ui->led_search->isHidden()){
@@ -635,13 +689,19 @@ void MainWindow::on_pbn_search_2_clicked()
     QJsonDocument data_doc = QJsonDocument::fromJson(data_b);
     QJsonObject data_obj = data_doc.object();
     int max = data_obj["max"].toInt(), index = -1;
+    int deleted=0;
     QJsonObject message;
     for(int i=1;i<=max;i++){
         message = data_obj[QString::number(i)].toObject();
+        if(message.isEmpty()){
+            deleted++;
+            continue;
+        }
         if(message["message"].toString().contains(text)){
-            ui->scrollArea->verticalScrollBar()->setSliderPosition(i*70);
-            ui->scrollAreaWidgetContents->layout()->itemAt(i)->widget()->setStyleSheet("background-color:rgb(140, 56, 235);");
-            index = i;
+            int numb = i-1 ? i>1 : 0;
+            ui->scrollArea->verticalScrollBar()->setSliderPosition(numb*70);
+            ui->scrollAreaWidgetContents->layout()->itemAt(i - deleted)->widget()->setStyleSheet("background-color:rgb(140, 56, 235);");
+            index = i - deleted;
             break;
         }
     }
@@ -655,5 +715,10 @@ void MainWindow::on_pbn_search_2_clicked()
         ui->scrollAreaWidgetContents->layout()->itemAt(index)->widget()->setStyleSheet("background-color:rgb(0, 94, 140);");
     });
     timer->start();
+}
+
+void MainWindow::on_message_edited()
+{
+    get_chat();
 }
 
