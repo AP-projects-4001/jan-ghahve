@@ -9,6 +9,7 @@ search::search(MyClient* client,QWidget *parent) :
     ui(new Ui::search)
 {
     ui->setupUi(this);
+    setFixedSize(size());
     this->client = client;
     if(client->is_client_connectd()){
         QJsonObject request;
@@ -20,7 +21,7 @@ search::search(MyClient* client,QWidget *parent) :
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         all_users = response_d.object();
     }
-    setFixedSize(size());
+
 }
 
 search::~search()
