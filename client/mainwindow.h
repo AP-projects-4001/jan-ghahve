@@ -31,9 +31,11 @@ public:
     void add_item_to_listwidget(QString name);
     void get_allUsers_contacts();
     bool is_admin(QString id, QStringList admins_list);
-    QWidget* add_message(bool flag, QString sender, QString message);
+    void add_message(bool flag, QString sender, QString message);
+    void append_message_in_database(QString message, QString senderId);
 
 private slots:
+    void set_msesage_widget_to_default(int i);
     void on_usersFound(QStringList users);
     void on_listWidget_itemClicked(QListWidgetItem *item);
     void on_messagerecievd(QString senderId, QString message, QString chatId);
@@ -47,6 +49,8 @@ private slots:
     void on_setting_clicked();
     void on_userauthenticated(QString id);
     void on_userunauthenticated(QString id);
+
+    void on_pbn_search_2_clicked();
 
 private:
     Ui::MainWindow *ui;

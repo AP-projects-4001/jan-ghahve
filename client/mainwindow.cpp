@@ -23,6 +23,7 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->led_search->hide();
     setFixedSize(size());
     pain();
     QObject::connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
@@ -226,7 +227,7 @@ void MainWindow::pain()
                                   );
 }
 
-QWidget* MainWindow::add_message(bool flag, QString sender, QString message)
+void MainWindow::add_message(bool flag, QString sender, QString message)
 {
     //flag sarfan baraye test bode mitoni baresh dari va chiz dg bezari ya inke kol tabe yeja dg copypaste koni
     QWidget* container = new QWidget(ui->scrollAreaWidgetContents);
@@ -279,7 +280,32 @@ QWidget* MainWindow::add_message(bool flag, QString sender, QString message)
                                                 "*{border-radius:10px; "
                                                 "background-color: palette(base);"
                                                 "font-size:16px;}");
-    return container;
+}
+
+void MainWindow::append_message_in_database(QString message, QString senderId)
+{
+    QFile file(user_data["id"].toString() + "%" + contact_info["id"].toString() + ".json");
+    file.open(QIODevice::ReadOnly);
+    QByteArray data_b = file.readAll();
+    file.close();
+    QJsonDocument data_doc = QJsonDocument::fromJson(data_b);
+    QJsonObject data_obj = data_doc.object();
+    int number =data_obj["max"].toInt() + 1;
+    data_obj["max"] = number;
+    QJsonObject msg;
+    msg["sender"] = senderId;
+    msg["message"] = message;
+    data_obj[QString::number(number)] = msg;
+    QJsonDocument d_doc(data_obj);
+    QFile file2(user_data["id"].toString() + "%" + contact_info["id"].toString());
+    file2.open(QIODevice::WriteOnly);
+    file2.write(d_doc.toJson());
+    file2.close();
+}
+
+void MainWindow::set_msesage_widget_to_default(int i)
+{
+    ui->scrollAreaWidgetContents->layout()->itemAt(i)->widget()->setStyleSheet("background-color:rgb(0, 94, 140);");
 }
 
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
@@ -384,6 +410,10 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     QByteArray chatReq_b = chatReq_d.toJson();
     if(client->is_client_connectd()){
         QByteArray response = client->request_to_server(&chatReq_b);
+        QFile file(user_data["id"].toString() + "%" + contact_info["id"].toString() + ".json");
+        file.open(QIODevice::WriteOnly);
+        file.write(response);
+        file.close();
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         chat = response_d.object();
         QString message, sender;
@@ -398,8 +428,9 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
                 flag = false;
             add_message(flag, sender, message);
         }
-        QWidget* item = add_message(flag, sender, message);
-        item->hide();
+        int a = ui->scrollArea->verticalScrollBar()->maximum() + 100;
+        ui->scrollArea->verticalScrollBar()->setMaximum(a);
+        ui->scrollArea->verticalScrollBar()->setSliderPosition(a);
     }
 
     QString status = contact_info["status"].toString();
@@ -434,10 +465,17 @@ void MainWindow::on_messagerecievd(QString senderId, QString message, QString ch
 {
     if(chatId == contact_info["id"].toString() && !chatId.isEmpty()){
         add_message(false, senderId, message);
-        ui->scrollAreaWidgetContents->scroll(ui->scrollAreaWidgetContents->x(),ui->scrollAreaWidgetContents->y());
+        int a = ui->scrollArea->verticalScrollBar()->maximum() + 100;
+        ui->scrollArea->verticalScrollBar()->setMaximum(a);
+        ui->scrollArea->verticalScrollBar()->setSliderPosition(a);
+        append_message_in_database(message, senderId);
     }
     else if(senderId == contact_info["id"].toString() && chatId.isEmpty()){
         add_message(false, senderId, message);
+        int a = ui->scrollArea->verticalScrollBar()->maximum() + 100;
+        ui->scrollArea->verticalScrollBar()->setMaximum(a);
+        ui->scrollArea->verticalScrollBar()->setSliderPosition(a);
+        append_message_in_database(message, senderId);
     }else{
         QFile file(user_data["id"].toString() + "%contacts.txt");
         file.open(QIODevice::Append);
@@ -475,19 +513,11 @@ void MainWindow::on_pbn_send_clicked()
     {
         client->request_to_server(&message_b);
     }
-    QWidget* child = add_message(true, user_data["id"].toString(), message_content);
-    //ui->scrollAreaWidgetContents->scroll(-ui->scrollAreaWidgetContents->height(),-ui->scrollAreaWidgetContents->width());
-    //ui->scrollAreaWidgetContents->setFocusPolicy(Qt::ScrollEnd);
-    //ui->scrollArea->verticalScrollBar()->setValue(this->ui->scrollArea->verticalScrollBar()->maximum());
-    //int index = ui->scrollAreaWidgetContents->layout()->count() - 1;
-    //QWidget* widget = ui->scrollAreaWidgetContents->layout()->itemAt(1)->widget();
-    //ui->scrollArea->ensureWidgetVisible(widget);
-    //ui->scrollArea->verticalScrollBar()->setValue();
+    add_message(true, user_data["id"].toString(), message_content);
     int a = ui->scrollArea->verticalScrollBar()->maximum() + 100;
     ui->scrollArea->verticalScrollBar()->setMaximum(a);
-    //ui->scrollArea->verticalScrollBar()->setValue(a);
     ui->scrollArea->verticalScrollBar()->setSliderPosition(a);
-    //ui->scrollArea->verticalScrollBar().
+    append_message_in_database(message_content, user_data["id"].toString());
 }
 
 void MainWindow::on_newgroup_clicked()
@@ -588,3 +618,42 @@ void MainWindow::on_userunauthenticated(QString id)
         ui->pbn_status->setVisible(false);
     }
 }
+
+void MainWindow::on_pbn_search_2_clicked()
+{
+    if(ui->led_search->isHidden()){
+        ui->led_search->show();
+        return;
+    }
+    QString text = ui->led_search->text();
+    if(text.isEmpty())
+        return;
+    QFile file(user_data["id"].toString() + "%" + contact_info["id"].toString() + ".json");
+    file.open(QIODevice::ReadOnly);
+    QByteArray data_b = file.readAll();
+    file.close();
+    QJsonDocument data_doc = QJsonDocument::fromJson(data_b);
+    QJsonObject data_obj = data_doc.object();
+    int max = data_obj["max"].toInt(), index = -1;
+    QJsonObject message;
+    for(int i=1;i<=max;i++){
+        message = data_obj[QString::number(i)].toObject();
+        if(message["message"].toString().contains(text)){
+            ui->scrollArea->verticalScrollBar()->setSliderPosition(i*70);
+            ui->scrollAreaWidgetContents->layout()->itemAt(i)->widget()->setStyleSheet("background-color:rgb(140, 56, 235);");
+            index = i;
+            break;
+        }
+    }
+    if(index < 0){
+        return;
+    }
+    QTimer* timer = new QTimer();
+    timer->setInterval(1000); //Time in milliseconds
+    timer->setSingleShot(true); //Setting this to true makes the timer run only once
+    connect(timer, &QTimer::timeout, this, [=](){
+        ui->scrollAreaWidgetContents->layout()->itemAt(index)->widget()->setStyleSheet("background-color:rgb(0, 94, 140);");
+    });
+    timer->start();
+}
+
