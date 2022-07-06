@@ -9,6 +9,7 @@
 #include "loading.h"
 #include <QLineEdit>
 #include "authenticationcode.h"
+#include "forgetpass.h"
 
 signin::signin(QWidget *parent) :
     QDialog(parent),
@@ -86,5 +87,12 @@ void signin::on_pbn_cancel_clicked()
     loading_page->setFixedSize(205,239);
     loading_page->show();
     this->close();
+}
+
+
+void signin::on_pbn_forgetpass_clicked()
+{
+    ForgetPass *forgetPass_window = new ForgetPass();
+    forgetPass_window->show();
 }
 
