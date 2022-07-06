@@ -263,11 +263,15 @@ color:rgb(255, 183, 3);</string>
   <widget class="QLabel" name="lbl_img">
    <property name="geometry">
     <rect>
-     <x>140</x>
+     <x>150</x>
      <y>20</y>
-     <width>131</width>
+     <width>121</width>
      <height>121</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:white;
+border-radius:60%;</string>
    </property>
    <property name="text">
     <string/>
