@@ -17,6 +17,7 @@
 #include "profile.h"
 #include "setting.h"
 #include "image_convertation.h"
+#include "loading.h"
 
 MainWindow::MainWindow(QString id, QWidget *parent)
     : QMainWindow(parent)
@@ -25,11 +26,15 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     ui->setupUi(this);
     ui->led_search->hide();
     setFixedSize(size());
+    ui->groupBox_2->hide();
+    ui->groupBox_4->hide();
+    ui->scrollArea->hide();
     pain();
     QObject::connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
     QObject::connect(ui->actionlvl_3_graph,&QAction::triggered,this,&MainWindow::on_graph_clicked);
     connect(ui->actionNew_Channel,&QAction::triggered,this,&MainWindow::on_newchannel_clicked);
     QObject::connect(ui->actionprofile,&QAction::triggered,this,&MainWindow::on_setting_clicked);
+    QObject::connect(ui->actionLogout,&QAction::triggered,this,&MainWindow::on_logout_clicked);
 
     client = new MyClient();
     get_user_info(id);
@@ -310,7 +315,9 @@ void MainWindow::set_msesage_widget_to_default(int i)
 
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
-
+    ui->groupBox_2->show();
+    ui->groupBox_4->show();
+    ui->scrollArea->show();
     QString id = item->text();
     QJsonObject request;
     request["status"] = "userInfo";
@@ -351,6 +358,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         }
         else
         {
+            //Get image profile data from server
             QJsonObject req;
             req["status"] = "getProfileImage";
             req["id"] = contact_info["id"].toString();
@@ -552,20 +560,6 @@ void MainWindow::on_newchannel_clicked()
     add_member->show();
 }
 
-//void MainWindow::on_pbn_profile_clicked()
-//{
-//    if(contact_info["status"].isNull())
-//    {
-//        Profile *profile= new Profile(user_data["id"].toString(), contact_info, this);
-//        profile->show();
-//    }
-//    else
-//    {
-//        GroupProfile* groupProfile = new GroupProfile(contact_info["id"].toString(), this);
-//        groupProfile->show();
-//    }
-//}
-
 void MainWindow::on_pbn_contact_name_clicked()
 {
     if(contact_info["status"].isNull())
@@ -578,6 +572,16 @@ void MainWindow::on_pbn_contact_name_clicked()
         GroupProfile* groupProfile = new GroupProfile(contact_info["id"].toString(), this);
         groupProfile->show();
     }
+}
+
+void MainWindow::on_logout_clicked()
+{
+    client->disconnect_from_server();
+    this->close();
+    this->destroy(true, true);
+    this->deleteLater();
+    loading *loading_page = new loading();
+    loading_page->show();
 }
 
 

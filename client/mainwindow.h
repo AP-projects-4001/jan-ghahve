@@ -45,14 +45,12 @@ private slots:
     void on_pbn_search_clicked();
     void on_groupcreated(QString id);
     void on_newchannel_clicked();
-//    void on_pbn_profile_clicked();
     void on_setting_clicked();
     void on_userauthenticated(QString id);
     void on_userunauthenticated(QString id);
-
     void on_pbn_search_2_clicked();
-
     void on_pbn_contact_name_clicked();
+    void on_logout_clicked();
 
 private:
     Ui::MainWindow *ui;

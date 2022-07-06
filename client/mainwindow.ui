@@ -205,7 +205,7 @@ border-radius:8px;</string>
     <widget class="QPushButton" name="pbn_contact_name">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>140</x>
        <y>10</y>
        <width>81</width>
        <height>31</height>
