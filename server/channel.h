@@ -25,8 +25,9 @@ public:
     QStringList send_message_to_group_or_channel(QJsonObject data, QString chat);
     QByteArray channelInfo(QString id);
     void modify_channel_admins(QString id, QString admins);
-
+    QByteArray get_profile_image(QJsonObject data);
     QString edit_profile(QJsonObject data);
+    QString channel_group_profile_edited(QJsonObject data);
 private:
     QString path;
     void write_to_file(QString file_path, QJsonObject result);

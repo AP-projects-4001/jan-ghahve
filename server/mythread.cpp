@@ -159,17 +159,15 @@ void MyThread::readyRead()
 {
     // get the information
     QByteArray encoded_Data = socket->readAll();
-    //QByteArray Data = socket->readAll();
     //Decoding
     // will write on server side window
     MyEncryption *encryption = new MyEncryption();
     QByteArray Data = encryption->myDecode(encoded_Data);
-    qDebug() << socketDescriptor << " Data in: " << Data;
+    //qDebug() << socketDescriptor << " Data in: " << Data;
 
     QJsonDocument data_doc = QJsonDocument::fromJson(Data);
     QJsonObject data_obj = data_doc.object();
     Channel channel(tr_mutex);
-    //-------TEST-----
     QString msg, status = data_obj["status"].toString();
     QByteArray response;
 
@@ -318,12 +316,20 @@ void MyThread::readyRead()
         msg = channel.edit_profile(data_obj);
         response = msg.toUtf8();
     }
+    else if(status == "getProfileImage")
+    {
+        response = channel.get_profile_image(data_obj);
+    }
+    else if(status == "Channel_Group_Profile_Edited")
+    {
+        msg = channel.channel_group_profile_edited(data_obj);
+        response = msg.toUtf8();
+    }
 
     //Get a responce from "channel", then Send it to the Client
     //Encoding
     QByteArray encoded_response = encryption->myEncode(response);
     socket->write(encoded_response);
-    //socket->write(response);
     socket->waitForBytesWritten(-1);
     delete encryption;
 }

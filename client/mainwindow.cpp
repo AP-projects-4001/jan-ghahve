@@ -16,6 +16,7 @@
 #include "groupprofile.h"
 #include "profile.h"
 #include "setting.h"
+#include "image_convertation.h"
 
 MainWindow::MainWindow(QString id, QWidget *parent)
     : QMainWindow(parent)
@@ -43,7 +44,6 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     thread->start();
 
 
-
     tray = new QSystemTrayIcon(this);
     tray->setIcon(QIcon(":/images/resourses/logo.png"));
     tray->setVisible(true);
@@ -54,8 +54,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-
 
 void MainWindow::get_user_info(QString id)
 {
@@ -142,6 +140,7 @@ void MainWindow::add_item_to_listwidget(QString name)
     QListWidgetItem* item = new QListWidgetItem(name);
     list->addItem(item);
 }
+
 void MainWindow::get_allUsers_contacts()
 {
     QJsonObject req;
@@ -190,15 +189,15 @@ void MainWindow::pain()
                                 "border-radius: 20%;"
                                 "background-position:center;}"
                                 "*:hover{background-color:rgb(30, 157, 230);}");
-    ui->menubar->resize(20,5);
+//    ui->menubar->resize(20,5);
     ui->menubar->setStyleSheet(
                                "font-size:15px;"
-
                                );
 
-    ui->menusetting->setStyleSheet("background-color:rgb(253, 240, 213);"
-                                   "border-radius: 20%;"
-                                   );
+    ui->listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    ui->menusetting->setStyleSheet("background-color:rgb(253, 240, 213);"
+//                                   "border-radius: 20%;"
+//                                   );
     ui->listWidget->setStyleSheet("QListWidget:item"
                                  "{"
                                     "height: 30px;"
@@ -336,7 +335,69 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         i--;
     }
 
+    //---------- SHOW PROFILE IMAGE ---------
+    // PV
+    if(contact_info["status"].isNull())
+    {
+        QStringList permissions = contact_info["permissions"].toString().split('%');
+        if(permissions.contains(user_data["id"].toString()))
+        {
+            QPixmap pix(":/images/resourses/default_profile.jpg");
+            QIcon ButtonIcon(pix);
+            QSize iconSize(QSize(51,51));
+            ui->pbn_profile->setIconSize(iconSize);
+            ui->pbn_profile->setIcon(ButtonIcon);
 
+        }
+        else
+        {
+            QJsonObject req;
+            req["status"] = "getProfileImage";
+            req["id"] = contact_info["id"].toString();
+            QJsonDocument req_doc(req);
+            QByteArray req_b = req_doc.toJson();
+            QJsonValue img_val;
+            if(client->connect_to_server())
+            {
+                QByteArray resp_b = client->request_to_server(&req_b);
+                QJsonDocument resp_d = QJsonDocument::fromJson(resp_b);
+                QJsonObject resp_obj = resp_d.object();
+                img_val = resp_obj[contact_info["id"].toString()];
+            }
+            ImageConvertation *imageConvertor = new ImageConvertation();
+            QPixmap pix = imageConvertor->pixmapFrom(img_val);
+            QIcon ButtonIcon(pix);
+            QSize iconSize(QSize(51,51));
+            ui->pbn_profile->setIconSize(iconSize);
+            ui->pbn_profile->setIcon(ButtonIcon);
+
+        }
+    }
+    // CHANNEL OR GROUP
+    else
+    {
+        QJsonObject req;
+        req["status"] = "getProfileImage";
+        req["id"] = contact_info["id"].toString();
+        QJsonDocument req_doc(req);
+        QByteArray req_b = req_doc.toJson();
+        QJsonValue img_val;
+        if(client->connect_to_server())
+        {
+            QByteArray resp_b = client->request_to_server(&req_b);
+            QJsonDocument resp_d = QJsonDocument::fromJson(resp_b);
+            QJsonObject resp_obj = resp_d.object();
+            img_val = resp_obj[contact_info["id"].toString()];
+        }
+        ImageConvertation *imageConvertor = new ImageConvertation();
+        QPixmap pix = imageConvertor->pixmapFrom(img_val);
+        QIcon ButtonIcon(pix);
+        QSize iconSize(QSize(51,51));
+        ui->pbn_profile->setIconSize(iconSize);
+        ui->pbn_profile->setIcon(ButtonIcon);
+    }
+
+    //ui->scrollAreaWidgetContents->layout()->addWidget()
 
     //get chat
     QJsonObject chat;
@@ -400,7 +461,6 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 
 }
 
-
 void MainWindow::on_messagerecievd(QString senderId, QString message, QString chatId)
 {
     if(chatId == contact_info["id"].toString() && !chatId.isEmpty()){
@@ -428,7 +488,6 @@ void MainWindow::on_messagerecievd(QString senderId, QString message, QString ch
         tray->showMessage("Message from "+ senderId + " :", message ,QIcon(":/images/resourses/chat.png"));
     }
 }
-
 
 void MainWindow::on_pbn_send_clicked()
 {
@@ -495,13 +554,15 @@ void MainWindow::on_newchannel_clicked()
     add_member->show();
 }
 
-
 void MainWindow::on_pbn_profile_clicked()
 {
-    if(contact_info["status"].isNull()){
+    if(contact_info["status"].isNull())
+    {
         Profile *profile= new Profile(user_data["id"].toString(), contact_info, this);
         profile->show();
-    }else{
+    }
+    else
+    {
         GroupProfile* groupProfile = new GroupProfile(contact_info["id"].toString(), this);
         groupProfile->show();
     }
@@ -509,9 +570,6 @@ void MainWindow::on_pbn_profile_clicked()
 
 void MainWindow::on_setting_clicked()
 {
-
-//    Profile *profile_window = new Profile(user_data["id"].toString());
-//    profile_window->show();
     QJsonObject user_alldata;
     QJsonObject request;
     request["status"] = "userInfo_forEdit";
@@ -524,7 +582,22 @@ void MainWindow::on_setting_clicked()
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         user_alldata = response_d.object();
     }
-    setting *setting_window = new setting(user_alldata);
+
+    QJsonObject req;
+    req["status"] = "getProfileImage";
+    req["id"] = user_data["id"];
+    QJsonDocument req_doc(req);
+    QByteArray req_b = req_doc.toJson();
+    QJsonValue img_val;
+
+    if(client->connect_to_server())
+    {
+        QByteArray resp_b = client->request_to_server(&req_b);
+        QJsonDocument resp_d = QJsonDocument::fromJson(resp_b);
+        QJsonObject resp_obj = resp_d.object();
+        img_val = resp_obj[user_data["id"].toString()];
+    }
+    setting *setting_window = new setting(img_val ,user_alldata);
     //this->close();
     setting_window->show();
     get_user_info(user_data["id"].toString());

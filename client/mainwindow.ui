@@ -50,8 +50,7 @@
       <string notr="true">background-color:rgb(191, 215, 234);
 border-color: white; 
 border-radius:10px; 
-background-color:rgb(240, 240, 240);
-
+background-color:rgb(253, 240, 213);
 
 </string>
      </property>
@@ -94,11 +93,21 @@ hover{
     <widget class="QLineEdit" name="ted_message">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>0</x>
        <y>0</y>
-       <width>501</width>
+       <width>531</width>
        <height>61</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: hide; 
+border-radius:10px; 
+background-color:rgb(240, 240, 240);
+font-size:19px;
+background-color:rgb(253, 240, 213);
+
+
+</string>
      </property>
     </widget>
    </widget>
@@ -141,7 +150,7 @@ background-color:rgb(1, 125, 180);
 border-radius: 25px;</string>
      </property>
      <property name="text">
-      <string>aks</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLabel" name="contact_name">
@@ -165,7 +174,7 @@ font-size:22px;</string>
     <widget class="QLabel" name="lbl_status">
      <property name="geometry">
       <rect>
-       <x>280</x>
+       <x>340</x>
        <y>20</y>
        <width>63</width>
        <height>16</height>
@@ -181,7 +190,7 @@ font-size:22px;</string>
     <widget class="QPushButton" name="pbn_status">
      <property name="geometry">
       <rect>
-       <x>260</x>
+       <x>310</x>
        <y>20</y>
        <width>16</width>
        <height>16</height>
@@ -189,44 +198,10 @@ font-size:22px;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color:rgb(0, 255, 127);
-border-radius: 25px;</string>
+border-radius:8px;</string>
      </property>
      <property name="text">
       <string/>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pbn_search_2">
-     <property name="geometry">
-      <rect>
-       <x>528</x>
-       <y>10</y>
-       <width>31</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(245, 245, 245);</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="led_search">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>412</x>
-       <y>10</y>
-       <width>111</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border-radius:8px;
-background-color:rgb(253, 240, 213);
-border:hide;</string>
      </property>
     </widget>
    </widget>
@@ -280,7 +255,7 @@ background-color:rgb(253, 240, 213);
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:rgb(245, 245, 245);
+      <string notr="true">background-color:rgb(253, 240, 213);
 border-radius: 20%;
 border-image: url(:/images/resourses/search1.png);</string>
      </property>
@@ -355,7 +330,7 @@ background-color: palette(base);</string>
      <x>0</x>
      <y>0</y>
      <width>839</width>
-     <height>28</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="cursor">
