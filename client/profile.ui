@@ -166,7 +166,7 @@ color:rgb(245, 223, 187);</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:white;
-border-radius:60%;</string>
+border-radius:65%;</string>
    </property>
    <property name="text">
     <string/>
