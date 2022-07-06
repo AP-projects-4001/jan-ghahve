@@ -43,12 +43,6 @@ setting::setting(QJsonValue img_val ,QJsonObject user_data ,QWidget *parent) :
     ui->lbl_img->setPixmap(this->profile_pix);
     ui->lbl_img->setScaledContents( true );
     ui->lbl_img->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
-
-//    QIcon ButtonIcon(pix);
-//    QSize iconSize(QSize(151,151));
-//    ui->pbn_profile->setIconSize(iconSize);
-//    ui->pbn_profile->setIcon(ButtonIcon);
-
     ui->pbn_changeImage->hide();
     ui->pbn_cancel->hide();
     ui->pbn_save->hide();
