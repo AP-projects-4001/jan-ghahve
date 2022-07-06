@@ -1,0 +1,12 @@
+debug/myencryption.o
+debug/qaesencryption.o
+debug/channel.o
+debug/main.o
+debug/myserver.o
+debug/mythread.o
+debug/smtp.o
+debug/moc_qaesencryption.o
+debug/moc_channel.o
+debug/moc_myserver.o
+debug/moc_mythread.o
+debug/moc_smtp.o

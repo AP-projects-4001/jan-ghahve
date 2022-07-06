@@ -130,47 +130,6 @@ background-color:rgb(1, 125, 180);
     <property name="title">
      <string/>
     </property>
-    <widget class="QPushButton" name="pbn_profile">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>0</y>
-       <width>51</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:white;
-border-radius: 25px;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLabel" name="contact_name">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>10</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border:hide;
-border-radius: 20%;
-font-size:22px;</string>
-     </property>
-     <property name="text">
-      <string>Name</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="lbl_status">
      <property name="geometry">
       <rect>
@@ -228,6 +187,40 @@ border-radius:8px;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color:withe;</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_profile">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>0</y>
+       <width>51</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pbn_contact_name">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>10</y>
+       <width>81</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgb(0, 48, 73);
+border-radius: 10px;
+color:rgb(245, 223, 187);</string>
+     </property>
+     <property name="text">
+      <string>Name</string>
      </property>
     </widget>
    </widget>

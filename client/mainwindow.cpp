@@ -323,7 +323,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         QByteArray response = client->request_to_server(&request_b);
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         contact_info = response_d.object();
-        ui->contact_name->setText(contact_info["name"].toString());
+        ui->pbn_contact_name->setText(contact_info["name"].toString());
     }
     QLayoutItem *child;
     int i = ui->scrollAreaWidgetContents->layout()->count();
@@ -342,11 +342,11 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         QStringList permissions = contact_info["permissions"].toString().split('%');
         if(permissions.contains(user_data["id"].toString()))
         {
+            //show default profile pic if user has no permission
             QPixmap pix(":/images/resourses/default_profile.jpg");
-            QIcon ButtonIcon(pix);
-            QSize iconSize(QSize(51,51));
-            ui->pbn_profile->setIconSize(iconSize);
-            ui->pbn_profile->setIcon(ButtonIcon);
+            ui->lbl_profile->setPixmap(pix);
+            ui->lbl_profile->setScaledContents( true );
+            ui->lbl_profile->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
 
         }
         else
@@ -366,10 +366,9 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
             }
             ImageConvertation *imageConvertor = new ImageConvertation();
             QPixmap pix = imageConvertor->pixmapFrom(img_val);
-            QIcon ButtonIcon(pix);
-            QSize iconSize(QSize(51,51));
-            ui->pbn_profile->setIconSize(iconSize);
-            ui->pbn_profile->setIcon(ButtonIcon);
+            ui->lbl_profile->setPixmap(pix);
+            ui->lbl_profile->setScaledContents( true );
+            ui->lbl_profile->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
 
         }
     }
@@ -391,10 +390,9 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         }
         ImageConvertation *imageConvertor = new ImageConvertation();
         QPixmap pix = imageConvertor->pixmapFrom(img_val);
-        QIcon ButtonIcon(pix);
-        QSize iconSize(QSize(51,51));
-        ui->pbn_profile->setIconSize(iconSize);
-        ui->pbn_profile->setIcon(ButtonIcon);
+        ui->lbl_profile->setPixmap(pix);
+        ui->lbl_profile->setScaledContents( true );
+        ui->lbl_profile->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
     }
 
     //ui->scrollAreaWidgetContents->layout()->addWidget()
@@ -434,7 +432,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     }
 
     QString status = contact_info["status"].toString();
-    ui->pbn_profile->setEnabled(true);
+    ui->lbl_profile->setEnabled(true);
     bool online = contact_info["online"].toBool();
     if(online){
         ui->lbl_status->setVisible(true);
@@ -554,7 +552,21 @@ void MainWindow::on_newchannel_clicked()
     add_member->show();
 }
 
-void MainWindow::on_pbn_profile_clicked()
+//void MainWindow::on_pbn_profile_clicked()
+//{
+//    if(contact_info["status"].isNull())
+//    {
+//        Profile *profile= new Profile(user_data["id"].toString(), contact_info, this);
+//        profile->show();
+//    }
+//    else
+//    {
+//        GroupProfile* groupProfile = new GroupProfile(contact_info["id"].toString(), this);
+//        groupProfile->show();
+//    }
+//}
+
+void MainWindow::on_pbn_contact_name_clicked()
 {
     if(contact_info["status"].isNull())
     {
@@ -567,6 +579,7 @@ void MainWindow::on_pbn_profile_clicked()
         groupProfile->show();
     }
 }
+
 
 void MainWindow::on_setting_clicked()
 {
@@ -656,4 +669,6 @@ void MainWindow::on_pbn_search_2_clicked()
     });
     timer->start();
 }
+
+
 
