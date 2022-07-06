@@ -204,6 +204,32 @@ border-radius:8px;</string>
       <string/>
      </property>
     </widget>
+    <widget class="QPushButton" name="pbn_search_2">
+     <property name="geometry">
+      <rect>
+       <x>548</x>
+       <y>10</y>
+       <width>21</width>
+       <height>33</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>PushButton</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="led_search">
+     <property name="geometry">
+      <rect>
+       <x>462</x>
+       <y>10</y>
+       <width>71</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:withe;</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
@@ -242,7 +268,7 @@ background-color:rgb(253, 240, 213);
 </string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pbn_search">
+    <widget class="QPushButton" name="pbn_search_chat">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -330,7 +356,7 @@ background-color: palette(base);</string>
      <x>0</x>
      <y>0</y>
      <width>839</width>
-     <height>26</height>
+     <height>28</height>
     </rect>
    </property>
    <property name="cursor">
