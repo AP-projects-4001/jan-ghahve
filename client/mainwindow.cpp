@@ -17,6 +17,7 @@
 #include "profile.h"
 #include "setting.h"
 #include "image_convertation.h"
+#include "loading.h"
 
 MainWindow::MainWindow(QString id, QWidget *parent)
     : QMainWindow(parent)
@@ -25,11 +26,15 @@ MainWindow::MainWindow(QString id, QWidget *parent)
     ui->setupUi(this);
     ui->led_search->hide();
     setFixedSize(size());
+    ui->groupBox_2->hide();
+    ui->groupBox_4->hide();
+    ui->scrollArea->hide();
     pain();
     QObject::connect(ui->actionNew_Group,&QAction::triggered,this,&MainWindow::on_newgroup_clicked);
     QObject::connect(ui->actionlvl_3_graph,&QAction::triggered,this,&MainWindow::on_graph_clicked);
     connect(ui->actionNew_Channel,&QAction::triggered,this,&MainWindow::on_newchannel_clicked);
     QObject::connect(ui->actionprofile,&QAction::triggered,this,&MainWindow::on_setting_clicked);
+    QObject::connect(ui->actionLogout,&QAction::triggered,this,&MainWindow::on_logout_clicked);
 
     client = new MyClient();
     get_user_info(id);
@@ -310,7 +315,9 @@ void MainWindow::set_msesage_widget_to_default(int i)
 
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
-
+    ui->groupBox_2->show();
+    ui->groupBox_4->show();
+    ui->scrollArea->show();
     QString id = item->text();
     QJsonObject request;
     request["status"] = "userInfo";
@@ -323,7 +330,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         QByteArray response = client->request_to_server(&request_b);
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         contact_info = response_d.object();
-        ui->contact_name->setText(contact_info["name"].toString());
+        ui->pbn_contact_name->setText(contact_info["name"].toString());
     }
     QLayoutItem *child;
     int i = ui->scrollAreaWidgetContents->layout()->count();
@@ -342,15 +349,16 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         QStringList permissions = contact_info["permissions"].toString().split('%');
         if(permissions.contains(user_data["id"].toString()))
         {
+            //show default profile pic if user has no permission
             QPixmap pix(":/images/resourses/default_profile.jpg");
-            QIcon ButtonIcon(pix);
-            QSize iconSize(QSize(51,51));
-            ui->pbn_profile->setIconSize(iconSize);
-            ui->pbn_profile->setIcon(ButtonIcon);
+            ui->lbl_profile->setPixmap(pix);
+            ui->lbl_profile->setScaledContents( true );
+            ui->lbl_profile->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
 
         }
         else
         {
+            //Get image profile data from server
             QJsonObject req;
             req["status"] = "getProfileImage";
             req["id"] = contact_info["id"].toString();
@@ -366,10 +374,9 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
             }
             ImageConvertation *imageConvertor = new ImageConvertation();
             QPixmap pix = imageConvertor->pixmapFrom(img_val);
-            QIcon ButtonIcon(pix);
-            QSize iconSize(QSize(51,51));
-            ui->pbn_profile->setIconSize(iconSize);
-            ui->pbn_profile->setIcon(ButtonIcon);
+            ui->lbl_profile->setPixmap(pix);
+            ui->lbl_profile->setScaledContents( true );
+            ui->lbl_profile->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
 
         }
     }
@@ -391,10 +398,9 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         }
         ImageConvertation *imageConvertor = new ImageConvertation();
         QPixmap pix = imageConvertor->pixmapFrom(img_val);
-        QIcon ButtonIcon(pix);
-        QSize iconSize(QSize(51,51));
-        ui->pbn_profile->setIconSize(iconSize);
-        ui->pbn_profile->setIcon(ButtonIcon);
+        ui->lbl_profile->setPixmap(pix);
+        ui->lbl_profile->setScaledContents( true );
+        ui->lbl_profile->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
     }
 
     //ui->scrollAreaWidgetContents->layout()->addWidget()
@@ -434,7 +440,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     }
 
     QString status = contact_info["status"].toString();
-    ui->pbn_profile->setEnabled(true);
+    ui->lbl_profile->setEnabled(true);
     bool online = contact_info["online"].toBool();
     if(online){
         ui->lbl_status->setVisible(true);
@@ -554,7 +560,7 @@ void MainWindow::on_newchannel_clicked()
     add_member->show();
 }
 
-void MainWindow::on_pbn_profile_clicked()
+void MainWindow::on_pbn_contact_name_clicked()
 {
     if(contact_info["status"].isNull())
     {
@@ -567,6 +573,17 @@ void MainWindow::on_pbn_profile_clicked()
         groupProfile->show();
     }
 }
+
+void MainWindow::on_logout_clicked()
+{
+    client->disconnect_from_server();
+    this->close();
+    this->destroy(true, true);
+    this->deleteLater();
+    loading *loading_page = new loading();
+    loading_page->show();
+}
+
 
 void MainWindow::on_setting_clicked()
 {
@@ -656,4 +673,6 @@ void MainWindow::on_pbn_search_2_clicked()
     });
     timer->start();
 }
+
+
 

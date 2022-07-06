@@ -1,0 +1,11 @@
+{
+    "1": {
+        "message": "salam",
+        "sender": "s"
+    },
+    "2": {
+        "message": "salamxa",
+        "sender": "s"
+    },
+    "max": 2
+}

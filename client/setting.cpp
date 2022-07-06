@@ -108,7 +108,6 @@ void setting::on_pbn_cancel_clicked()
 
 }
 
-
 void setting::on_pbn_save_clicked()
 {
     QString id,name,password,phonenum,email;
@@ -120,6 +119,9 @@ void setting::on_pbn_save_clicked()
     email = ui->led_email->text();
     birthdate = ui->dateEdit->date();
     ui->dateEdit->date();
+
+    if(!validate_edit_data(name, email, password, phonenum))
+        return;
 
     QJsonObject user;
     user["status"] = "edit_profile";
@@ -155,48 +157,48 @@ void setting::on_pbn_save_clicked()
     }
 }
 
+
+
+//Checking validation of inputs
+bool setting::validate_edit_data(QString name, QString email, QString pass, QString number)
+{
+    if(name.length() == 0){
+        QMessageBox::warning(this, "Invalid input", "Name field cannot be empty!");
+        return false;
+    }
+    else if(pass.length() == 0){
+        QMessageBox::warning(this, "Invalid input", "Password field cannot be empty!");
+        return false;
+    }
+    else if(email.length() == 0){
+        QMessageBox::warning(this, "Invalid input", "Email field cannot be empty!");
+        return false;
+    }
+    else if(number.length() == 0){
+        QMessageBox::warning(this, "Invalid input", "Phone number field cannot be empty!");
+        return false;
+    }
+    return true;
+}
+
 void setting::on_pbn_changeImage_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,tr("open image"), QDir::homePath(),tr("JPG (*.jpg)"));
     if(fileName.size())
     {
         QImage image(fileName);
-
-
         auto pix = QPixmap::fromImage(image);
         ImageConvertation *image_convertor = new ImageConvertation();
         ui->lbl_img->setPixmap(pix);
         ui->lbl_img->setScaledContents( true );
         ui->lbl_img->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
         this->new_profile_pix = pix;
-        //    QIcon ButtonIcon(pix);
-    //    QSize iconSize(QSize(151,151));
-    //    ui->pbn_profile->setIconSize(iconSize);
-    //    ui->pbn_profile->setIcon(ButtonIcon);
         delete image_convertor;
     }
     else
     {
         this->new_profile_pix = this->profile_pix;
     }
-
-    //auto val = image_convertor->jsonValFromPixmap(pix);
-
-
-//    QFile file("image_file.json");
-//    if(file.open(QIODevice::WriteOnly))
-//    {
-//       auto pix = QPixmap::fromImage(image);
-//       auto val = jsonValFromPixmap(pix);
-//       QJsonObject image;
-//       image["img"] = val;
-//       QJsonDocument img_d(image);
-//       QByteArray img_b = img_d.toJson();
-//       file.write(img_b);
-////       auto pix2 = pixmapFrom(val);
-////       auto img2 = pix2.toImage();
-//    }
-
 }
 
 
