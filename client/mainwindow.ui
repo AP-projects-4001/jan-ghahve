@@ -268,7 +268,7 @@ background-color:rgb(253, 240, 213);
 </string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pbn_search_chat">
+    <widget class="QPushButton" name="pbn_search">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -356,7 +356,7 @@ background-color: palette(base);</string>
      <x>0</x>
      <y>0</y>
      <width>839</width>
-     <height>28</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="cursor">
