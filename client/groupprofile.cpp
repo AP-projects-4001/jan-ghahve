@@ -53,11 +53,21 @@ GroupProfile::GroupProfile(QString id,QString visitor, QWidget *parent) :
     json_obj = json_doc.object();
     if(!json_obj.isEmpty())
     {
-        QString creator_of_group = json_obj["1"].toString();
-        if(visitor!=creator_of_group)
+        QString creator_of_channel = json_obj["1"].toString();
+        if(visitor!=creator_of_channel)
         {
             ui->pbn_permission->hide();
         }
+        bool is_visitor_admin = false;
+        QString admins_list = json_obj["admins"].toString();
+        if((admins_list.contains(visitor)) || (visitor==creator_of_channel))
+            is_visitor_admin = true;
+        if(is_visitor_admin)
+            ui->pbn_change_image->show();
+        else
+            ui->pbn_change_image->hide();
+
+
 
     }
 
