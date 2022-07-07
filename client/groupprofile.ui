@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>394</width>
-    <height>337</height>
+    <height>368</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>280</y>
+     <y>10</y>
      <width>151</width>
      <height>33</height>
     </rect>
@@ -40,8 +40,8 @@ color:rgb(252, 163, 17)</string>
   <widget class="QLabel" name="lbl_name">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>210</y>
+     <x>110</x>
+     <y>230</y>
      <width>171</width>
      <height>31</height>
     </rect>
@@ -61,7 +61,7 @@ font:26px;</string>
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>10</y>
+     <y>310</y>
      <width>121</width>
      <height>33</height>
     </rect>
@@ -82,7 +82,7 @@ color:rgb(34, 119, 255)</string>
    <property name="geometry">
     <rect>
      <x>290</x>
-     <y>280</y>
+     <y>310</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -103,7 +103,7 @@ color:rgb(245, 223, 187);</string>
    <property name="geometry">
     <rect>
      <x>190</x>
-     <y>280</y>
+     <y>310</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -123,8 +123,8 @@ color:rgb(245, 223, 187);</string>
   <widget class="QLabel" name="lbl_img">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>10</y>
+     <x>110</x>
+     <y>50</y>
      <width>171</width>
      <height>171</height>
     </rect>
