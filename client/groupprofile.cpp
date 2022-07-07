@@ -66,9 +66,10 @@ GroupProfile::GroupProfile(QString id,QString visitor, QWidget *parent) :
             ui->pbn_change_image->show();
         else
             ui->pbn_change_image->hide();
-
-
-
+    }
+    else
+    {
+        ui->pbn_permission->hide();
     }
 
 }
