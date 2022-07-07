@@ -311,6 +311,7 @@ void MyThread::readyRead()
     else if(status == "modifyAdmins"){
         channel.modify_channel_admins(data_obj["id"].toString(), data_obj["admins"].toString());
         msg = "ok";
+        response = msg.toUtf8();
     }
     else if(status == "edit_profile"){
         msg = channel.edit_profile(data_obj);
@@ -325,6 +326,10 @@ void MyThread::readyRead()
         msg = channel.channel_group_profile_edited(data_obj);
         response = msg.toUtf8();
     }
+    else if(status == "editMessage"){
+        channel.edit_message(data_obj);
+        msg = "ok";
+        response = msg.toUtf8();
     else if(status == "forgetpassword")
     {
         QJsonObject result;

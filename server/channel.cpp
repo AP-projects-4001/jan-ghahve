@@ -677,6 +677,44 @@ QString Channel::channel_group_profile_edited(QJsonObject data)
 
 }
 
+void Channel::edit_message(QJsonObject data)
+{
+    //----LOCK ----
+    ch_mutex->lock();
+    //if it's a pv chat
+    QString id1 = data["sender"].toString();
+    QString id2 = data["id2"].toString();
+    QString file_path;
+    QJsonObject msg_obj;
+    if(data["chat"].toString() == "pv"){
+        file_path = id1+ "%" + id2 + ".json";
+
+        msg_obj = read_from_file(file_path);
+
+        if(msg_obj.empty())//the file didn't open
+        {
+            //file name can be : id2 + "%" + id1 + ".json"
+            file_path = id2 + "%" +id1 + ".json";
+            msg_obj = read_from_file(file_path);
+        }
+    }else{
+        file_path = id1 + ".json";
+        msg_obj = read_from_file(file_path);
+    }
+
+    int index = data["index"].toInt();
+    if(data["message"].isNull()){
+        msg_obj.remove(QString::number(index));
+    }
+    else{
+        QJsonObject message;
+        message["message"] = data["message"];
+        message["sender"] = data["sender"];
+        msg_obj[QString::number(index)] = message;
+    }
+    write_to_file(file_path, msg_obj);
+    //---- UnLock -----
+    ch_mutex->unlock();
 QJsonObject Channel::check_email_validation(QJsonObject data)
 {
     //----LOCK ----

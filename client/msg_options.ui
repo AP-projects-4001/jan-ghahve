@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>340</width>
-    <height>106</height>
+    <width>350</width>
+    <height>117</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>40</y>
+     <y>70</y>
      <width>71</width>
      <height>29</height>
     </rect>
@@ -38,7 +38,7 @@ color:rgb(191, 215, 234);</string>
    <property name="geometry">
     <rect>
      <x>100</x>
-     <y>40</y>
+     <y>70</y>
      <width>71</width>
      <height>29</height>
     </rect>
@@ -52,11 +52,11 @@ color:rgb(229, 56, 59);</string>
     <string>Delete</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_3">
+  <widget class="QPushButton" name="pbn_edit">
    <property name="geometry">
     <rect>
      <x>180</x>
-     <y>40</y>
+     <y>70</y>
      <width>71</width>
      <height>29</height>
     </rect>
@@ -74,7 +74,7 @@ color:rgb(253, 240, 213);</string>
    <property name="geometry">
     <rect>
      <x>260</x>
-     <y>40</y>
+     <y>70</y>
      <width>71</width>
      <height>29</height>
     </rect>
@@ -86,6 +86,16 @@ color:rgb(34, 119, 255)</string>
    </property>
    <property name="text">
     <string>Forward</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="led_message">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>30</y>
+     <width>311</width>
+     <height>30</height>
+    </rect>
    </property>
   </widget>
  </widget>
