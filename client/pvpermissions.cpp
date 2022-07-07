@@ -11,6 +11,7 @@ PvPermissions::PvPermissions(QString id, QString permissions, QWidget *parent) :
     ui->setupUi(this);
     setFixedSize(size());
 
+    //open database of user contacts and show
     QFile file(id + "%contacts.txt");
     if(file.open(QIODevice::ReadOnly)){
         QTextStream stream(&file);
@@ -50,6 +51,7 @@ void PvPermissions::on_listWidget_itemClicked(QListWidgetItem *item)
 
 void PvPermissions::on_pbn_ok_clicked()
 {
+    //add selected contacts to restricted list for permission
     QListWidget* list = ui->listWidget;
     QString admins = "";
     for(int i=0; i< numbOfContacts; i++){

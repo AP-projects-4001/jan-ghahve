@@ -6,7 +6,7 @@ ImageConvertation::ImageConvertation()
 
 }
 
-
+//convert QPixmap to QJsonValue (for sending in socket and write it to file in database)
 QJsonValue ImageConvertation::jsonValFromPixmap(const QPixmap &p)
 {
   QBuffer buffer;
@@ -16,6 +16,7 @@ QJsonValue ImageConvertation::jsonValFromPixmap(const QPixmap &p)
   return {QLatin1String(encoded)};
 }
 
+//convert QJsonValue to QPixmap  (for showing on label in user-window)
 QPixmap ImageConvertation::pixmapFrom(const QJsonValue &val)
 {
   auto const encoded = val.toString().toLatin1();
