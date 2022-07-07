@@ -52,7 +52,6 @@ private slots:
     void on_chat_message_clicked(QListWidgetItem* item);
     void on_pbn_search_2_clicked();
     void on_message_edited();
-    void on_pbn_search_2_clicked();
     void on_pbn_contact_name_clicked();
     void on_logout_clicked();
 

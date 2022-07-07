@@ -305,7 +305,7 @@ void MainWindow::append_message_in_database(QString message, QString senderId)
     msg["message"] = message;
     data_obj[QString::number(number)] = msg;
     QJsonDocument d_doc(data_obj);
-    QFile file2(user_data["id"].toString() + "%" + contact_info["id"].toString());
+    QFile file2(user_data["id"].toString() + "%" + contact_info["id"].toString() + ".json");
     file2.open(QIODevice::WriteOnly);
     file2.write(d_doc.toJson());
     file2.close();
@@ -675,9 +675,9 @@ void MainWindow::on_chat_message_clicked(QListWidgetItem *item)
             counter++;
         i++;
     }
-
+    QStringList message_spliter = item->text().split("\n");
     QJsonObject data;
-    data["message"] = item->text();
+    data["message"] = message_spliter[1];
     if(contact_info["status"].isNull())
         data["chat"] = "pv";
     else
@@ -716,9 +716,11 @@ void MainWindow::on_pbn_search_2_clicked()
             continue;
         }
         if(message["message"].toString().contains(text)){
-            int numb = i-1 ? i>1 : 0;
-            ui->scrollArea->verticalScrollBar()->setSliderPosition(numb*70);
-            ui->scrollAreaWidgetContents->layout()->itemAt(i - deleted)->widget()->setStyleSheet("background-color:rgb(140, 56, 235);");
+            int numb = i - deleted;
+            if(i - deleted >0)
+                numb = i - deleted - 1;
+            ui->scrollArea->verticalScrollBar()->setSliderPosition(numb*80);
+            ui->scrollAreaWidgetContents->layout()->itemAt(i - deleted)->widget()->setStyleSheet("background-color:rgb(14, 19, 26);");
             index = i - deleted;
             break;
         }

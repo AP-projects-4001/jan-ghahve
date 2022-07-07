@@ -30,7 +30,8 @@ public:
     QString channel_group_profile_edited(QJsonObject data);
     void edit_message(QJsonObject data);
     QJsonObject check_email_validation(QJsonObject data);
-    
+    QStringList forward_message(QJsonObject data);
+
 private:
     QString path;
     void write_to_file(QString file_path, QJsonObject result);
