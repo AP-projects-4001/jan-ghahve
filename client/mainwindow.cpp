@@ -350,7 +350,7 @@ void MainWindow::get_chat()
                 continue;
             sender = msg["sender"].toString();
             message = msg["message"].toString();
-            if(sender == user_data["id"].toString() && contact_info["channel"].toString() == "channel")
+            if(sender == user_data["id"].toString() && contact_info["status"].toString() != "channel")
                 flag = true;
             else
                 flag = false;
