@@ -10,5 +10,6 @@
         <file>resourses/default_profile.jpg</file>
         <file>resourses/group_default_profile.jpg</file>
         <file>resourses/channel_default_profile.jpg</file>
+        <file>resourses/search.png</file>
     </qresource>
 </RCC>
