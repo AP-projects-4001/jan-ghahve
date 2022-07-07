@@ -16,10 +16,14 @@ SOURCES += \
     adding_member.cpp \
     authenticationcode.cpp \
     channelpermissions.cpp \
+    forgetpass.cpp \
+    forwardbox.cpp \
     groupprofile.cpp \
+    image_convertation.cpp \
     loading.cpp \
     main.cpp \
     mainwindow.cpp \
+    msg_options.cpp \
     pvpermissions.cpp \
     setting.cpp \
     showingprof.cpp \
@@ -41,9 +45,13 @@ HEADERS += \
     adding_member.h \
     authenticationcode.h \
     channelpermissions.h \
+    forgetpass.h \
+    forwardbox.h \
     groupprofile.h \
+    image_convertation.h \
     loading.h \
     mainwindow.h \
+    msg_options.h \
     pvpermissions.h \
     setting.h \
     showingprof.h \
@@ -59,9 +67,12 @@ FORMS += \
     adding_member.ui \
     authenticationcode.ui \
     channelpermissions.ui \
+    forgetpass.ui \
+    forwardbox.ui \
     groupprofile.ui \
     loading.ui \
     mainwindow.ui \
+    msg_options.ui \
     pvpermissions.ui \
     setting.ui \
     showingprof.ui \
@@ -77,6 +88,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    MyRes.qrc \
     MyRes.qrc \
 
 
