@@ -32,7 +32,7 @@ private slots:
 
     void on_pbn_changeImage_clicked();
     void on_pbn_permissions_clicked();
-
+    bool validate_edit_data(QString name, QString email, QString pass, QString number);
 private:
     Ui::setting *ui;
     QJsonObject user_data;

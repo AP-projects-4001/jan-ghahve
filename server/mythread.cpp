@@ -330,6 +330,32 @@ void MyThread::readyRead()
         channel.edit_message(data_obj);
         msg = "ok";
         response = msg.toUtf8();
+    else if(status == "forgetpassword")
+    {
+        QJsonObject result;
+        result = channel.check_email_validation(data_obj);
+        msg = result["msg"].toString();
+        //correct email address
+        if(msg=="accepted")
+        {
+            QString const uname = "janghahve@gmail.com";
+            QString const rcpt = data_obj["email"].toString();
+            QString const subject = "Forgot password";
+            QString const message = result["password"].toString();
+            QString const paswd = "mxakpmwpmrjbqgzo";
+            QString const server = "smtp.gmail.com";
+            int const port = 465;
+            Smtp* smtp = new Smtp(uname, paswd, server, port);
+            smtp->sendMail(uname, rcpt , subject,message);
+            response = msg.toUtf8();
+        }
+        //incorrect email address
+        else
+        {
+            msg = "incorrect!";
+            response = msg.toUtf8();
+        }
+
     }
 
     //Get a responce from "channel", then Send it to the Client

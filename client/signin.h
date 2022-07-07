@@ -22,6 +22,8 @@ private slots:
     void on_userauthenticated();
     void on_pbn_cancel_clicked();
 
+    void on_pbn_forgetpass_clicked();
+
 private:
     Ui::signin *ui;
     MyClient* client;

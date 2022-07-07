@@ -46,13 +46,15 @@ private slots:
     void on_pbn_search_clicked();
     void on_groupcreated(QString id);
     void on_newchannel_clicked();
-    void on_pbn_profile_clicked();
     void on_setting_clicked();
     void on_userauthenticated(QString id);
     void on_userunauthenticated(QString id);
     void on_chat_message_clicked(QListWidgetItem* item);
     void on_pbn_search_2_clicked();
     void on_message_edited();
+    void on_pbn_search_2_clicked();
+    void on_pbn_contact_name_clicked();
+    void on_logout_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -62,7 +64,6 @@ private:
     QJsonObject contact_info;
     QJsonObject all_users;
     QJsonObject all_users_contacts;
-    //QArrayData user_contacts;
     QSystemTrayIcon* tray;
 };
 #endif // MAINWINDOW_H

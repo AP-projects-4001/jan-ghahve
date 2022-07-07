@@ -15,6 +15,7 @@ QString Channel::signup_check(QJsonObject data)
 {
     //----LOCK ----
     ch_mutex->lock();
+
     QJsonArray json_arr;
     QJsonObject json_obj;
 
@@ -123,8 +124,6 @@ QString Channel::signup(QJsonObject data) //data = new user data
     write_to_file(path, result);
 
     QJsonObject images_json_obj = read_from_file("images.json");
-    //qDebug()<<"-------BEFORE WRITE IN FILE ---------";
-    //qDebug()<<"image : "<<img;
     images_json_obj[user["id"].toString()] = img;
     write_to_file("images.json",images_json_obj);
 
@@ -231,6 +230,9 @@ QJsonObject Channel::get_info(QString id)
 
 QByteArray Channel::get_info_forEdit(QString id)
 {
+    //----LOCK ----
+    ch_mutex->lock();
+
     QJsonObject json_obj;
     //if id belongs to a user
     QJsonArray profiles_arr;
@@ -259,9 +261,13 @@ QByteArray Channel::get_info_forEdit(QString id)
                 }
             }
             QJsonDocument temp_doc(user);
+            //---- UnLock -----
+            ch_mutex->unlock();
             return temp_doc.toJson();
         }
     }
+    //---- UnLock -----
+    ch_mutex->unlock();
     return 0;
 }
 
@@ -709,6 +715,47 @@ void Channel::edit_message(QJsonObject data)
     write_to_file(file_path, msg_obj);
     //---- UnLock -----
     ch_mutex->unlock();
+QJsonObject Channel::check_email_validation(QJsonObject data)
+{
+    //----LOCK ----
+    ch_mutex->lock();
+    QJsonArray profiles_arr;
+    QJsonArray users_arr;
+    QJsonObject json_obj;
+
+    json_obj = read_from_file(path);
+    profiles_arr = json_obj["profiles"].toArray();
+    users_arr = json_obj["users"].toArray();
+
+    bool email_found = false;
+    QJsonObject user;
+    QJsonObject answer;
+    int counter = 0;
+    for(QJsonValueRef user_ref:qAsConst(profiles_arr))
+    {
+        user = user_ref.toObject();
+        if(user["email"].toString()==data["email"].toString())
+        {
+            email_found = true;
+            answer["msg"] = "accepted";
+            answer["password"] = users_arr.at(counter)["password"].toString();
+            qDebug()<<answer["password"];
+            break;
+        }
+        else
+        {
+            counter = counter + 1;
+            continue;
+        }
+
+    }
+    if(email_found==false)
+    {
+        answer["msg"]="incorrect email address!";
+    }
+    //----UnLock----
+    ch_mutex->unlock();
+    return answer;
 }
 
 //------------------ Working with Files ------------------
