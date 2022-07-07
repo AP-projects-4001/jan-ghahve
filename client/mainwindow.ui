@@ -227,7 +227,7 @@ border-radius:8px;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:withe;</string>
+      <string notr="true"/>
      </property>
     </widget>
    </widget>
@@ -268,7 +268,7 @@ background-color:rgb(253, 240, 213);
 </string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pbn_search_chat">
+    <widget class="QPushButton" name="pbn_search">
      <property name="geometry">
       <rect>
        <x>150</x>
