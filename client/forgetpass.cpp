@@ -44,6 +44,7 @@ void ForgetPass::on_pushButton_2_clicked()
     {
         QMessageBox::warning(this, "Error!", "incorrect email address!");
     }
+    client->disconnect_from_server();
     this->close();
     //QMessageBox::information(this, "Invalid input", "Phone number field cannot be empty!");
 

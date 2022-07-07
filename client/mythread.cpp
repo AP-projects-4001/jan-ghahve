@@ -17,7 +17,7 @@ void MyThread::run()
     qDebug() << " Thread started";
 
     socket = new QTcpSocket;
-    socket->connectToHost("0.tcp.eu.ngrok.io",1025);
+    socket->connectToHost("127.0.0.1",1025);
     qDebug() << "connecting...\n";
 
     if(socket->waitForConnected(-1)){

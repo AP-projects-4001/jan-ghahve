@@ -58,6 +58,7 @@ void Profile::show_informations()
         ui->lbl_img->setPixmap(pix);
         ui->lbl_img->setScaledContents( true );
         ui->lbl_img->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
+        client->disconnect_from_server();
 
     }
     ui->led_username->setText(user_data["id"].toString());

@@ -412,7 +412,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
             QJsonDocument req_doc(req);
             QByteArray req_b = req_doc.toJson();
             QJsonValue img_val;
-            if(client->connect_to_server())
+            if(client->is_client_connectd())
             {
                 QByteArray resp_b = client->request_to_server(&req_b);
                 QJsonDocument resp_d = QJsonDocument::fromJson(resp_b);

@@ -21,7 +21,7 @@ bool MyClient::connect_to_server()
     //Start to connect to the server
     qDebug() << "Start\n";
     clientSocket = new QTcpSocket;
-    clientSocket->connectToHost("0.tcp.eu.ngrok.io",1025);
+    clientSocket->connectToHost("127.0.0.1",1025);
     qDebug() << "connecting...\n";
 
     if(clientSocket->waitForConnected(-1)){
