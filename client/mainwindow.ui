@@ -169,7 +169,7 @@ border-radius:8px;</string>
     <widget class="QPushButton" name="pbn_search_2">
      <property name="geometry">
       <rect>
-       <x>540</x>
+       <x>530</x>
        <y>10</y>
        <width>31</width>
        <height>31</height>
@@ -218,21 +218,27 @@ border-radius:25px;</string>
       <rect>
        <x>120</x>
        <y>10</y>
-       <width>181</width>
+       <width>121</width>
        <height>31</height>
       </rect>
      </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
      <property name="styleSheet">
-      <string notr="true">
+      <string notr="true">font-weight:bold;
 border-radius: 10px;
 color:black;
-font:19px;</string>
+font:23px;</string>
      </property>
      <property name="text">
       <string>Name</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
      </property>
     </widget>
    </widget>
@@ -353,7 +359,10 @@ background-color: palette(base);</string>
     <property name="styleSheet">
      <string notr="true">background-color:rgb(0, 119, 182);
 border-radius:15px;
-font:24px;
+font:20px;
+font-weight:bold;
+
+
 </string>
     </property>
     <property name="text">
@@ -373,7 +382,7 @@ font:24px;
      <x>0</x>
      <y>0</y>
      <width>839</width>
-     <height>25</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="cursor">

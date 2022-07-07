@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>378</width>
-    <height>368</height>
+    <width>394</width>
+    <height>337</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,9 +19,9 @@
   <widget class="QPushButton" name="pbn_permission">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>10</x>
      <y>280</y>
-     <width>141</width>
+     <width>151</width>
      <height>33</height>
     </rect>
    </property>
@@ -31,7 +31,7 @@
    <property name="styleSheet">
     <string notr="true">background-color:rgb(0, 48, 73);
 border-radius: 10%;
-color:rgb(34, 119, 255)</string>
+color:rgb(252, 163, 17)</string>
    </property>
    <property name="text">
     <string>Change Permissions</string>
@@ -40,11 +40,15 @@ color:rgb(34, 119, 255)</string>
   <widget class="QLabel" name="lbl_name">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>10</y>
-     <width>191</width>
-     <height>21</height>
+     <x>120</x>
+     <y>210</y>
+     <width>171</width>
+     <height>31</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(38, 70, 83);
+font:26px;</string>
    </property>
    <property name="text">
     <string>TextLabel</string>
@@ -56,9 +60,9 @@ color:rgb(34, 119, 255)</string>
   <widget class="QPushButton" name="pbn_change_image">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>240</y>
-     <width>141</width>
+     <x>10</x>
+     <y>10</y>
+     <width>121</width>
      <height>33</height>
     </rect>
    </property>
@@ -77,8 +81,8 @@ color:rgb(34, 119, 255)</string>
   <widget class="QPushButton" name="pbn_save">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>320</y>
+     <x>290</x>
+     <y>280</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -98,8 +102,8 @@ color:rgb(245, 223, 187);</string>
   <widget class="QPushButton" name="pbn_cancel">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>320</y>
+     <x>190</x>
+     <y>280</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -119,15 +123,15 @@ color:rgb(245, 223, 187);</string>
   <widget class="QLabel" name="lbl_img">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>50</y>
-     <width>191</width>
-     <height>181</height>
+     <x>120</x>
+     <y>10</y>
+     <width>171</width>
+     <height>171</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:white;
-border-radius:60%;</string>
+border-radius:85%;</string>
    </property>
    <property name="text">
     <string/>

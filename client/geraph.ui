@@ -80,11 +80,14 @@ border-radius: 10%;</string>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>80</x>
+      <x>60</x>
       <y>50</y>
-      <width>51</width>
+      <width>81</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font:24px;</string>
     </property>
     <property name="text">
      <string>name</string>
