@@ -26,7 +26,6 @@ SOURCES += \
     msg_options.cpp \
     pvpermissions.cpp \
     setting.cpp \
-    showingprof.cpp \
     siginup.cpp \
     signin.cpp \
     myclient.cpp \
@@ -54,7 +53,6 @@ HEADERS += \
     msg_options.h \
     pvpermissions.h \
     setting.h \
-    showingprof.h \
     siginup.h \
     signin.h \
     myclient.h \
@@ -75,7 +73,6 @@ FORMS += \
     msg_options.ui \
     pvpermissions.ui \
     setting.ui \
-    showingprof.ui \
     siginup.ui \
     signin.ui \
     profile.ui \

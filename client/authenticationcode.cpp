@@ -32,7 +32,7 @@ void AuthenticationCode::on_pbn_ok_clicked()
     QByteArray json_b = json_doc.toJson();
     json_b = client->request_to_server(&json_b);
     QString msg = QString::fromUtf8(json_b);
-//    if(msg == "accepted"){
+    if(msg == "accepted"){
         client->disconnect_from_server();
         this->close();
         this->destroy(true, true);
@@ -42,11 +42,11 @@ void AuthenticationCode::on_pbn_ok_clicked()
         emit user_authenticated();
         MainWindow* main_window = new MainWindow(user["id"].toString());
         main_window->show();
-//    }
-//    else
-//    {
-//        QMessageBox::warning(this, "signup error", msg);
-//    }
+    }
+    else
+    {
+        QMessageBox::warning(this, "signup error", msg);
+    }
 }
 
 

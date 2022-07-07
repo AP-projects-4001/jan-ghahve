@@ -21,8 +21,10 @@ private slots:
     void on_pbn_ok_clicked();
     void on_userauthenticated();
     void on_pbn_cancel_clicked();
-
     void on_pbn_forgetpass_clicked();
+
+signals:
+    void user_authenticated();
 
 private:
     Ui::signin *ui;

@@ -23,7 +23,7 @@ ForgetPass::~ForgetPass()
 
 void ForgetPass::on_pushButton_2_clicked()
 {
-    MyClient *client = new MyClient();
+    client = new MyClient();
     QJsonObject req;
     req["status"] = "forgetpassword";
     req["email"] = ui->lineEdit->text();
@@ -44,9 +44,13 @@ void ForgetPass::on_pushButton_2_clicked()
     {
         QMessageBox::warning(this, "Error!", "incorrect email address!");
     }
-    client->disconnect_from_server();
     this->close();
     //QMessageBox::information(this, "Invalid input", "Phone number field cannot be empty!");
 
+}
+
+void ForgetPass::on_user_authenticated()
+{
+    client->disconnect_from_server();
 }
 
