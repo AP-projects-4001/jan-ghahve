@@ -9,7 +9,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-GroupProfile::GroupProfile(QString id, QWidget *parent) :
+GroupProfile::GroupProfile(QString id,QString visitor, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::GroupProfile)
 {
@@ -42,6 +42,25 @@ GroupProfile::GroupProfile(QString id, QWidget *parent) :
     ui->lbl_img->setPixmap(pix);
     ui->lbl_img->setScaledContents( true );
     ui->lbl_img->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
+    //----------------------------channel info  ------------------------------------
+    QJsonObject json_obj;
+    json_obj["status"] = "channelInfo";
+    json_obj["id"] = id;
+    QJsonDocument json_doc(json_obj);
+    QByteArray json_b = json_doc.toJson();
+    json_b = client->request_to_server(&json_b);
+    json_doc = QJsonDocument::fromJson(json_b);
+    json_obj = json_doc.object();
+    if(!json_obj.isEmpty())
+    {
+        QString creator_of_group = json_obj["1"].toString();
+        if(visitor!=creator_of_group)
+        {
+            ui->pbn_permission->hide();
+        }
+
+    }
+
 }
 
 GroupProfile::~GroupProfile()
@@ -92,7 +111,7 @@ void GroupProfile::on_pbn_save_clicked()
     QJsonDocument req_d(req);
     QByteArray req_b = req_d.toJson();
 
-    if(client->connect_to_server()){
+    if(client->is_client_connectd()){
         //Sending data to the server and waiting for getting a response from it
         QByteArray response = client->request_to_server(&req_b);
         QString msg = QString(response);

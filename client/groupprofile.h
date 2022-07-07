@@ -12,7 +12,7 @@ class GroupProfile : public QDialog
     Q_OBJECT
 
 public:
-    explicit GroupProfile(QString id,QWidget *parent = nullptr);
+    explicit GroupProfile(QString id,QString visitor ,QWidget *parent = nullptr);
     ~GroupProfile();
 
 private slots:

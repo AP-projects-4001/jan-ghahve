@@ -415,7 +415,7 @@ QStringList Channel::create_group_or_channel(QJsonObject data, QString chat)
     for(QJsonValueRef user_ref:qAsConst(json_arr))
     {
         user = user_ref.toObject();
-        if(user["id"] == data["id"]){
+        if(user["id"] == data["name"]){
             username_uique = false;
             break;
         }
@@ -454,10 +454,13 @@ QStringList Channel::create_group_or_channel(QJsonObject data, QString chat)
     QJsonObject images_json_obj = read_from_file("images.json");
     images_json_obj[data["name"].toString()] = img;
     write_to_file("images.json",images_json_obj);
+
+
     data.remove("name");
 
+    data["admins"] = "";
     all_data[name] = data;
-    all_data["admins"] = "";
+
     write_to_file(chat + "s.json", all_data);
 
     //modify contacts file
