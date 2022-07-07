@@ -701,7 +701,7 @@ void Channel::edit_message(QJsonObject data)
             msg_obj = read_from_file(file_path);
         }
     }else{
-        file_path = id1 + ".json";
+        file_path = id2 + ".json";
         msg_obj = read_from_file(file_path);
     }
 
