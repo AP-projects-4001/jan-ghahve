@@ -13,8 +13,6 @@ Profile::Profile(QString contact_id, QJsonObject user_data,QWidget *parent) :
     ui->setupUi(this);
     setFixedSize(size());
     show_informations();
-    qDebug()<<contact_id;
-    qDebug()<<user_data["id"];
 }
 
 Profile::~Profile()
@@ -27,6 +25,7 @@ void Profile::show_informations()
     QStringList permissions = user_data["permissions"].toString().split('%');
     if(permissions.contains(contact_id))
     {
+        //if user restricted,default profile show and number does'nt show
         ui->led_phonenum->hide();
         ui->lbl_phonenum->hide();
         QPixmap pix(":/images/resourses/default_profile.jpg");
@@ -38,6 +37,7 @@ void Profile::show_informations()
     }
     else
     {
+        //if user has permission, show profile and number
         ui->led_phonenum->setText(user_data["number"].toString());
         MyClient *client = new MyClient();
         QJsonObject req;

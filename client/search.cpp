@@ -12,12 +12,12 @@ search::search(MyClient* client,QWidget *parent) :
     setFixedSize(size());
     this->client = client;
     if(client->is_client_connectd()){
+        //send request to server and get it's response
         QJsonObject request;
         request["status"] ="allUsersInfo";
         QJsonDocument requset_doc(request);
         QByteArray request_b=requset_doc.toJson();
         QByteArray response = client->request_to_server(&request_b);
-
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         all_users = response_d.object();
     }
@@ -36,13 +36,16 @@ void search::on_pbn_ok_clicked()
     QString number = ui->led_number->text();
     QStringList foundedIds;
 
+    //check validation of inputs
     if(name == "" && id == "" && number == ""){
         QMessageBox::warning(this, "Invalid input", "You must fill at least one of the values!");
         return;
     }
 
+
     QJsonArray data_arr = all_users["profiles"].toArray();
     QJsonObject user;
+    //search in database
     for(QJsonValueRef userRef:data_arr){
         user = userRef.toObject();
         if(user["id"].toString() == id || user["name"].toString() == name || user["number"].toString() == number){
@@ -54,6 +57,7 @@ void search::on_pbn_ok_clicked()
         return;
     }
 
+    //show founded IDs on listWidget
     QListWidget* list = ui->listWidget;
     list->clear();
     numbOfUsers = 0;
@@ -94,6 +98,7 @@ void search::on_pbn_submit_clicked()
             counter++;
         }
     }
+    //check validation
     if(counter == 0){
         QMessageBox::warning(this, "Invalid input", "You must choose at least one user!");
         return;
