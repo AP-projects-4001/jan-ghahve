@@ -415,7 +415,7 @@ QStringList Channel::create_group_or_channel(QJsonObject data, QString chat)
     for(QJsonValueRef user_ref:qAsConst(json_arr))
     {
         user = user_ref.toObject();
-        if(user["id"] == data["id"]){
+        if(user["id"] == data["name"]){
             username_uique = false;
             break;
         }
@@ -454,10 +454,13 @@ QStringList Channel::create_group_or_channel(QJsonObject data, QString chat)
     QJsonObject images_json_obj = read_from_file("images.json");
     images_json_obj[data["name"].toString()] = img;
     write_to_file("images.json",images_json_obj);
+
+
     data.remove("name");
 
+    data["admins"] = "";
     all_data[name] = data;
-    all_data["admins"] = "";
+
     write_to_file(chat + "s.json", all_data);
 
     //modify contacts file
@@ -808,25 +811,27 @@ void Channel::write_to_file(QString file_path, QJsonObject result)
     file.open(QIODevice::WriteOnly);
     QByteArray data_b = result_doc.toJson();
     //Encoding
-    MyEncryption *encryption = new MyEncryption();;
-    QByteArray encoded_Data = encryption->myEncode(data_b);
-    file.write(encoded_Data);
-    delete encryption;
+    //MyEncryption *encryption = new MyEncryption();;
+    //QByteArray encoded_Data = encryption->myEncode(data_b);
+    //file.write(encoded_Data);
+    file.write(data_b);
+    //delete encryption;
     file.close();
 }
-
 QJsonObject Channel::read_from_file(QString file_path)
 {
+
     QFile file(file_path);
     QJsonObject json_obj;
     if(file.open(QIODevice::ReadOnly)){
         QByteArray encoded_data = file.readAll();
         file.close();
-        MyEncryption *encryption = new MyEncryption();;
-        QByteArray decoded_Data = encryption->myDecode(encoded_data);
-        delete encryption;
+        //MyEncryption *encryption = new MyEncryption();;
+        //QByteArray decoded_Data = encryption->myDecode(encoded_data);
+        //delete encryption;
         //Decoding
-        QJsonDocument json_doc = QJsonDocument::fromJson(decoded_Data);
+        //QJsonDocument json_doc = QJsonDocument::fromJson(decoded_Data);
+        QJsonDocument json_doc = QJsonDocument::fromJson(encoded_data);
         json_obj = json_doc.object();
     }
     return json_obj;

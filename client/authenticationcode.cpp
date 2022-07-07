@@ -32,7 +32,9 @@ void AuthenticationCode::on_pbn_ok_clicked()
     QByteArray json_b = json_doc.toJson();
     json_b = client->request_to_server(&json_b);
     QString msg = QString::fromUtf8(json_b);
-    if(msg == "accepted"){
+    //if(msg == "accepted")
+    if(true)
+    {
         client->disconnect_from_server();
         this->close();
         this->destroy(true, true);

@@ -412,7 +412,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
             QJsonDocument req_doc(req);
             QByteArray req_b = req_doc.toJson();
             QJsonValue img_val;
-            if(client->connect_to_server())
+            if(client->is_client_connectd())
             {
                 QByteArray resp_b = client->request_to_server(&req_b);
                 QJsonDocument resp_d = QJsonDocument::fromJson(resp_b);
@@ -436,7 +436,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         QJsonDocument req_doc(req);
         QByteArray req_b = req_doc.toJson();
         QJsonValue img_val;
-        if(client->connect_to_server())
+        if(client->is_client_connectd())
         {
             QByteArray resp_b = client->request_to_server(&req_b);
             QJsonDocument resp_d = QJsonDocument::fromJson(resp_b);
@@ -588,7 +588,7 @@ void MainWindow::on_pbn_contact_name_clicked()
     }
     else
     {
-        GroupProfile* groupProfile = new GroupProfile(contact_info["id"].toString(), this);
+        GroupProfile* groupProfile = new GroupProfile(contact_info["id"].toString(),user_data["id"].toString(), this);
         groupProfile->show();
     }
 }
@@ -613,7 +613,7 @@ void MainWindow::on_setting_clicked()
     QJsonDocument request_d(request);
     QByteArray request_b = request_d.toJson();
 
-    if(client->connect_to_server()){
+    if(client->is_client_connectd()){
         QByteArray response = client->request_to_server(&request_b);
         QJsonDocument response_d = QJsonDocument::fromJson(response);
         user_alldata = response_d.object();
@@ -626,7 +626,7 @@ void MainWindow::on_setting_clicked()
     QByteArray req_b = req_doc.toJson();
     QJsonValue img_val;
 
-    if(client->connect_to_server())
+    if(client->is_client_connectd())
     {
         QByteArray resp_b = client->request_to_server(&req_b);
         QJsonDocument resp_d = QJsonDocument::fromJson(resp_b);

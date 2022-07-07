@@ -64,7 +64,7 @@ void ChannelPermissions::on_pbn_ok_clicked()
     req_obj["id"] = id;
 
     QString admins = "";
-    for(int i=0; i< numbOfMembers; i++){
+    for(int i=0; i< numbOfMembers-1; i++){
         QListWidgetItem* item = list->item(i);
         if(item->checkState()){
             admins += (item->text()+"%");

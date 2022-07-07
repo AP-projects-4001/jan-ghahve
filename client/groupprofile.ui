@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>375</width>
-    <height>280</height>
+    <width>378</width>
+    <height>368</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
   <widget class="QPushButton" name="pbn_permission">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>30</y>
+     <x>120</x>
+     <y>280</y>
      <width>141</width>
      <height>33</height>
     </rect>
@@ -40,21 +40,24 @@ color:rgb(34, 119, 255)</string>
   <widget class="QLabel" name="lbl_name">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>160</y>
-     <width>63</width>
-     <height>20</height>
+     <x>90</x>
+     <y>10</y>
+     <width>191</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
     <string>TextLabel</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QPushButton" name="pbn_change_image">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>90</y>
+     <x>120</x>
+     <y>240</y>
      <width>141</width>
      <height>33</height>
     </rect>
@@ -75,7 +78,7 @@ color:rgb(34, 119, 255)</string>
    <property name="geometry">
     <rect>
      <x>200</x>
-     <y>220</y>
+     <y>320</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -96,7 +99,7 @@ color:rgb(245, 223, 187);</string>
    <property name="geometry">
     <rect>
      <x>90</x>
-     <y>220</y>
+     <y>320</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -116,10 +119,10 @@ color:rgb(245, 223, 187);</string>
   <widget class="QLabel" name="lbl_img">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>20</y>
-     <width>121</width>
-     <height>121</height>
+     <x>90</x>
+     <y>50</y>
+     <width>191</width>
+     <height>181</height>
     </rect>
    </property>
    <property name="styleSheet">
