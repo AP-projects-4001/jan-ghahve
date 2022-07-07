@@ -70,6 +70,7 @@ void signin::on_pbn_ok_clicked()
             this->destroy(true, true);
             this->deleteLater();
             //Go to the main window(chat window)
+            emit user_authenticated();
             MainWindow* main_window = new MainWindow(id);
             main_window->show();
         }else{
@@ -97,6 +98,7 @@ void signin::on_pbn_cancel_clicked()
 void signin::on_pbn_forgetpass_clicked()
 {
     ForgetPass *forgetPass_window = new ForgetPass();
+    connect(this, &signin::user_authenticated, forgetPass_window, &ForgetPass::on_user_authenticated);
     forgetPass_window->show();
 }
 

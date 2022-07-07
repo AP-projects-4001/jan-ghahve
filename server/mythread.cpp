@@ -199,23 +199,16 @@ void MyThread::readyRead()
         response = msg.toUtf8();
     }
     else if(status == "authenticationCode"){
-//        if(data_obj["auth"].toInt() == authentication_code){
-//            if(data_obj["state"].toString() == "signup"){
-//                data_obj.remove("state");
-//                data_obj.remove("auth");
-//                msg = channel.signup(data_obj);
-//            }
-//            msg = "accepted";
-//        }else{
-//            msg = "The code is wrong!";
-//        }
-        if(data_obj["state"].toString() == "signup"){
-
-            data_obj.remove("state");
-            data_obj.remove("auth");
-            msg = channel.signup(data_obj);
+        if(data_obj["auth"].toInt() == authentication_code){
+            if(data_obj["state"].toString() == "signup"){
+                data_obj.remove("state");
+                data_obj.remove("auth");
+                msg = channel.signup(data_obj);
+            }
+            msg = "accepted";
+        }else{
+            msg = "The code is wrong!";
         }
-        msg = "accepted";
         response = msg.toUtf8();
     }
     else if(status == "userInfo"){
