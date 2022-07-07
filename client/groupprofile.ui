@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>394</width>
+    <width>409</width>
     <height>368</height>
    </rect>
   </property>
@@ -40,10 +40,10 @@ color:rgb(252, 163, 17)</string>
   <widget class="QLabel" name="lbl_name">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>80</x>
      <y>230</y>
-     <width>171</width>
-     <height>31</height>
+     <width>251</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -60,7 +60,7 @@ font:26px;</string>
   <widget class="QPushButton" name="pbn_change_image">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>150</x>
      <y>310</y>
      <width>121</width>
      <height>33</height>
@@ -81,8 +81,8 @@ color:rgb(34, 119, 255)</string>
   <widget class="QPushButton" name="pbn_save">
    <property name="geometry">
     <rect>
-     <x>290</x>
-     <y>310</y>
+     <x>300</x>
+     <y>320</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -102,8 +102,8 @@ color:rgb(245, 223, 187);</string>
   <widget class="QPushButton" name="pbn_cancel">
    <property name="geometry">
     <rect>
-     <x>190</x>
-     <y>310</y>
+     <x>20</x>
+     <y>320</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -123,7 +123,7 @@ color:rgb(245, 223, 187);</string>
   <widget class="QLabel" name="lbl_img">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>120</x>
      <y>50</y>
      <width>171</width>
      <height>171</height>
