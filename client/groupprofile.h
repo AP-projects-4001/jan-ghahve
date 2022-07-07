@@ -2,7 +2,7 @@
 #define GROUPPROFILE_H
 
 #include <QDialog>
-
+#include "myclient.h"
 namespace Ui {
 class GroupProfile;
 }
@@ -30,6 +30,7 @@ private:
     QString id;
     QPixmap profile_pix;
     QPixmap new_profile_pix;
+    MyClient* client;
 };
 
 #endif // GROUPPROFILE_H

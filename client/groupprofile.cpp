@@ -20,8 +20,8 @@ GroupProfile::GroupProfile(QString id,QString visitor, QWidget *parent) :
     ui->lbl_name->setText(id);
     ui->pbn_save->hide();
     ui->pbn_cancel->hide();
-    //---------- GET PROFILE OF GROUP OR CHANNEL -------------
-    MyClient *client = new MyClient();
+
+    client = new MyClient();
     QJsonObject req;
     req["status"] = "getProfileImage";
     req["id"] = id;
@@ -108,7 +108,6 @@ void GroupProfile::on_pbn_save_clicked()
     ImageConvertation *imageConvertor = new ImageConvertation;
     QJsonValue val = imageConvertor->jsonValFromPixmap(this->new_profile_pix);
     req["img"] = val;
-    MyClient* client = new MyClient();
     QJsonDocument req_d(req);
     QByteArray req_b = req_d.toJson();
 
