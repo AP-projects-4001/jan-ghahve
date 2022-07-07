@@ -180,7 +180,7 @@ border-radius:8px;</string>
 background-color:rgb(1, 125, 180);</string>
      </property>
      <property name="text">
-      <string>PushButton</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLineEdit" name="led_search">
@@ -373,7 +373,7 @@ font:24px;
      <x>0</x>
      <y>0</y>
      <width>839</width>
-     <height>26</height>
+     <height>28</height>
     </rect>
    </property>
    <property name="cursor">

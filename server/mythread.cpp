@@ -197,40 +197,18 @@ void MyThread::readyRead()
     {
         msg = channel.signin(data_obj);
         response = msg.toUtf8();
-        if(msg == "accepted"){
-            std::uniform_int_distribution<int> distribution(99999,999999);
-            int number = distribution(*QRandomGenerator::global());
-            authentication_code = number;
-
-            QString const uname = "janghahve@gmail.com";
-            QString const rcpt = data_obj["email"].toString();
-            QString const subject = "Authentication code";
-            QString const msg = QString::number(number);
-            QString const paswd = "mxakpmwpmrjbqgzo";
-            QString const server = "smtp.gmail.com";
-            int const port = 465;
-            Smtp* smtp = new Smtp(uname, paswd, server, port);
-            smtp->sendMail(uname, rcpt , subject,msg);
-        }
     }
     else if(status == "authenticationCode"){
-//        if(data_obj["auth"].toInt() == authentication_code){
-//            if(data_obj["state"].toString() == "signup"){
-//                data_obj.remove("state");
-//                data_obj.remove("auth");
-//                msg = channel.signup(data_obj);
-//            }
-//            msg = "accepted";
-//        }else{
-//            msg = "The code is wrong!";
-//        }
-        if(data_obj["state"].toString() == "signup"){
-
-            data_obj.remove("state");
-            data_obj.remove("auth");
-            msg = channel.signup(data_obj);
+        if(data_obj["auth"].toInt() == authentication_code){
+            if(data_obj["state"].toString() == "signup"){
+                data_obj.remove("state");
+                data_obj.remove("auth");
+                msg = channel.signup(data_obj);
+            }
+            msg = "accepted";
+        }else{
+            msg = "The code is wrong!";
         }
-        msg = "accepted";
         response = msg.toUtf8();
     }
     else if(status == "userInfo"){
@@ -330,6 +308,7 @@ void MyThread::readyRead()
         channel.edit_message(data_obj);
         msg = "ok";
         response = msg.toUtf8();
+    }
     else if(status == "forgetpassword")
     {
         QJsonObject result;
@@ -356,6 +335,12 @@ void MyThread::readyRead()
             response = msg.toUtf8();
         }
 
+    }
+    else if(status == "forwardMessage"){
+        QStringList ids = channel.forward_message(data_obj);
+        msg = "ok";
+        response = msg.toUtf8();
+        emit message_group_recieved(data_obj["sender"].toString(), "", ids, data_obj["message"].toString());
     }
 
     //Get a responce from "channel", then Send it to the Client

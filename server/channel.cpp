@@ -715,6 +715,8 @@ void Channel::edit_message(QJsonObject data)
     write_to_file(file_path, msg_obj);
     //---- UnLock -----
     ch_mutex->unlock();
+}
+
 QJsonObject Channel::check_email_validation(QJsonObject data)
 {
     //----LOCK ----
@@ -756,6 +758,46 @@ QJsonObject Channel::check_email_validation(QJsonObject data)
     //----UnLock----
     ch_mutex->unlock();
     return answer;
+}
+
+QStringList Channel::forward_message(QJsonObject data)
+{
+    //----LOCK ----
+    ch_mutex->lock();
+    int max = data["max"].toInt();
+    QString id1 = data["sender"].toString(), id2, file_path;
+    QJsonObject msg_obj;
+    QJsonArray msg_arr;
+    QJsonObject message;
+    message["sender"] = id1;
+    message["message"] = data["message"];
+    QStringList ids;
+    for(int i=1;i<=max;i++){
+        id2 = data[QString::number(i)].toString();
+        file_path = id1+ "%" + id2 + ".json";
+        msg_obj = read_from_file(file_path);
+
+        if(msg_obj.empty())//the file didn't open
+        {
+            //file name can be : id2 + "%" + id1 + ".json"
+            file_path = id2 + "%" +id1 + ".json";
+            msg_obj = read_from_file(file_path);
+        }
+        if(msg_obj.empty()){
+            msg_obj["max"] = 0;
+        }
+        int max_msg = msg_obj["max"].toInt() + 1;
+        msg_obj["max"] = max_msg;
+
+        msg_obj[QString::number(max_msg)] = message;
+
+        //new chat messages(msg_arr) are overwritten in the database
+        write_to_file(file_path, msg_obj);
+        ids.append(id2);
+    }
+    //---- UnLock -----
+    ch_mutex->unlock();
+    return ids;
 }
 
 //------------------ Working with Files ------------------

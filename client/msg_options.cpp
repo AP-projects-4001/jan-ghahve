@@ -1,5 +1,6 @@
 #include "msg_options.h"
 #include "ui_msg_options.h"
+#include "forwardbox.h"
 
 Msg_Options::Msg_Options(MyClient* client, QJsonObject data, QWidget *parent) :
     QDialog(parent),
@@ -55,5 +56,12 @@ void Msg_Options::on_pushButton_2_clicked()
         client->request_to_server(&data_b);
     emit message_edited();
     this->close();
+}
+
+
+void Msg_Options::on_pushButton_4_clicked()
+{
+    ForwardBox* forward = new ForwardBox(data["sender"].toString(), data["message"].toString(), client, this);
+    forward->show();
 }
 
