@@ -99,7 +99,8 @@ color:rgb(34, 119, 255)</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:rgb(240, 240, 240);
-border-radius:15px;</string>
+border-radius:18px;
+font-color:rgb(38, 70, 83);</string>
    </property>
   </widget>
  </widget>
