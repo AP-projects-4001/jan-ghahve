@@ -175,8 +175,11 @@ border-radius:8px;</string>
        <height>31</height>
       </rect>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
-      <string notr="true">border-image:url(:/images/resourses/search.jpg);
+      <string notr="true">border-image:url(:/images/resourses/search.png);
 background-color:rgb(1, 125, 180);</string>
      </property>
      <property name="text">
@@ -218,7 +221,7 @@ border-radius:25px;</string>
       <rect>
        <x>120</x>
        <y>10</y>
-       <width>121</width>
+       <width>181</width>
        <height>31</height>
       </rect>
      </property>
@@ -232,7 +235,7 @@ border-radius:25px;</string>
       <string notr="true">font-weight:bold;
 border-radius: 10px;
 color:black;
-font:23px;</string>
+font:18px;</string>
      </property>
      <property name="text">
       <string>Name</string>

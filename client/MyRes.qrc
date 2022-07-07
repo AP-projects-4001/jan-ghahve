@@ -5,10 +5,10 @@
         <file>resourses/logo.png</file>
         <file>resourses/search1.png</file>
         <file>resourses/send.png</file>
-        <file>resourses/search.jpg</file>
         <file>resourses/chat.png</file>
         <file>resourses/default_profile.jpg</file>
         <file>resourses/group_default_profile.jpg</file>
         <file>resourses/channel_default_profile.jpg</file>
+        <file>resourses/search.png</file>
     </qresource>
 </RCC>
