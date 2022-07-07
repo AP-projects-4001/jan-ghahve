@@ -350,7 +350,7 @@ void MainWindow::get_chat()
                 continue;
             sender = msg["sender"].toString();
             message = msg["message"].toString();
-            if(sender == user_data["id"].toString())
+            if(sender == user_data["id"].toString() && contact_info["channel"].toString() == "channel")
                 flag = true;
             else
                 flag = false;
@@ -538,7 +538,10 @@ void MainWindow::on_pbn_send_clicked()
     {
         client->request_to_server(&message_b);
     }
-    add_message(true, user_data["id"].toString(), message_content);
+    if(contact_info["status"].toString() == "channel")
+        add_message(false, user_data["id"].toString(), message_content);
+    else
+        add_message(true, user_data["id"].toString(), message_content);
     int a = ui->scrollArea->verticalScrollBar()->maximum() + 100;
     ui->scrollArea->verticalScrollBar()->setMaximum(a);
     ui->scrollArea->verticalScrollBar()->setSliderPosition(a);
