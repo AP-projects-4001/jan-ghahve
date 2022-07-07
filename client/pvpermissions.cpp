@@ -62,3 +62,9 @@ void PvPermissions::on_pbn_ok_clicked()
     this->close();
 }
 
+
+void PvPermissions::on_pushButton_2_clicked()
+{
+
+}
+

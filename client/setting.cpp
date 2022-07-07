@@ -27,6 +27,7 @@ setting::setting(QJsonValue img_val ,QJsonObject user_data ,QWidget *parent) :
 
     ui->led_phonenum->setText(user_data["number"].toString());
     ui->led_phonenum->setReadOnly(true);
+    ui->led_phonenum->setValidator(new QIntValidator(this));
 
     ui->led_username->setText(user_data["id"].toString());
     ui->led_username->setReadOnly(true);

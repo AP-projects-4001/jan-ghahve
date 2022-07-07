@@ -29,7 +29,6 @@ public:
     bool is_already_added(QString id);
     QStringList get_user_contacts_from_file();
     void add_item_to_listwidget(QString name);
-    void get_allUsers_contacts();
     bool is_admin(QString id, QStringList admins_list);
     void add_message(bool flag, QString sender, QString message);
     void append_message_in_database(QString message, QString senderId);
@@ -62,7 +61,6 @@ private:
     QJsonObject user_data;
     QJsonObject contact_info;
     QJsonObject all_users;
-    QJsonObject all_users_contacts;
     QSystemTrayIcon* tray;
 };
 #endif // MAINWINDOW_H

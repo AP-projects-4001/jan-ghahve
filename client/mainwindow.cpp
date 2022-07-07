@@ -148,20 +148,6 @@ void MainWindow::add_item_to_listwidget(QString name)
     list->addItem(item);
 }
 
-void MainWindow::get_allUsers_contacts()
-{
-    QJsonObject req;
-    req["status"] = "allUsersContacts";
-    QJsonDocument req_doc(req);
-    QByteArray req_b = req_doc.toJson();
-    if(client->is_client_connectd()){
-        QByteArray response_b = client->request_to_server(&req_b);
-        QJsonDocument respones_d = QJsonDocument::fromJson(response_b);
-        QJsonObject response_obj = respones_d.object();
-        this->all_users_contacts = response_obj;
-    }
-}
-
 bool MainWindow::is_admin(QString id, QStringList admins_list)
 {
     for(QString user:admins_list){
@@ -559,7 +545,17 @@ void MainWindow::on_graph_clicked()
 
     QString myUsername;
     myUsername = user_data["id"].toString();
-    get_allUsers_contacts();
+    QJsonObject req;
+    req["status"] = "allUsersContacts";
+    QJsonObject all_users_contacts;
+    QJsonDocument req_doc(req);
+    QByteArray req_b = req_doc.toJson();
+    if(client->is_client_connectd()){
+        QByteArray response_b = client->request_to_server(&req_b);
+        QJsonDocument respones_d = QJsonDocument::fromJson(response_b);
+        QJsonObject response_obj = respones_d.object();
+        all_users_contacts = response_obj;
+    }
     geraph *graph_window = new geraph(myUsername,all_users_contacts);
     graph_window->show();
 }
@@ -701,6 +697,8 @@ void MainWindow::on_pbn_search_2_clicked()
         return;
     }
     QString text = ui->led_search->text();
+    ui->led_search->clear();
+    ui->led_search->hide();
     if(text.isEmpty())
         return;
     QFile file(user_data["id"].toString() + "%" + contact_info["id"].toString() + ".json");

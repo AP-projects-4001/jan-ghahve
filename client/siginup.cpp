@@ -25,6 +25,8 @@ siginup::siginup(QWidget *parent) :
     setTabOrder(ui->dateEdit,ui->led_email);
     setTabOrder(ui->led_email,ui->led_pass);
     setTabOrder(ui->led_pass,ui->conf_pass);
+
+    ui->led_phonenumb->setValidator(new QIntValidator(this));
 }
 
 siginup::~siginup()
