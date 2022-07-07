@@ -176,7 +176,8 @@ border-radius:8px;</string>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">border-image:url(:/images/resourses/search.jpg);</string>
+      <string notr="true">border-image:url(:/images/resourses/search.jpg);
+background-color:rgb(1, 125, 180);</string>
      </property>
      <property name="text">
       <string>PushButton</string>
@@ -345,17 +346,24 @@ background-color: palette(base);</string>
      <rect>
       <x>60</x>
       <y>20</y>
-      <width>101</width>
+      <width>111</width>
       <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:rgb(0, 119, 182);
 border-radius:15px;
-font:24px;</string>
+font:24px;
+</string>
     </property>
     <property name="text">
      <string>name</string>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::AutoText</enum>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
