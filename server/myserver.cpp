@@ -45,7 +45,7 @@ void MyServer::on_message_recieved(QString senderId, QString recieverId, QString
     QString id;
     for(int i=0; i< threads.length(); i++){
         id = data.value(threads.at(i)->get_socketdiscriptor());
-        if(id == recieverId && threads.at(i)->get_state() == "reciever" && id != recieverId){
+        if(id == recieverId && threads.at(i)->get_state() == "reciever" && id != senderId){
             threads.at(i)->on_new_message_recieved(senderId, recieverId, message, "");
             break;
         }
