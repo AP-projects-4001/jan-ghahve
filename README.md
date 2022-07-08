@@ -10,4 +10,4 @@ some main features of this project:
 - editing, saving and forwarding messages.
 - searching through messages in a chat.
 and here are some of the prictures of UI
-![Chat page](images/img1.jpg)
+![Chat page](images/img1.png)
