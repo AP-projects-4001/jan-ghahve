@@ -383,7 +383,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
         if(permissions.contains(user_data["id"].toString()))
         {
             //show default profile pic if user has no permission
-            QPixmap pix(":/images/resourses/default_profile.jpg");
+            QPixmap pix(":/images/resourses/default_profile.png");
             ui->lbl_profile->setPixmap(pix);
             ui->lbl_profile->setScaledContents( true );
             ui->lbl_profile->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );

@@ -89,7 +89,7 @@ void siginup::on_pbn_submit_clicked()
     user["password"] = pass;
     user["email"]=email;
     user["birthdate"] = birthdate.toString("dd/MM/yyyy");
-    QImage image(":/images/resourses/default_profile.jpg");
+    QImage image(":/images/resourses/default_profile.png");
     auto pix = QPixmap::fromImage(image);
     ImageConvertation *imageConvertor = new ImageConvertation();
     QJsonValue val = imageConvertor->jsonValFromPixmap(pix);

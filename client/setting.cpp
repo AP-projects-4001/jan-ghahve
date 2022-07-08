@@ -178,7 +178,7 @@ bool setting::validate_edit_data(QString name, QString email, QString pass, QStr
 
 void setting::on_pbn_changeImage_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,tr("open image"), QDir::homePath(),tr("JPG (*.jpg)"));
+    QString fileName = QFileDialog::getOpenFileName(this,tr("open image"), QDir::homePath(),tr("PNG (*.PNG)"));
     if(fileName.size())
     {
         QImage image(fileName);

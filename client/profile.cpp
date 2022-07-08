@@ -28,7 +28,7 @@ void Profile::show_informations()
         //if user restricted,default profile show and number does'nt show
         ui->led_phonenum->hide();
         ui->lbl_phonenum->hide();
-        QPixmap pix(":/images/resourses/default_profile.jpg");
+        QPixmap pix(":/images/resourses/default_profile.png");
         ui->lbl_img->setPixmap(pix);
         ui->lbl_img->setScaledContents( true );
         ui->lbl_img->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );

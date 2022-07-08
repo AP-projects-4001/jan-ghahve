@@ -87,7 +87,7 @@ void GroupProfile::on_pbn_permission_clicked()
 
 void GroupProfile::on_pbn_change_image_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,tr("open image"), QDir::homePath(),tr("JPG (*.jpg)"));
+    QString fileName = QFileDialog::getOpenFileName(this,tr("open image"), QDir::homePath(),tr("PNG (*.png)"));
     if(fileName.size())
     {
         QImage image(fileName);

@@ -94,7 +94,7 @@ void adding_member::on_pbn_ok_clicked()
     req_obj["max"] = counter + 1;
     if(chat == "group")
     {
-        QImage image(":/images/resourses/group_default_profile.jpg");
+        QImage image(":/images/resourses/group_default_profile.png");
         auto pix = QPixmap::fromImage(image);
         ImageConvertation *imageConvertor = new ImageConvertation();
         QJsonValue val = imageConvertor->jsonValFromPixmap(pix);
@@ -102,7 +102,7 @@ void adding_member::on_pbn_ok_clicked()
     }
     else
     {
-        QImage image(":/images/resourses/channel_default_profile.jpg");
+        QImage image(":/images/resourses/channel_default_profile.png");
         auto pix = QPixmap::fromImage(image);
         ImageConvertation *imageConvertor = new ImageConvertation();
         QJsonValue val = imageConvertor->jsonValFromPixmap(pix);
