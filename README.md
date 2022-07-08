@@ -13,7 +13,7 @@ The database of this project is based on JSON files and there are some main feat
 - searching through messages in a chat.
 
 
-and here are some of the prictures of UI
+and here are some of the pictures of UI
 
 
 ![Chat page](images/img1.png)
