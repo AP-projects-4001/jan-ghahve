@@ -13,3 +13,5 @@ some main features of this project:
 
 and here are some of the prictures of UI
 ![Chat page](images/img1.png)
+![Profile page](images/img2.png)
+![Channel profile page](images/img3.png)
