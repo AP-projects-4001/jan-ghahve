@@ -199,8 +199,8 @@ void MyThread::readyRead()
         response = msg.toUtf8();
     }
     else if(status == "authenticationCode"){
-//        if(data_obj["auth"].toInt() == authentication_code)
-//        {
+        if(data_obj["auth"].toInt() == authentication_code)
+        {
         if(data_obj["state"].toString() == "signup")
         {
             data_obj.remove("state");
@@ -208,10 +208,10 @@ void MyThread::readyRead()
             msg = channel.signup(data_obj);
         }
         msg = "accepted";
-    //        }
-//        else{
-//            msg = "The code is wrong!";
-//        }
+            }
+        else{
+            msg = "The code is wrong!";
+        }
         response = msg.toUtf8();
     }
     else if(status == "userInfo"){
